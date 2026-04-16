@@ -10,10 +10,16 @@
             --c-blue-1: #32455F;
             --c-blue-2: #1A324A;
             --c-darkest: #07101C;
+            
             --text-main: #ffffff;
-            --text-muted: #9aaec4;
-            --brand-color: #5b86e5; /* Màu xanh của logo Nighthub */
-            --danger-color: #ff3b30; /* Màu đỏ cho chữ Đăng ký */
+            --text-muted: #64748b; /* Xám nhạt cho chữ phụ */
+            --accent-blue: #38bdf8; /* Xanh neon cho chữ Đăng ký */
+            
+            --card-bg: rgba(15, 23, 36, 0.6);
+            --card-border: rgba(255, 255, 255, 0.08);
+            
+            --input-bg: rgba(255, 255, 255, 0.04);
+            --input-border: rgba(255, 255, 255, 0.1);
         }
 
         /* ================= RESET CSS ================= */
@@ -25,7 +31,6 @@
         }
 
         body {
-            /* Nền xanh Dark Blue gradient như giao diện chính */
             background: linear-gradient(135deg, 
                 var(--c-blue-1) 17%, 
                 var(--c-blue-2) 35%, 
@@ -36,298 +41,358 @@
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* ================= BỐ CỤC KHUNG ĐĂNG NHẬP ================= */
-        .login-container {
-            width: 100%;
-            max-width: 400px; /* Kích thước chuẩn của app mobile */
-            padding: 40px 25px;
-            display: flex;
             flex-direction: column;
-            gap: 30px;
-            
-            /* (Tùy chọn) Thêm một lớp kính mờ nhẹ nếu xem trên màn hình máy tính rộng */
-            background: rgba(7, 16, 28, 0.3);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-
-        /* --- HEADER (Nút Back + Tiêu đề) --- */
-        .login-header {
-            display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            margin-bottom: 10px;
         }
 
-        .back-btn {
+        /* Nút quay lại trang chủ ở góc trái trên cùng */
+        .back-link {
             position: absolute;
-            left: 0;
-            background: none;
-            border: none;
+            top: 30px;
+            left: 30px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
             color: var(--text-main);
-            cursor: pointer;
+        }
+
+        .back-link svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ================= LOGO SECTION ================= */
+        .logo-section {
             display: flex;
-            align-items: center;
             justify-content: center;
-            padding: 5px;
-            transition: transform 0.2s ease;
+            margin-bottom: 30px;
         }
 
-        .back-btn:hover {
-            transform: translateX(-3px);
-        }
-
-        .login-header h2 {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        /* --- LOGO KHU VỰC --- */
-        .login-logo {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        /* Giả lập Logo Nighthub bằng Text + Icon */
         .logo-wrapper {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .logo-icon {
+        .logo-icon svg {
             width: 50px;
             height: 50px;
-            /* Mô phỏng icon vòng tròn và dải phim */
-            background: radial-gradient(circle at top left, #4DA8DA, var(--c-darkest));
-            border-radius: 50%;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: inset -2px -2px 10px rgba(0,0,0,0.5);
+            fill: #4DA8DA;
         }
 
-        .logo-icon svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--text-main);
-            transform: rotate(-15deg);
+
+        /* ================= LOGIN CARD ================= */
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 40px 35px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
         }
 
-        .logo-text {
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--brand-color);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            background: linear-gradient(to right, #6ea4ff, #4DA8DA);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .card-title {
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--text-main);
         }
 
-        /* --- CÁC NÚT ĐĂNG NHẬP MẠNG XÃ HỘI --- */
-        .social-buttons {
+        /* ================= FORM NHẬP LIỆU ================= */
+        .login-form {
             display: flex;
             flex-direction: column;
-            gap: 15px;
         }
 
-        .btn-social {
+        .input-group {
             position: relative;
-            width: 100%;
-            height: 55px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(20, 20, 20, 0.6); /* Nền xám đen mờ */
-            color: var(--text-main);
-            font-size: 14px;
-            font-weight: 600;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            cursor: pointer;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            color: #94a3b8;
+            display: flex;
+            pointer-events: none;
+        }
+
+        .input-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border-radius: 8px; /* Hình chữ nhật bo góc nhẹ */
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
             transition: all 0.3s ease;
         }
 
-        .btn-social:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
+        .input-group input::placeholder {
+            color: #64748b;
+        }
+
+        .input-group input:focus {
+            border-color: var(--accent-blue);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+        }
+        
+        .input-group input:focus + .input-icon {
+            color: var(--accent-blue);
+        }
+
+        /* --- Quên mật khẩu --- */
+        .forgot-pwd {
+            text-align: right;
+            margin-bottom: 20px;
+            margin-top: -5px;
+        }
+
+        .forgot-pwd a {
+            color: var(--text-muted); /* Màu xám nhạt */
+            text-decoration: none;
+            font-size: 12px;
+            transition: color 0.2s;
+        }
+
+        .forgot-pwd a:hover {
+            color: #cbd5e1;
+        }
+
+        /* --- Nút Đăng Nhập Chính --- */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            background-color: #334764; /* Xanh Navy nhám giống ảnh */
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+
+        .btn-submit:hover {
+            background-color: #40597a;
             transform: translateY(-2px);
         }
 
-        /* Định vị Icon nằm sát lề trái, Text căn giữa hoàn hảo */
-        .btn-social svg {
-            position: absolute;
-            left: 20px;
-            width: 24px;
-            height: 24px;
-        }
-
-        .btn-social span {
-            width: 100%;
-            text-align: center;
-        }
-
-        /* --- DIVIDER (Đường kẻ chữ OR) --- */
+        /* ================= ĐƯỜNG KẺ CHIA CẮT ================= */
         .divider {
             display: flex;
             align-items: center;
             text-align: center;
             color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 600;
-            margin: 5px 0;
+            font-size: 12px;
+            margin-bottom: 25px;
         }
 
         .divider::before,
         .divider::after {
             content: '';
             flex: 1;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .divider:not(:empty)::before {
-            margin-right: 15px;
+        .divider:not(:empty)::before { margin-right: 15px; }
+        .divider:not(:empty)::after { margin-left: 15px; }
+
+        /* ================= MẠNG XÃ HỘI (XẾP DỌC) ================= */
+        .social-login {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
         }
 
-        .divider:not(:empty)::after {
-            margin-left: 15px;
-        }
-
-        /* --- NÚT ĐĂNG NHẬP CHÍNH --- */
-        .btn-primary {
+        .social-btn {
             width: 100%;
-            height: 55px;
-            border-radius: 30px;
-            border: none;
-            background: var(--text-main);
-            color: #000000;
-            font-size: 15px;
-            font-weight: 700;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(255,255,255,0.2);
+            transition: all 0.2s ease;
+            text-decoration: none;
         }
 
-        .btn-primary:hover {
-            background: #e2e2e2;
+        .social-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255,255,255,0.3);
+            filter: brightness(1.1);
         }
 
-        /* --- FOOTER ĐĂNG KÝ --- */
-        .login-footer {
+        /* Chỉnh CSS để dùng ảnh thay vì SVG */
+        .social-btn img { 
+            width: 20px; 
+            height: 20px; 
+            object-fit: contain;
+        }
+
+        /* Facebook */
+        .social-btn.fb { background: #1877F2; color: #ffffff; }
+
+        /* Google */
+        .social-btn.gg { background: #ffffff; color: #000000; }
+        
+        /* Apple */
+        .social-btn.ap { background: #000000; color: #ffffff; border-color: #333; }
+
+        /* ================= ĐĂNG KÝ ================= */
+        .register-text {
             text-align: center;
             font-size: 13px;
-            color: var(--text-muted);
-            margin-top: -10px;
+            color: #94a3b8;
         }
 
-        .login-footer a {
-            color: var(--danger-color); /* Màu đỏ */
+        .register-text a {
+            color: var(--accent-blue); /* Màu xanh sáng */
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 600;
             margin-left: 5px;
-            transition: color 0.3s ease;
+            transition: opacity 0.2s;
         }
 
-        .login-footer a:hover {
+        .register-text a:hover {
+            opacity: 0.8;
             text-decoration: underline;
-            color: #ff6b62;
         }
 
-        /* ================= RESPONSIVE ================= */
-        /* Bỏ background viền card nếu xem trên điện thoại để trải full màn hình */
+        /* Responsive cho thiết bị di động nhỏ */
         @media (max-width: 480px) {
-            .login-container {
+            .login-card {
                 background: transparent;
                 border: none;
                 box-shadow: none;
-                padding: 30px 20px;
+                padding: 20px;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+            }
+            .back-link {
+                top: 20px;
+                left: 20px;
             }
         }
+        .logo { display: flex; align-items: center; text-decoration: none; }
+        .logo img { height: 150px; width: auto; object-fit: contain; }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
-        
-        <!-- Header -->
-        <div class="login-header">
-            <button class="back-btn" title="Quay lại">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                    <polyline points="12 19 5 12 12 5"></polyline>
-                </svg>
-            </button>
-            <h2>Đăng nhập</h2>
-        </div>
+    <!-- Nút quay lại -->
+    <a href="home.html" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Trang chủ
+    </a>
 
-        <!-- Logo -->
-        <div class="login-logo">
-            <div class="logo-wrapper">
-                <div class="logo-icon">
-                    <!-- Icon cuộn phim minh họa -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.82 2H4.18C2.97 2 2 2.97 2 4.18v15.64C2 21.03 2.97 22 4.18 22h15.64c1.21 0 2.18-.97 2.18-2.18V4.18C22 2.97 21.03 2 19.82 2zM7 20H4V4h3v16zm0-12H4V5h3v3zm0 4H4v-3h3v3zm0 4H4v-3h3v3zM20 20h-3v-3h3v3zm0-4h-3v-3h3v3zm0-4h-3V9h3v3zm0-4h-3V5h3v3z"/></svg>
-                </div>
-                <h1 class="logo-text">NIGHTHUB</h1>
+    <!-- Logo Phía trên Form -->
+    <div class="logo-section">
+        <div class="logo-wrapper">
+            <div class="logo img">
+                <img src="images/logo.png" alt="Phim liên quan 2">
             </div>
         </div>
+    </div>
 
-        <!-- Các nút đăng nhập MXH -->
-        <div class="social-buttons">
-            <button class="btn-social facebook">
-                <!-- Icon FB -->
-                <svg viewBox="0 0 24 24" fill="#1877F2" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M23.9981 11.9991C23.9981 5.37216 18.626 0 11.9991 0C5.37216 0 0 5.37216 0 11.9991C0 17.9882 4.38789 22.9522 10.1242 23.8524V15.4676H7.07758V11.9991H10.1242V9.35553C10.1242 6.34826 11.9156 4.68714 14.6564 4.68714C15.9692 4.68714 17.3424 4.92149 17.3424 4.92149V7.87439H15.8294C14.3388 7.87439 13.8739 8.79933 13.8739 9.74824V11.9991H17.2018L16.6698 15.4676H13.8739V23.8524C19.6103 22.9522 23.9981 17.9882 23.9981 11.9991Z"/>
-                </svg>
-                <span>Đăng nhập với Facebook</span>
-            </button>
+    <!-- Khung Đăng Nhập -->
+    <div class="login-card">
+        <h2 class="card-title">Đăng Nhập</h2>
+        
+        <form class="login-form">
+            
+            <!-- Email / SĐT -->
+            <div class="input-group">
+                <span class="input-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                </span>
+                <input type="text" placeholder="Email hoặc số điện thoại">
+            </div>
 
-            <button class="btn-social google">
-                <!-- Icon Google -->
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                </svg>
-                <span>Đăng nhập với Google</span>
-            </button>
+            <!-- Password -->
+            <div class="input-group">
+                <span class="input-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </span>
+                <input type="password" placeholder="Mật khẩu">
+            </div>
 
-            <button class="btn-social apple">
-                <!-- Icon Apple -->
-                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16.365 21.435c-1.42.062-2.84-1.053-4.26-1.053-1.42 0-3.083 1.238-4.444 1.176-1.854-.062-3.584-1.053-4.51-2.723-1.977-3.468-1.668-8.734.247-12.016 1.05-1.796 2.842-2.91 4.757-2.91 1.42 0 2.718.99 3.583.99.927 0 2.472-1.176 4.202-1.053 1.792.062 3.46.743 4.45 2.167-3.832 2.29-3.213 7.804.557 9.352-1.05 2.6-2.595 5.512-4.582 6.07zM14.945 5.334C15.81 4.282 16.365 2.733 16.242 1.25c-1.36.062-2.966.93-3.893 1.982-.74.93-1.42 2.538-1.235 4.025 1.482.124 2.966-.867 3.83-1.923z"/>
-                </svg>
-                <span>Đăng nhập với Apple</span>
-            </button>
-        </div>
+            <!-- Quên mật khẩu -->
+            <div class="forgot-pwd">
+                <a href="#">Quên mật khẩu?</a>
+            </div>
 
-        <!-- Divider OR -->
-        <div class="divider">
-            <span>or</span>
-        </div>
+            <!-- Nút Đăng nhập -->
+            <button type="button" class="btn-submit">Đăng Nhập</button>
 
-        <!-- Nút đăng nhập Mật khẩu -->
-        <button class="btn-primary">Đăng nhập bằng mật khẩu</button>
+            <!-- Line chia cắt -->
+            <div class="divider">
+                <span>Hoặc đăng nhập bằng</span>
+            </div>
 
-        <!-- Footer -->
-        <div class="login-footer">
-            Bạn chưa có tài khoản?<a href="#">Đăng ký</a>
-        </div>
+            <!-- Nút đăng nhập MXH (Đã thay bằng thẻ img) -->
+            <div class="social-login">
+                <!-- FB -->
+                <button type="button" class="social-btn fb">
+                    <img src="images/logo_fb.webp" alt="Facebook Logo">
+                    Đăng nhập bằng Facebook
+                </button>
+                
+                <!-- GG -->
+                <button type="button" class="social-btn gg">
+                    <img src="images/google-logo-removebg-preview.png" alt="Google Logo">
+                    Đăng nhập bằng Google
+                </button>
+                
+                <!-- Apple -->
+                <button type="button" class="social-btn ap">
+                    <img src="images/Vectorized_Apple_gray_logo.svg-removebg-preview.png" alt="Apple Logo">
+                    Đăng nhập bằng Apple
+                </button>
+            </div>
 
+            <!-- Footer text -->
+            <div class="register-text">
+                Chưa có tài khoản? <a href="#">Đăng ký ngay</a>
+            </div>
+            
+        </form>
     </div>
 
 </body>
