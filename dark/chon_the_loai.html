@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streamflix - Chọn Thể Loại Phim</title>
+    <style>
+        /* ================= CÀI ĐẶT BIẾN MÀU SẮC ================= */
+        :root {
+            /* Dải màu chuẩn từ giao diện gốc */
+            --c-blue-1: #32455F;
+            --c-blue-2: #1A324A;
+            --c-darkest: #07101C;
+            
+            --text-main: #ffffff; 
+            --text-muted: #8b9db3; 
+            
+            /* Màu cho các vòng tròn */
+            --circle-bg: rgba(255, 255, 255, 0.2); /* Trắng mờ cho trạng thái chưa chọn */
+            --circle-active: #ffffff; /* Trắng tinh cho trạng thái đã chọn */
+        }
+
+        /* ================= RESET CSS ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            /* Nền gradient chuẩn của dự án */
+            background: linear-gradient(135deg, 
+                var(--c-blue-1) 17%, 
+                var(--c-blue-2) 35%, 
+                var(--c-darkest) 62%, 
+                var(--c-blue-2) 84%
+            );
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ================= KHUNG CHỌN THỂ LOẠI (MOBILE VIEW) ================= */
+        .selection-container {
+            width: 100%;
+            max-width: 400px; /* Khung chuẩn theo giao diện mobile */
+            min-height: 800px;
+            height: 90vh;
+            padding: 40px 30px;
+            border-radius: 30px;
+            
+            /* Kính mờ nhẹ để nổi bật form lên khỏi nền */
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 50px;
+            gap: 20px;
+            padding-top: 20px;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--text-main);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: 900;
+            font-size: 14px;
+            position: relative;
+            box-shadow: 0 0 15px rgba(255,255,255,0.2);
+        }
+
+        /* Tạo hình mặt trăng khuyết giống ảnh */
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            right: -5px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--c-darkest); /* Cắt phần trắng bằng màu nền */
+            border-radius: 50%;
+        }
+        
+        .logo-text-inner {
+            position: relative;
+            z-index: 2; /* Nằm trên mặt trăng */
+            color: var(--text-main);
+            font-size: 16px;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--text-main);
+        }
+
+        /* --- GRID THỂ LOẠI --- */
+        .genre-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px 20px;
+            flex-grow: 1; /* Đẩy phần nút bấm xuống dưới cùng */
+        }
+
+        .genre-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .genre-item:hover {
+            transform: scale(1.05);
+        }
+
+        .genre-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--circle-bg);
+            backdrop-filter: blur(5px);
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.1);
+        }
+
+        /* Trạng thái khi được chọn (Sáng trắng) */
+        .genre-circle.active {
+            background-color: var(--circle-active);
+            box-shadow: 0 0 20px rgba(255,255,255,0.4);
+        }
+
+        .genre-name {
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            color: var(--text-main);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+
+        /* --- NÚT BẤM CUỐI TRANG --- */
+        .footer-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            padding-bottom: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px 0;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        /* Cả hai nút đều có nền trắng chữ đen như trong ảnh mẫu */
+        .btn-skip {
+            background-color: var(--text-main);
+            color: #000000;
+        }
+
+        .btn-select {
+            background-color: var(--text-main);
+            color: #000000;
+        }
+
+        .btn:hover {
+            transform: scale(1.03);
+            background-color: #e6e6e6;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="selection-container">
+        
+        <!-- HEADER CÓ MẶT TRĂNG VÀ TIÊU ĐỀ -->
+        <div class="header">
+            <div class="logo-icon">
+                <span class="logo-text-inner">Logo</span>
+            </div>
+            <div class="title">Bạn thích thể loại<br>phim nào</div>
+        </div>
+
+        <!-- DANH SÁCH THỂ LOẠI -->
+        <div class="genre-grid">
+            <!-- Hàng 1 -->
+            <div class="genre-item">
+                <div class="genre-circle active"></div>
+                <span class="genre-name">Kinh dị</span>
+            </div>
+            <div class="genre-item">
+                <div class="genre-circle"></div>
+                <span class="genre-name">Hành động</span>
+            </div>
+            <div class="genre-item">
+                <div class="genre-circle"></div>
+                <span class="genre-name">Hài hước</span>
+            </div>
+
+            <!-- Hàng 2 -->
+            <div class="genre-item">
+                <div class="genre-circle active"></div>
+                <span class="genre-name">Viễn tưởng</span>
+            </div>
+            <div class="genre-item">
+                <div class="genre-circle"></div>
+                <span class="genre-name">Lãng mạn</span>
+            </div>
+            <div class="genre-item">
+                <div class="genre-circle"></div>
+                <span class="genre-name">Tài liệu</span>
+            </div>
+
+            <!-- Hàng 3 -->
+            <div class="genre-item">
+                <div class="genre-circle"></div>
+                <span class="genre-name">Hoạt hình</span>
+            </div>
+            <div class="genre-item">
+                <div class="genre-circle active"></div>
+                <span class="genre-name">Tâm lý</span>
+            </div>
+            <div class="genre-item">
+                <div class="genre-circle"></div>
+                <span class="genre-name">Cổ trang</span>
+            </div>
+        </div>
+
+        <!-- CÁC NÚT ĐIỀU HƯỚNG -->
+        <div class="footer-actions">
+            <button class="btn btn-skip">Bỏ qua</button>
+            <button class="btn btn-select">Chọn</button>
+        </div>
+
+    </div>
+
+    <!-- Script nhỏ để tạo hiệu ứng Bấm chọn thể loại phim -->
+    <script>
+        document.querySelectorAll('.genre-item').forEach(item => {
+            item.addEventListener('click', () => {
+                // Tìm vòng tròn bên trong item được click và bật/tắt class 'active'
+                const circle = item.querySelector('.genre-circle');
+                circle.classList.toggle('active');
+            });
+        });
+    </script>
+
+</body>
+</html>

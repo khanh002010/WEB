@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nighthub - Chi tiết phim</title>
+    <style>
+        /* ================= CÀI ĐẶT BIẾN MÀU SẮC (CHUẨN TÔNG DARK BLUE) ================= */
+        :root {
+            --c-blue-1: #32455F;
+            --c-blue-2: #1A324A;
+            --c-darkest: #07101C;
+
+            --bg-nav: rgba(7, 16, 28, 0.85); 
+            --bg-card: rgba(26, 50, 74, 0.3); /* Thêm màu nền card cho phim liên quan */
+            
+            --accent-color: #4DA8DA; 
+            --accent-glow: rgba(77, 168, 218, 0.4);
+            
+            --text-main: #ffffff; 
+            --text-muted: #9aaec4; 
+            --star-color: #f5c518; 
+        }
+
+        /* ================= RESET CSS ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            /* Nền xanh Dark Blue gradient 4 điểm */
+            background: linear-gradient(135deg, 
+                #32455F 17%, 
+                #1A324A 35%, 
+                #07101C 62%, 
+                #1A324A 84%
+            );
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ================= NAVBAR ================= */
+        header {
+            background-color: var(--bg-nav);
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 35px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .icon-btn:hover {
+            color: var(--accent-color);
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+            background-color: #32455F;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.4);
+            background-image: url('images/avatar.jpg');
+            background-size: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .avatar:hover {
+            transform: scale(1.1);
+        }
+
+        /* ================= BỐ CỤC CHUNG ================= */
+        .detail-wrapper {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            border-bottom: 2px dashed rgba(255,255,255,0.2); 
+            margin-bottom: 50px;
+        }
+
+        .detail-bg {
+            position: absolute;
+            background-size: cover;
+            z-index: 1;
+        }
+
+        .detail-content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .detail-bg::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 30%;
+            background: linear-gradient(to top, var(--c-darkest) 0%, transparent 100%);
+        }
+
+        /* ---------------------------------------------------
+           PHƯƠNG ÁN 1: CSS CHO POSTER ĐỨNG (BÊN PHẢI)
+        --------------------------------------------------- */
+        .vertical-poster {
+            padding: 100px 0 50px 0; 
+            align-items: center;
+        }
+
+        .vertical-poster .detail-bg {
+            top: 0;
+            right: 0; 
+            width: 50%; 
+            height: 100%;
+            background-position: center;
+            -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%);
+            mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%);
+        }
+
+        .vertical-poster .detail-content {
+            width: 55%; 
+            margin-left: 0;
+            padding: 40px 50px;
+        }
+
+        /* ---------------------------------------------------
+           PHƯƠNG ÁN 2: CSS CHO POSTER NGANG (NỬA TRÊN)
+        --------------------------------------------------- */
+        .horizontal-poster {
+            padding: 45vh 0 50px 0; 
+            align-items: flex-start;
+        }
+
+        .horizontal-poster .detail-bg {
+            top: 0;
+            left: 0; 
+            width: 100%;
+            height: 95vh;
+            background-position: top center;
+
+            -webkit-mask-image: linear-gradient(
+                to bottom,
+                rgba(0,0,0,1) 90%,
+                rgba(0,0,0,0) 100%
+            );
+            mask-image: linear-gradient(
+                to bottom,
+                rgba(0,0,0,1) 90%,
+                rgba(0,0,0,0) 100%
+            );
+        }
+
+        .horizontal-poster .detail-content {
+            width: 100%; 
+            max-width: 1200px;
+            margin: 0 auto; 
+            padding: 0 50px;
+        }
+
+        /* ================= THÀNH PHẦN BÊN TRONG ================= */
+        .detail-thumb {
+            width: 160px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .detail-title {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            margin-top: 350px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+            letter-spacing: -1px;
+        }
+
+        .detail-meta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            font-size: 15px;
+            font-weight: 500;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        }
+
+        .meta-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-main);
+            font-size: 16px;
+        }
+        
+        .meta-rating .stars {
+            color: var(--star-color);
+            letter-spacing: 2px;
+            font-size: 18px;
+        }
+
+        .meta-year { color: var(--text-main); }
+
+        .meta-badge {
+            border: 1px solid rgba(255,255,255,0.5);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            background: rgba(0,0,0,0.4);
+            letter-spacing: 0.5px;
+        }
+
+        .meta-hd {
+            border-color: var(--text-main);
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .meta-duration { color: var(--text-muted); }
+
+        .detail-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px; 
+        }
+
+        .action-btn {
+            height: 50px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(26, 50, 74, 0.6);
+            backdrop-filter: blur(5px);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 0 25px;
+            gap: 8px;
+        }
+
+        .action-btn.play {
+            background: var(--text-main);
+            color: #000;
+            border-color: var(--text-main);
+        }
+
+        .action-btn.play svg { fill: #000; }
+
+        .action-btn.icon-only {
+            width: 50px;
+            padding: 0;
+            border-radius: 50%;
+        }
+
+        .action-btn:hover {
+            border-color: var(--text-main);
+            background: rgba(255,255,255,0.2);
+            color: var(--text-main);
+            transform: scale(1.05);
+        }
+        
+        .action-btn.play:hover {
+            background: rgba(255,255,255,0.8);
+            color: #000;
+        }
+
+        /* KHỐI TRAILERS (CUỘN NGANG 16:10) */
+        .trailer-section {
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .trailer-list {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto; 
+            padding-bottom: 15px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.2) transparent;
+        }
+
+        .trailer-list::-webkit-scrollbar { height: 6px; }
+        .trailer-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
+        .trailer-item {
+            flex: 0 0 auto; 
+            width: 240px; 
+            aspect-ratio: 16 / 10; 
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .trailer-item:hover {
+            border-color: var(--text-main);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.8);
+        }
+
+        .trailer-item img {
+            width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;
+        }
+        .trailer-item:hover img { transform: scale(1.05); }
+
+        .trailer-play {
+            position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 40px; height: 40px; background: rgba(0,0,0,0.6);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            border: 1px solid rgba(255,255,255,0.5); backdrop-filter: blur(4px); transition: all 0.3s ease;
+        }
+        .trailer-play svg { width: 16px; height: 16px; fill: white; margin-left: 3px; }
+
+        .trailer-item:hover .trailer-play {
+            background: var(--text-main); border-color: var(--text-main);
+            transform: translate(-50%, -50%) scale(1.15);
+        }
+        .trailer-item:hover .trailer-play svg { fill: black; }
+
+        .detail-desc {
+            font-size: 1.15rem; color: #e2e8f0; line-height: 1.6;
+            margin-bottom: 20px; max-width: 95%; text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+        }
+
+        .detail-cast { font-size: 14px; color: var(--text-muted); line-height: 1.8; }
+        .detail-cast span { color: var(--text-main); }
+
+        /* ================= TABS MÔ TẢ (TẬP PHIM, LIÊN QUAN, BÌNH LUẬN) ================= */
+        .tabs-wrapper {
+            margin-top: 50px;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 80px; /* Thêm khoảng trống xích xuống dưới để hover không bị Footer đè */
+        }
+
+        .tab-headers {
+            display: flex;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 25px; gap: 30px;
+        }
+
+        .tab-btn {
+            background: none; border: none; color: var(--text-muted);
+            font-size: 16px; font-weight: 600; padding-bottom: 12px;
+            cursor: pointer; position: relative; transition: color 0.3s;
+        }
+
+        .tab-btn:hover, .tab-btn.active { color: var(--text-main); }
+
+        .tab-btn.active::after {
+            content: ''; position: absolute; bottom: -1px; left: 0;
+            width: 100%; height: 3px; background-color: var(--accent-color); border-radius: 3px 3px 0 0;
+        }
+
+        .tab-pane { display: none; animation: fadeIn 0.4s ease; }
+        .tab-pane.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* TAB: DANH SÁCH TẬP PHIM (Series) */
+        .episode-list { display: flex; flex-direction: column; gap: 15px; }
+        .episode-item {
+            display: flex; align-items: center; gap: 20px; padding: 10px; border-radius: 8px;
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.3s; cursor: pointer;
+        }
+        .episode-item:hover { background: rgba(255,255,255,0.1); }
+        .ep-img { width: 140px; aspect-ratio: 16/9; border-radius: 6px; object-fit: cover; }
+        .ep-info { flex: 1; }
+        .ep-title { font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 5px; }
+        .ep-duration { font-size: 13px; color: var(--text-muted); }
+        .ep-download { color: var(--text-main); background: none; border: none; cursor: pointer; padding: 10px; margin-right: 10px; transition: color 0.3s; }
+        .ep-download:hover { color: var(--accent-color); }
+
+        /* ================= TAB: PHIM LIÊN QUAN (CSS LIQUID GLASS GIỐNG HOME) ================= */
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* Giống lưới trang chủ */
+            gap: 15px;
+            padding-bottom: 60px; /* Thêm khoảng trống padding bên trong để card trồi lên an toàn */
+            padding-top: 10px;
+        }
+
+        /* Tái sử dụng class .movie-card từ trang chủ cho Phim liên quan */
+        .movie-card {
+            background: var(--bg-card); border-radius: 12px; overflow: hidden; 
+            cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: none; text-decoration: none; color: var(--text-main); display: block; 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); position: relative; aspect-ratio: 2 / 3; 
+            isolation: isolate; transform: translateZ(0); -webkit-mask-image: -webkit-radial-gradient(white, black); 
+        }
+
+        .movie-card::before {
+            content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg); transition: all 0.6s ease; z-index: 10; pointer-events: none;
+        }
+
+        .movie-card:hover::before { left: 200%; }
+        .movie-card:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 15px 40px rgba(0,0,0,0.9); z-index: 10; }
+        
+        .movie-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; position: relative; z-index: 1; display: block; }
+        .movie-card:hover img { transform: scale(1.05); }
+
+        .card-info {
+            padding: 40px 17px 17px 17px; position: absolute; 
+            bottom: -2px; left: -2px; right: -2px; z-index: 5; 
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 10%, rgba(0, 0, 0, 0.7) 60%, rgba(0, 0, 0, 0) 100%);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+            border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+            transform: translateY(102%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .movie-card:hover .card-info { transform: translateY(0); }
+
+        .card-actions { display: flex; gap: 8px; opacity: 0; margin-bottom: 12px; transform: translateY(10px); transition: all 0.3s ease 0.1s; }
+        .movie-card:hover .card-actions { opacity: 1; transform: translateY(0); }
+        .card-action-btn { /* Dùng tên khác xíu để không đụng action-btn ở trên */
+            width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.6); 
+            background: rgba(20, 20, 20, 0.6); color: white; display: flex; align-items: center; 
+            justify-content: center; cursor: pointer; transition: all 0.2s ease; 
+        }
+        .card-action-btn.play { background: var(--text-main); color: #000; border-color: var(--text-main); padding-left: 3px; }
+        .card-action-btn:hover { border-color: var(--text-main); background: rgba(255,255,255,0.3); color: var(--text-main); transform: scale(1.15); }
+        .card-action-btn.play:hover { background: rgba(255,255,255,0.9); color: #000; }
+
+        .card-title { font-size: 15px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 800; color: var(--text-main); text-shadow: 1px 1px 3px rgba(0,0,0,1); }
+        .card-desc { font-size: 11.5px; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; }
+
+
+        /* TAB: BÌNH LUẬN */
+        .comment-section {
+            color: var(--text-muted);
+            font-size: 15px;
+            text-align: center;
+            padding: 60px 0;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+
+        /* ================= FOOTER MỚI (Y HỆT TRANG CHỦ NIGHTHUB) ================= */
+        .footer {
+            position: relative;
+            z-index: 100; /* Z-index lớn để chắc chắn đè lên nếu lướt qua */
+            background-color: rgba(7, 16, 28, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 60px 50px 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo img {
+            height: 150px; /* Logo to chuẩn Nighthub */
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 80px;
+            flex-wrap: wrap;
+        }
+
+        .link-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-column h4 {
+            color: var(--text-main);
+            font-size: 16px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .link-column a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .link-column a:hover {
+            color: var(--text-main);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 1200px) {
+            .nav-links { display: none; }
+            .detail-title { font-size: 3.5rem; }
+            .related-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 900px) {
+            .detail-wrapper {
+                flex-direction: column;
+                justify-content: flex-end;
+                padding-top: 0;
+            }
+            .vertical-poster .detail-bg {
+                width: 100%; height: 70vh;
+                -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%);
+                mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%);
+            }
+            .vertical-poster .detail-content, .horizontal-poster .detail-content {
+                width: 100%; margin-left: 0; padding: 20px;
+            }
+            .vertical-poster .detail-content { margin-top: 40vh; }
+            .horizontal-poster { padding-top: 45vh; }
+            .detail-desc { max-width: 100%; }
+            .detail-meta { justify-content: flex-start; }
+            .detail-title { font-size: 2.8rem; }
+            .footer-links { gap: 40px; }
+            .ep-img { width: 100px; }
+            .related-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 600px) {
+            header { padding: 15px 20px; }
+            .detail-thumb { width: 120px; }
+            .detail-title { font-size: 2.2rem; }
+            .action-btn { font-size: 14px; padding: 0 20px; }
+            .action-btn.icon-only { width: 45px; height: 45px; }
+            .footer { padding: 40px 20px 20px; }
+            .footer-links { gap: 20px; flex-direction: column; }
+            .related-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <div class="nav-left">
+            <a href="#" class="logo">
+                <img src="images/only_logo.png" alt="Nighthub Logo">
+            </a>
+            <nav class="nav-links">
+                <a href="#" class="active">Trang chủ</a>
+                <a href="#">Phim điện ảnh</a>
+                <a href="#">Phim truyền hình</a>
+                <a href="#">Phim hoạt hình</a>
+                <a href="#">Phim tài liệu</a>
+                <a href="#">Danh sách của tôi</a>
+            </nav>
+        </div>
+        <div class="nav-right">
+            <button class="icon-btn" title="Tìm kiếm">🔍</button>
+            <button class="icon-btn" title="Thông báo">🔔</button>
+            <div class="avatar" title="Tài khoản"></div>
+        </div>
+    </header>
+
+    <!-- =========================================================================
+         BƯỚC 1: LỰA CHỌN BỐ CỤC POSTER
+         - Thay class "horizontal-poster" thành "vertical-poster" nếu muốn poster đứng bên phải.
+         - Mặc định đang để "horizontal-poster" (poster ngang).
+    ========================================================================== -->
+    <!-- <div class="detail-wrapper vertical-poster">
+        
+        <div class="detail-bg" style="background-image: url('images/poster-phim-hoat-hinh-5.jpg');"></div>
+
+        <div class="detail-content">
+            <img src="https://image.tmdb.org/t/p/w500/8tZYtuWezp8JbcsvHYO0O46tFbo.jpg" alt="Poster Thumbnail" class="detail-thumb">
+
+            <h1 class="detail-title">Mad Max: Fury Road</h1>
+            
+            <div class="detail-meta">
+                <span class="meta-rating"><span class="stars">★★★★★</span> 4.9/5</span>
+                <span class="meta-year">2015</span>
+                <span class="meta-badge">18+</span>
+                <span class="meta-duration">2 giờ 00 phút</span>
+                <span class="meta-badge meta-hd">FULL HD</span>
+            </div>
+
+            <div class="detail-actions">
+                <button class="action-btn play">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    Xem phim
+                </button>
+                <button class="action-btn icon-only" title="Lưu phim">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
+                <button class="action-btn icon-only" title="Chi tiết">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                </button>
+            </div>
+
+            <div class="trailer-section">
+                <h4 class="section-title">Trailers & Đoạn cắt</h4>
+                <div class="trailer-list">
+                    <div class="trailer-item">
+                        <img src="https://image.tmdb.org/t/p/w500/h8gHn0G41qAdvG3tzqwH4kGvB9S.jpg" alt="Trailer 1">
+                        <div class="trailer-play"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+                    </div>
+                    <div class="trailer-item">
+                        <img src="https://image.tmdb.org/t/p/w500/A0x8C1o7bL3oD2oYlKqD6nIe9Zp.jpg" alt="Trailer 2">
+                        <div class="trailer-play"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="detail-desc">Trong một thế giới cạn kiệt tài nguyên sau tận thế, hai người nổi loạn có thể là cơ hội cuối cùng để lập lại trật tự...</p>
+            <div class="detail-cast">
+                <p><span>Đạo diễn:</span> George Miller</p>
+                <p><span>Diễn viên:</span> Tom Hardy, Charlize Theron, Nicholas Hoult</p>
+            </div>
+
+            <div class="tabs-wrapper">
+                <div class="tab-headers">
+                    <button class="tab-btn active" onclick="openTab(event, 'related-movie')">Phim liên quan</button>
+                    <button class="tab-btn" onclick="openTab(event, 'comments-movie')">Bình luận</button>
+                </div>
+                <div class="tab-content">
+                    <div id="related-movie" class="tab-pane active">
+                        <div class="related-grid">
+                            
+                            <a href="#" class="movie-card">
+                                <img src="images/banner.jpeg" alt="Phim">
+                                <div class="card-info">
+                                    <div class="card-actions">
+                                        <button class="card-action-btn play" title="Xem phim">▶</button>
+                                        <button class="card-action-btn" title="Lưu phim"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                        <button class="card-action-btn" title="Chi tiết"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                                    </div>
+                                    <h4 class="card-title">Interstellar</h4>
+                                    <p class="card-desc">Khi Trái Đất đang chết mòn, một nhóm phi hành gia phải thực hiện sứ mệnh quan trọng nhất lịch sử nhân loại.</p>
+                                </div>
+                            </a>
+                            <a href="#" class="movie-card">
+                                <img src="images/banner.jpeg" alt="Phim">
+                                <div class="card-info">
+                                    <div class="card-actions">
+                                        <button class="card-action-btn play" title="Xem phim">▶</button>
+                                        <button class="card-action-btn" title="Lưu phim"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                        <button class="card-action-btn" title="Chi tiết"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                                    </div>
+                                    <h4 class="card-title">Oppenheimer</h4>
+                                    <p class="card-desc">Sự ra đời của bom nguyên tử làm thay đổi hoàn toàn cục diện thế giới.</p>
+                                </div>
+                            </a>
+
+                        </div>
+                    </div>
+                    <div id="comments-movie" class="tab-pane">
+                        <div class="comment-section">Chưa có bình luận nào. Hãy là người đầu tiên!</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div> -->
+
+
+    <!-- =========================================================================
+         PHƯƠNG ÁN 2: DÀNH CHO POSTER NGANG (CHIẾM TOÀN BỘ NỬA TRÊN MÀN HÌNH)
+         Bạn hãy xóa Phương án 1 bên trên đi nếu chọn dùng Phương án 2 này.
+    ========================================================================== -->
+    <div class="detail-wrapper horizontal-poster">
+        
+        <div class="detail-bg" style="background-image: url('images/poster_1.jpeg');"></div>
+
+        <div class="detail-content">
+            <h1 class="detail-title">Captain America: CIVIL WAR</h1>
+            
+            <div class="detail-meta">
+                <span class="meta-rating"><span class="stars">★★★★★</span> 4.9/5</span>
+                <span class="meta-year">2015</span>
+                <span class="meta-badge">18+</span>
+                <span class="meta-duration">2 giờ 00 phút</span>
+                <span class="meta-badge meta-hd">FULL HD</span>
+            </div>
+
+            <div class="detail-actions">
+                <button class="action-btn play">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    Xem phim
+                </button>
+                <button class="action-btn icon-only" title="Lưu phim">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
+                <button class="action-btn icon-only" title="Chi tiết">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                </button>
+            </div>
+
+            <div class="trailer-section">
+                <h4 class="section-title">Trailers & Đoạn cắt</h4>
+                <div class="trailer-list">
+                    <div class="trailer-item">
+                        <img src="images/poster_1.jpeg" alt="Trailer 1">
+                        <div class="trailer-play"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+                    </div>
+                    <div class="trailer-item">
+                        <img src="images/poster_1.jpeg" alt="Trailer 2">
+                        <div class="trailer-play"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="detail-desc">Trong một thế giới cạn kiệt tài nguyên sau tận thế, hai người nổi loạn có thể là cơ hội cuối cùng để lập lại trật tự. Max (Tom Hardy), một người đàn ông kiệm lời tìm kiếm sự bình yên sau khi mất đi vợ con, và Furiosa (Charlize Theron), một nữ chiến binh tin rằng con đường sống sót duy nhất là vượt qua sa mạc để trở về quê hương cội nguồn của mình. Một cuộc rượt đuổi sinh tử không hồi kết bắt đầu.</p>
+            <div class="detail-cast">
+                <p><span>Đạo diễn:</span> George Miller</p>
+                <p><span>Diễn viên:</span> Tom Hardy, Charlize Theron, Nicholas Hoult</p>
+            </div>
+
+            <!-- =========================================================================
+                 BƯỚC 2: LỰA CHỌN TABS CHO PHIM BỘ (CÓ TẬP PHIM)
+            ========================================================================== -->
+            
+            <div class="tabs-wrapper">
+                <div class="tab-headers">
+                    <button class="tab-btn active" onclick="openTab(event, 'episodes-series')">Tập phim</button>
+                    <button class="tab-btn" onclick="openTab(event, 'related-series')">Phim liên quan</button>
+                    <button class="tab-btn" onclick="openTab(event, 'comments-series')">Bình luận</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="episodes-series" class="tab-pane active">
+                        <div class="episode-list">
+                            <div class="episode-item">
+                                <img src="images/poster_1.jpeg" alt="Ep 1" class="ep-img">
+                                <div class="ep-info">
+                                    <div class="ep-title">1. Đèn đỏ, đèn xanh</div>
+                                    <div class="ep-duration">1h 0m 2s</div>
+                                </div>
+                                <button class="ep-download" title="Tải xuống">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                </button>
+                            </div>
+                            <div class="episode-item">
+                                <img src="images/poster_1.jpeg" alt="Ep 2" class="ep-img">
+                                <div class="ep-info">
+                                    <div class="ep-title">2. Địa ngục</div>
+                                    <div class="ep-duration">1h 3m 36s</div>
+                                </div>
+                                <button class="ep-download" title="Tải xuống">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="related-series" class="tab-pane">
+                        <div class="related-grid">
+                            
+                            <!-- Bắt đầu Thẻ Phim 1 -->
+                            <a href="#" class="movie-card">
+                                <img src="images/poster_doc_2.webp" alt="Phim 1">
+                                <div class="card-info">
+                                    <div class="card-actions">
+                                        <button class="card-action-btn play" title="Xem phim">▶</button>
+                                        <button class="card-action-btn" title="Lưu phim"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                        <button class="card-action-btn" title="Chi tiết"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                                    </div>
+                                    <h4 class="card-title">Interstellar</h4>
+                                    <p class="card-desc">Khi Trái Đất đang chết mòn, một nhóm phi hành gia phải thực hiện sứ mệnh quan trọng nhất lịch sử nhân loại.</p>
+                                </div>
+                            </a>
+
+                            <!-- Bắt đầu Thẻ Phim 2 -->
+                            <a href="#" class="movie-card">
+                                <img src="images/poster_doc_2.webp" alt="Phim 2">
+                                <div class="card-info">
+                                    <div class="card-actions">
+                                        <button class="card-action-btn play" title="Xem phim">▶</button>
+                                        <button class="card-action-btn" title="Lưu phim"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                        <button class="card-action-btn" title="Chi tiết"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                                    </div>
+                                    <h4 class="card-title">The Dark Knight</h4>
+                                    <p class="card-desc">Hiệp sĩ bóng đêm Batman phải đối mặt với thử thách lớn nhất từ trước đến nay mang tên Joker.</p>
+                                </div>
+                            </a>
+
+                            <!-- Bắt đầu Thẻ Phim 3 -->
+                            <a href="#" class="movie-card">
+                                <img src="images/poster_doc_2.webp" alt="Phim 3">
+                                <div class="card-info">
+                                    <div class="card-actions">
+                                        <button class="card-action-btn play" title="Xem phim">▶</button>
+                                        <button class="card-action-btn" title="Lưu phim"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                        <button class="card-action-btn" title="Chi tiết"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                                    </div>
+                                    <h4 class="card-title">Oppenheimer</h4>
+                                    <p class="card-desc">Bộ phim kể lại câu chuyện về J. Robert Oppenheimer và sự ra đời của bom nguyên tử.</p>
+                                </div>
+                            </a>
+
+                            <!-- Bắt đầu Thẻ Phim 4 -->
+                            <a href="#" class="movie-card">
+                                <img src="images/poster_doc_2.webp" alt="Phim 4">
+                                <div class="card-info">
+                                    <div class="card-actions">
+                                        <button class="card-action-btn play" title="Xem phim">▶</button>
+                                        <button class="card-action-btn" title="Lưu phim"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                        <button class="card-action-btn" title="Chi tiết"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                                    </div>
+                                    <h4 class="card-title">Tenet</h4>
+                                    <p class="card-desc">Hành trình qua một thế giới bóng tối gián điệp quốc tế với nhiệm vụ thao túng nghịch lý thời gian.</p>
+                                </div>
+                            </a>
+
+                        </div>
+                    </div>
+
+                    <div id="comments-series" class="tab-pane">
+                        <div class="comment-section">Chưa có bình luận nào. Hãy là người đầu tiên!</div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- ================= FOOTER (Y HỆT TRANG CHỦ NIGHTHUB) ================= -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="images/logo.png" alt="Nighthub logo">
+            </div>
+            
+            <div class="footer-links">
+                <div class="link-column">
+                    <h4>Về chúng tôi</h4>
+                    <a href="#">Giới thiệu Nighthub</a>
+                    <a href="#">Cơ hội nghề nghiệp</a>
+                    <a href="#">Thông tin báo chí</a>
+                </div>
+                
+                <div class="link-column">
+                    <h4>Hỗ trợ khách hàng</h4>
+                    <a href="#">Trung tâm trợ giúp</a>
+                    <a href="#">Câu hỏi thường gặp</a>
+                    <a href="#">Liên hệ với chúng tôi</a>
+                </div>
+                
+                <div class="link-column">
+                    <h4>Điều khoản & Chính sách</h4>
+                    <a href="#">Điều khoản sử dụng</a>
+                    <a href="#">Quyền riêng tư</a>
+                    <a href="#">Bảo mật & Cookie</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Nighthub. Nền tảng xem phim trực tuyến hàng đầu.</p>
+        </div>
+    </footer>
+
+    <!-- SCRIPT ĐIỀU KHIỂN CHUYỂN TAB -->
+    <script>
+        function openTab(evt, tabId) {
+            const wrapper = evt.currentTarget.closest('.tabs-wrapper');
+            const panes = wrapper.querySelectorAll('.tab-pane');
+            panes.forEach(pane => pane.classList.remove('active'));
+            
+            const btns = wrapper.querySelectorAll('.tab-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+    </script>
+
+</body>
+</html>

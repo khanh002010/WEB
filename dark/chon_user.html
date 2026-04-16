@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streamflix - Ai đang xem vậy?</title>
+    <style>
+        /* ================= CÀI ĐẶT BIẾN MÀU SẮC ================= */
+        :root {
+            --c-blue-1: #32455F;
+            --c-blue-2: #1A324A;
+            --c-darkest: #07101C;
+            --text-main: #ffffff;
+            --text-muted: #9aaec4;
+        }
+
+        /* ================= RESET CSS ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            /* Nền xanh Dark Blue gradient 4 điểm chuẩn của dự án */
+            background: linear-gradient(135deg, 
+                var(--c-blue-1) 17%, 
+                var(--c-blue-2) 35%, 
+                var(--c-darkest) 62%, 
+                var(--c-blue-2) 84%
+            );
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        /* ================= HEADER (LOGO GÓC TRÁI) ================= */
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 50px;
+            z-index: 100;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* ================= NỘI DUNG CHÍNH ================= */
+        .profile-container {
+            text-align: center;
+            width: 100%;
+            max-width: 1000px;
+            padding: 0 20px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .profile-title {
+            font-size: 3.5rem;
+            font-weight: 600;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        /* --- DANH SÁCH USER --- */
+        .profiles-list {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap; /* Tự xuống dòng trên màn hình nhỏ */
+            margin-bottom: 60px;
+        }
+
+        .profile-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            text-decoration: none;
+            group: profile;
+        }
+
+        /* Avatar hình tròn theo yêu cầu */
+        .profile-avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background-color: var(--c-blue-1);
+            background-size: cover;
+            background-position: center;
+            border: 4px solid transparent; /* Viền tàng hình chờ hover */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+        }
+
+        /* Thêm lớp phủ đen mờ nhẹ lúc chưa chọn giống Netflix */
+        .profile-avatar::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.3);
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .profile-name {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        /* --- HIỆU ỨNG HOVER CHUẨN NETFLIX --- */
+        .profile-item:hover .profile-avatar {
+            transform: scale(1.1); /* Phóng to */
+            border-color: var(--text-main); /* Hiện viền trắng */
+            box-shadow: 0 15px 30px rgba(0,0,0,0.8);
+        }
+
+        .profile-item:hover .profile-avatar::after {
+            background: rgba(0,0,0,0); /* Xóa lớp mờ để ảnh sáng rõ lên */
+        }
+
+        .profile-item:hover .profile-name {
+            color: var(--text-main); /* Chữ sáng lên */
+        }
+
+        /* --- NÚT THÊM NGƯỜI DÙNG --- */
+        .btn-add-user {
+            background-color: var(--text-main);
+            color: #000000;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 30px; /* Nút viên thuốc (pill) theo thiết kế */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-add-user:hover {
+            background-color: #e5e5e5;
+            transform: scale(1.05);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.5);
+        }
+
+        /* Icon dấu cộng trong nút */
+        .btn-add-user svg {
+            width: 20px;
+            height: 20px;
+            stroke-width: 3px;
+        }
+
+        /* Hiệu ứng xuất hiện mượt mà */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 900px) {
+            .profile-title { font-size: 2.5rem; margin-bottom: 30px; }
+            .profile-avatar { width: 120px; height: 120px; }
+            .profiles-list { gap: 20px; }
+            header { padding: 20px; text-align: center; }
+            .logo { justify-content: center; }
+        }
+
+        @media (max-width: 600px) {
+            .profile-title { font-size: 2rem; }
+            .profile-avatar { width: 100px; height: 100px; }
+            .profiles-list { gap: 15px; margin-bottom: 40px; }
+            .btn-add-user { padding: 12px 30px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header chỉ chứa Logo -->
+    <header>
+        <a href="#" class="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Logo">
+        </a>
+    </header>
+
+    <!-- Khối Nội Dung Chọn User -->
+    <div class="profile-container">
+        <h1 class="profile-title">Ai đang xem vậy?</h1>
+        
+        <div class="profiles-list">
+            <!-- User 1 -->
+            <a href="movie-detail.html" class="profile-item">
+                <div class="profile-avatar" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');"></div>
+                <span class="profile-name">User 1</span>
+            </a>
+
+            <!-- User 2 -->
+            <a href="movie-detail.html" class="profile-item">
+                <!-- Dùng gradient làm avatar mặc định nếu không có ảnh -->
+                <div class="profile-avatar" style="background: linear-gradient(45deg, #ff9a9e, #fecfef);"></div>
+                <span class="profile-name">Gia đình</span>
+            </a>
+
+            <!-- User 3 -->
+            <a href="movie-detail.html" class="profile-item">
+                <div class="profile-avatar" style="background: linear-gradient(45deg, #a18cd1, #fbc2eb);"></div>
+                <span class="profile-name">Trẻ em</span>
+            </a>
+            
+            <!-- User 4 -->
+            <a href="movie-detail.html" class="profile-item">
+                <div class="profile-avatar" style="background: linear-gradient(45deg, #84fab0, #8fd3f4);"></div>
+                <span class="profile-name">Khách</span>
+            </a>
+        </div>
+
+        <!-- Nút thêm người dùng giống trong thiết kế của bạn -->
+        <button class="btn-add-user">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Thêm người dùng
+        </button>
+    </div>
+
+</body>
+</html>

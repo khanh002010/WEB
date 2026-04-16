@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streamflix - Cài đặt tài khoản</title>
+    <style>
+        /* ================= CÀI ĐẶT BIẾN MÀU SẮC ================= */
+        :root {
+            --c-blue-1: #32455F;
+            --c-blue-2: #1A324A;
+            --c-darkest: #07101C;
+            
+            --bg-nav: rgba(7, 16, 28, 0.85); 
+            --bg-panel: rgba(7, 16, 28, 0.5); /* Nền kính mờ cho Panel */
+            --bg-item: rgba(255, 255, 255, 0.05); /* Nền cho các dòng list */
+            
+            --accent-color: #4DA8DA; 
+            --accent-red: #F86060; /* Màu đỏ hồng theo bộ lọc */
+            --accent-red-light: #FFD6D6; /* Hồng nhạt */
+            --accent-green: #46d369;
+            
+            --text-main: #ffffff; 
+            --text-muted: #9aaec4; 
+            --input-bg: rgba(0, 0, 0, 0.4);
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ================= RESET CSS ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, 
+                var(--c-blue-1) 17%, 
+                var(--c-blue-2) 35%, 
+                var(--c-darkest) 62%, 
+                var(--c-blue-2) 84%
+            );
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ================= NAVBAR (Cập nhật) ================= */
+        header {
+            background-color: var(--bg-nav);
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .nav-left { display: flex; align-items: center; gap: 40px; }
+        .logo { display: flex; align-items: center; text-decoration: none; }
+        .logo img { height: 35px; object-fit: contain; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.3s; position: relative; }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-main); font-weight: 500; }
+        
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .icon-btn { background: none; border: none; color: var(--text-main); font-size: 18px; cursor: pointer; transition: color 0.3s; }
+        .icon-btn:hover { color: var(--accent-color); }
+        .avatar { width: 35px; height: 35px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.4); background-image: url('images/avatar.jpg'); background-size: cover; cursor: pointer; transition: transform 0.3s; }
+        .avatar:hover { transform: scale(1.1); }
+
+        /* ================= KHU VỰC TÌM KIẾM VÀ BỘ LỌC ================= */
+        .search-wrapper { display: flex; align-items: center; gap: 10px; }
+
+        .search-box {
+            display: flex; align-items: center; background-color: #EAEAEF;
+            border-radius: 20px; padding: 6px 15px; width: 250px; transition: width 0.3s ease;
+        }
+        .search-box svg { width: 18px; height: 18px; stroke: #000; margin-right: 8px; }
+        .search-box input { border: none; background: transparent; outline: none; font-size: 14px; color: #333; width: 100%; }
+        .search-box input::placeholder { color: #888; }
+
+        .filter-toggle-btn {
+            display: flex; align-items: center; justify-content: center;
+            background-color: #EAEAEF; border: none; border-radius: 12px;
+            width: 36px; height: 36px; cursor: pointer; transition: transform 0.2s, background 0.2s;
+        }
+        .filter-toggle-btn:hover { background-color: #d1d1d6; transform: scale(1.05); }
+        .filter-toggle-btn svg { width: 20px; height: 20px; stroke: var(--accent-red); }
+
+        /* ================= KHU VỰC THÔNG BÁO ================= */
+        .notification-wrapper { position: relative; }
+        .noti-btn-container { position: relative; display: inline-block; }
+        .noti-badge {
+            position: absolute; top: -2px; right: -2px; width: 8px; height: 8px;
+            background-color: var(--accent-red); border-radius: 50%;
+            border: 2px solid var(--bg-nav);
+        }
+
+        .notification-dropdown {
+            position: absolute; top: 45px; right: -10px; width: 340px;
+            background: rgba(15, 23, 36, 0.95);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: none; flex-direction: column; z-index: 1000; overflow: hidden;
+            transform-origin: top right;
+            animation: dropFade 0.2s ease;
+        }
+        
+        .notification-dropdown.active { display: flex; }
+
+        @keyframes dropFade {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .noti-header {
+            padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-weight: 700; font-size: 16px; color: white; display: flex; justify-content: space-between;
+        }
+        .noti-header span { font-size: 12px; color: var(--accent-color); cursor: pointer; font-weight: normal; }
+        .noti-list { max-height: 350px; overflow-y: auto; }
+        .noti-list::-webkit-scrollbar { width: 6px; }
+        .noti-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
+        .noti-item {
+            padding: 15px 20px; display: flex; gap: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer; transition: background 0.2s; position: relative;
+        }
+        .noti-item:hover { background: rgba(255,255,255,0.05); }
+        .noti-item.unread::before {
+            content: ''; position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
+            width: 6px; height: 6px; background-color: var(--accent-color); border-radius: 50%;
+        }
+        
+        .noti-img { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; }
+        .noti-content { flex: 1; }
+        .noti-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
+        .noti-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+        .noti-time { font-size: 11px; color: var(--accent-color); margin-top: 5px; }
+
+        /* ================= BỘ LỌC NÂNG CAO (MODAL) ================= */
+        .filter-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+            z-index: 999; display: none; opacity: 0; transition: opacity 0.3s;
+        }
+        .filter-overlay.active { display: block; opacity: 1; }
+
+        .filter-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%);
+            background: #ffffff; color: #333; width: 90%; max-width: 400px;
+            border-radius: 24px; padding: 20px 25px; z-index: 1000;
+            display: none; opacity: 0; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: all 0.3s ease; max-height: 85vh; overflow-y: auto;
+        }
+        .filter-modal.active { display: block; opacity: 1; transform: translate(-50%, -50%); }
+
+        .filter-drag-handle { width: 40px; height: 4px; background: #d1d1d6; border-radius: 2px; margin: 0 auto 15px auto; }
+        .filter-header-title { text-align: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
+        .filter-header-title h3 { color: var(--accent-red); font-size: 18px; font-weight: 700; }
+
+        .filter-group { margin-bottom: 20px; }
+        .filter-group h4 { font-size: 16px; color: #000; margin-bottom: 10px; font-weight: 700; }
+        .filter-options { display: flex; flex-wrap: wrap; gap: 10px; }
+        .filter-tag {
+            padding: 6px 16px; border-radius: 20px; border: 1px solid var(--accent-red);
+            color: var(--accent-red); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; background: transparent;
+        }
+        .filter-tag.active { background-color: var(--accent-red); color: #fff; }
+        .filter-tag:hover { transform: scale(1.05); }
+
+        .filter-footer { display: flex; gap: 15px; border-top: 1px solid #eee; padding-top: 20px; margin-top: 10px; }
+        .btn-filter-cancel, .btn-filter-apply {
+            flex: 1; padding: 12px; border-radius: 25px; font-size: 16px; font-weight: 700;
+            border: none; cursor: pointer; transition: transform 0.2s;
+        }
+        .btn-filter-cancel { background-color: var(--accent-red-light); color: var(--accent-red); }
+        .btn-filter-apply { background-color: var(--accent-red); color: white; box-shadow: 0 4px 15px rgba(248, 96, 96, 0.4); }
+        .btn-filter-cancel:hover, .btn-filter-apply:hover { transform: scale(1.02); }
+
+
+        /* ================= BỐ CỤC CHÍNH (SIDEBAR + CONTENT) ================= */
+        .settings-layout {
+            max-width: 1200px;
+            margin: 10px auto 50px; /* Chỉnh lại lề trên vì có header h1 rồi */
+            padding: 0 20px;
+            display: flex;
+            gap: 30px;
+            min-height: 70vh;
+        }
+
+        .page-header {
+            max-width: 1200px;
+            margin: 100px auto 20px;
+            padding: 0 20px;
+        }
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        /* --- THANH BÊN TRÁI (SIDEBAR) --- */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            padding: 16px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 15px;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn svg {
+            width: 20px; height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background: var(--bg-panel);
+            color: var(--text-main);
+            border-left: 4px solid var(--accent-color);
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        /* --- NỘI DUNG BÊN PHẢI (CONTENT PANEL) --- */
+        .content-area {
+            flex: 1;
+            background: var(--bg-panel);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-pane {
+            display: none; 
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .tab-pane.active {
+            display: block; 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pane-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* ================= COMPONENT CHUNG ================= */
+        
+        .input-group { margin-bottom: 25px; }
+        .input-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .input-group input:focus, .input-group select:focus {
+            border-color: var(--accent-color);
+            background: rgba(0,0,0,0.6);
+        }
+
+        .btn-action {
+            padding: 14px 28px;
+            border-radius: 10px;
+            border: none;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-primary { background: var(--text-main); color: #000; }
+        .btn-primary:hover { background: #e0e0e0; transform: translateY(-2px); }
+        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
+        .btn-outline:hover { background: rgba(255,255,255,0.1); }
+        .btn-danger { background: rgba(229, 9, 20, 0.1); border: 1px solid var(--accent-red); color: var(--accent-red); }
+        .btn-danger:hover { background: var(--accent-red); color: #fff; }
+
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.2); border-radius: 24px; transition: .4s; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: var(--text-main); border-radius: 50%; transition: .4s; }
+        .switch input:checked + .slider { background-color: var(--accent-green); }
+        .switch input:checked + .slider:before { transform: translateX(20px); }
+
+        .menu-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px; }
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: var(--bg-item);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+            border: 1px solid transparent;
+        }
+        .menu-item:hover { background: rgba(255,255,255,0.1); border-color: var(--border-color); }
+        .menu-item span { font-size: 15px; font-weight: 500; }
+        .menu-item svg { width: 18px; height: 18px; stroke: var(--text-muted); }
+
+        details {
+            background: var(--bg-item);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        details:hover { border-color: var(--border-color); }
+        summary {
+            padding: 18px 20px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        summary::-webkit-details-marker { display: none; }
+        summary::after {
+            content: '';
+            width: 12px; height: 12px;
+            border-bottom: 2px solid var(--text-muted);
+            border-right: 2px solid var(--text-muted);
+            transform: rotate(45deg);
+            transition: transform 0.3s;
+        }
+        details[open] summary::after { transform: rotate(-135deg); margin-top: 5px; }
+        .details-content {
+            padding: 0 20px 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* ================= CHI TIẾT TỪNG TAB ================= */
+        .profile-header-info { display: flex; align-items: center; gap: 20px; margin-bottom: 40px; }
+        .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: #32455F url('images/avatar.jpg') center/cover; }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(45deg, #f5c518, #F5A623);
+            color: #000;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .static-info { margin-bottom: 25px; padding: 15px; background: var(--bg-item); border-radius: 12px; display: flex; justify-content: space-between; align-items: center;}
+        .static-info .label { color: var(--text-muted); font-size: 13px; }
+        .static-info .value { font-weight: 600; display: flex; align-items: center; gap: 8px;}
+        .actions-row { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); }
+
+        .section-label { color: var(--text-muted); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; margin-top: 25px;}
+        .pill-btn-group { display: flex; flex-direction: column; gap: 15px; margin-top: 30px;}
+        .pill-btn { padding: 16px; border-radius: 30px; border: none; background: #fff; color: #000; font-size: 15px; font-weight: 700; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .pill-btn:hover { background: #e0e0e0; }
+
+        /* Responsive */
+        @media (max-width: 1200px) { 
+            .nav-links { display: none; } 
+            .search-box { width: 200px; } 
+        }
+        @media (max-width: 900px) {
+            .settings-layout { flex-direction: column; margin-top: 20px; }
+            .sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding-bottom: 10px; }
+            .tab-btn { white-space: nowrap; padding: 12px 15px; width: auto; border-radius: 8px; border-left: none; border-bottom: 4px solid transparent; }
+            .tab-btn.active { border-left: none; border-top-left-radius: 8px; border-bottom-left-radius: 0; border-bottom: 4px solid var(--accent-color); }
+            .tab-btn span { display: none; }
+            .page-header { margin-top: 80px; }
+        }
+        @media (max-width: 600px) {
+            header { padding: 15px 20px; }
+            .content-area { padding: 25px 20px; }
+            .actions-row { flex-direction: column; gap: 15px; }
+            .btn-action { width: 100%; }
+            .search-box { width: 140px; }
+            .notification-dropdown { width: 300px; right: -60px; } 
+        }
+        .footer { background-color: rgba(7, 16, 28, 0.6); backdrop-filter: blur(10px); padding: 60px 50px 20px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 60px; }
+        .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; max-width: 1200px; margin: 0 auto; }
+        .footer-logo img { height: 150px; margin-bottom: 20px; }
+        .footer-links { display: flex; gap: 80px; flex-wrap: wrap; }
+        .link-column { display: flex; flex-direction: column; gap: 12px; }
+        .link-column h4 { color: var(--text-main); font-size: 16px; margin-bottom: 8px; font-weight: 600; }
+        .link-column a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.3s; }
+        .link-column a:hover { color: var(--text-main); }
+        .footer-bottom { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); font-size: 13px; }
+
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR MỚI TỪ INDEX -->
+    <header>
+        <div class="nav-left">
+            <a href="#" class="logo">
+                <img src="images/only_logo.png" alt="Nighthub logo">
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#" class="active">Trang chủ</a>
+                <a href="#">Phim điện ảnh</a>
+                <a href="#">Phim truyền hình</a>
+                <a href="#">Phim hoạt hình</a>
+                <a href="#">Phim tài liệu</a>
+                <a href="#">Danh sách của tôi</a>
+            </nav>
+        </div>
+        
+        <div class="nav-right">
+            
+            <!-- Cụm Tìm Kiếm & Bộ Lọc -->
+            <div class="search-wrapper">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" placeholder="Tìm kiếm">
+                </div>
+
+                <button class="filter-toggle-btn" onclick="toggleFilter()" title="Bộ lọc nâng cao">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="17" cy="8" r="3"></circle>
+                        <line x1="3" y1="8" x2="14" y2="8"></line>
+                        <circle cx="7" cy="16" r="3"></circle>
+                        <line x1="10" y1="16" x2="21" y2="16"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- CHỨC NĂNG THÔNG BÁO MỚI -->
+            <div class="notification-wrapper">
+                <div class="noti-btn-container">
+                    <button class="icon-btn" title="Thông báo" onclick="toggleNotification(event)">🔔</button>
+                    <!-- Chấm đỏ báo có thông báo mới -->
+                    <div class="noti-badge"></div>
+                </div>
+
+                <!-- Bảng Dropdown Thông Báo -->
+                <div class="notification-dropdown" id="notiDropdown">
+                    <div class="noti-header">
+                        Thông báo
+                        <span>Đánh dấu đã đọc</span>
+                    </div>
+                    <div class="noti-list">
+                        <!-- Item 1 (Chưa đọc) -->
+                        <div class="noti-item unread">
+                            <img src="images/poster_doc_1.jpg" alt="Phim" class="noti-img">
+                            <div class="noti-content">
+                                <div class="noti-title">Tập mới đã có sẵn!</div>
+                                <div class="noti-desc">Dune: Part Two (Tập 12) vừa được cập nhật. Xem ngay nào!</div>
+                                <div class="noti-time">10 phút trước</div>
+                            </div>
+                        </div>
+                        <!-- Item 2 -->
+                        <div class="noti-item">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Phim" class="noti-img">
+                            <div class="noti-content">
+                                <div class="noti-title">Gợi ý cho bạn</div>
+                                <div class="noti-desc">Dựa trên Interstellar, chúng tôi đề xuất The Dark Knight.</div>
+                                <div class="noti-time">2 giờ trước</div>
+                            </div>
+                        </div>
+                        <!-- Item 3 -->
+                        <div class="noti-item">
+                            <img src="images/poster_doc_1.jpg" alt="Phim" class="noti-img">
+                            <div class="noti-content">
+                                <div class="noti-title">Phim mới ra mắt</div>
+                                <div class="noti-desc">Oppenheimer đã có bản FULL HD lồng tiếng.</div>
+                                <div class="noti-time">1 ngày trước</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="avatar" title="Tài khoản"></div>
+        </div>
+    </header>
+
+    <!-- GIAO DIỆN BỘ LỌC NÂNG CAO (MODAL) -->
+    <div class="filter-overlay" id="filterOverlay" onclick="toggleFilter()"></div>
+    
+    <div class="filter-modal" id="filterModal">
+        <div class="filter-drag-handle"></div>
+        <div class="filter-header-title">
+            <h3>Bộ lọc nâng cao</h3>
+        </div>
+
+        <div class="filter-body">
+            <div class="filter-group">
+                <h4>Danh mục</h4>
+                <div class="filter-options">
+                    <span class="filter-tag">Phim điện ảnh</span>
+                    <span class="filter-tag active">Phim lẻ</span>
+                    <span class="filter-tag">Phim tài liệu</span>
+                    <span class="filter-tag">Phim bộ</span>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h4>Khu vực</h4>
+                <div class="filter-options">
+                    <span class="filter-tag active">Tất cả</span>
+                    <span class="filter-tag">Việt Nam</span>
+                    <span class="filter-tag">Trung Quốc</span>
+                    <span class="filter-tag">Hàn Quốc</span>
+                    <span class="filter-tag">Âu Mỹ</span>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h4>Thể loại</h4>
+                <div class="filter-options">
+                    <span class="filter-tag">Tình cảm</span>
+                    <span class="filter-tag active">Kinh dị</span>
+                    <span class="filter-tag">Khoa học viễn tưởng</span>
+                    <span class="filter-tag">Hành động</span>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h4>Giai đoạn</h4>
+                <div class="filter-options">
+                    <span class="filter-tag">2022</span>
+                    <span class="filter-tag">2023</span>
+                    <span class="filter-tag">2024</span>
+                    <span class="filter-tag active">2025</span>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h4>Lọc</h4>
+                <div class="filter-options">
+                    <span class="filter-tag active">Phổ biến</span>
+                    <span class="filter-tag">Gần đây</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-footer">
+            <button class="btn-filter-cancel" onclick="toggleFilter()">Thoát</button>
+            <button class="btn-filter-apply" onclick="toggleFilter()">Lọc</button>
+        </div>
+    </div>
+
+
+    <div class="page-header">
+        <h1>Cài đặt</h1>
+    </div>
+
+    <!-- MAIN LAYOUT -->
+    <div class="settings-layout">
+        
+        <!-- SIDEBAR (MENU BÊN TRÁI) -->
+        <aside class="sidebar">
+            <!-- Data-target chứa id của tab-pane tương ứng -->
+            <button class="tab-btn active" data-target="tab-profile">
+                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span>Hồ sơ người dùng</span>
+            </button>
+            <button class="tab-btn" data-target="tab-settings">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <span>Cài đặt</span>
+            </button>
+            <button class="tab-btn" data-target="tab-noti">
+                <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                <span>Thông báo</span>
+            </button>
+            <button class="tab-btn" data-target="tab-lang">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                <span>Ngôn ngữ</span>
+            </button>
+            <button class="tab-btn" data-target="tab-support">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <span>Thông tin & Hỗ trợ</span>
+            </button>
+        </aside>
+
+        <!-- CONTENT PANEL (NỘI DUNG BÊN PHẢI) -->
+        <main class="content-area">
+            
+            <!-- TAB 1: HỒ SƠ NGƯỜI DÙNG -->
+            <div id="tab-profile" class="tab-pane active">
+                <h2 class="pane-title">Thông tin cá nhân</h2>
+                
+                <div class="profile-header-info">
+                    <div class="profile-avatar"></div>
+                    <div>
+                        <div class="status-badge">Tài khoản VIP</div>
+                        <button class="btn-outline btn-action" style="padding: 8px 16px; font-size: 13px;">Thay đổi ảnh</button>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Tên hiển thị</label>
+                    <input type="text" value="Nguyen Van A">
+                </div>
+
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" value="user@example.com">
+                </div>
+
+                <div class="static-info">
+                    <span class="label">Phương thức đăng nhập</span>
+                    <span class="value">
+                        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                        Google
+                    </span>
+                </div>
+
+                <div class="actions-row">
+                    <button class="btn-primary btn-action">Lưu thay đổi</button>
+                    <button class="btn-danger btn-action">Đăng xuất</button>
+                </div>
+            </div>
+
+            <!-- TAB 2: CÀI ĐẶT (GIỐNG ẢNH 95a482) -->
+            <div id="tab-settings" class="tab-pane">
+                <h2 class="pane-title">Cài đặt thiết bị & Bảo mật</h2>
+
+                <!-- Công tắc Light/Dark Mode -->
+                <div class="menu-list" style="margin-bottom: 10px;">
+                    <div class="menu-item" style="border: 1px solid var(--accent-color);">
+                        <span>Giao diện Tối (Dark Mode)</span>
+                        <label class="switch">
+                            <input type="checkbox" checked id="theme-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="section-label">Điều khiển</div>
+                <div class="menu-list">
+                    <div class="menu-item">
+                        <span>Cài đặt ứng dụng</span>
+                        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="menu-item">
+                        <span>Quản lý thiết bị</span>
+                        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                </div>
+
+                <div class="section-label">Bảo mật</div>
+                <div class="menu-list">
+                    <div class="menu-item">
+                        <span>Google Authenticator</span>
+                        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="menu-item">
+                        <span>Cảnh báo bảo mật</span>
+                        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="menu-item">
+                        <span>Ghi nhớ đăng nhập</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="menu-item">
+                        <span>Face ID</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="menu-item">
+                        <span>Biometric ID</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="pill-btn-group">
+                    <button class="pill-btn">Đổi mã PIN</button>
+                    <button class="pill-btn">Đổi mật khẩu</button>
+                </div>
+            </div>
+
+            <!-- TAB 3: THÔNG BÁO -->
+            <div id="tab-noti" class="tab-pane">
+                <h2 class="pane-title">Cài đặt Thông báo</h2>
+                
+                <div class="menu-list">
+                    <div class="menu-item">
+                        <span>Email nhận tin phim mới</span>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="menu-item">
+                        <span>Thông báo đẩy trên thiết bị (Push)</span>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="menu-item">
+                        <span>Cập nhật tính năng nền tảng</span>
+                        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                    </div>
+                    <div class="menu-item">
+                        <span>Cảnh báo đăng nhập lạ</span>
+                        <label class="switch"><input type="checkbox" checked disabled><span class="slider" style="background:#46d369"></span></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: NGÔN NGỮ -->
+            <div id="tab-lang" class="tab-pane">
+                <h2 class="pane-title">Ngôn ngữ (Language)</h2>
+                <div class="input-group">
+                    <label>Ngôn ngữ hiển thị (Display Language)</label>
+                    <select>
+                        <option value="vi">Tiếng Việt</option>
+                        <option value="en">English</option>
+                        <option value="fr">Français</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국語</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label>Ngôn ngữ Phụ đề mặc định (Default Subtitles)</label>
+                    <select>
+                        <option value="vi">Tiếng Việt</option>
+                        <option value="en">English (CC)</option>
+                        <option value="off">Tắt (Off)</option>
+                    </select>
+                </div>
+                <button class="btn-primary btn-action">Lưu thiết lập</button>
+            </div>
+
+            <!-- TAB 5: THÔNG TIN & HỖ TRỢ (GIỐNG ẢNH 95a461) -->
+            <div id="tab-support" class="tab-pane">
+                <h2 class="pane-title">Thông tin & Hỗ trợ</h2>
+                
+                <!-- Accordion layout -->
+                <details>
+                    <summary>Về NightHub</summary>
+                    <div class="details-content">
+                        NightHub là nền tảng giải trí trực tuyến hàng đầu cung cấp hàng ngàn bộ phim điện ảnh, truyền hình chất lượng cao...
+                    </div>
+                </details>
+                
+                <details>
+                    <summary>Điều khoản quyền riêng tư</summary>
+                    <div class="details-content">
+                        Chúng tôi cam kết bảo mật thông tin cá nhân của bạn. Không chia sẻ dữ liệu với bên thứ ba...
+                    </div>
+                </details>
+                
+                <details>
+                    <summary>Điều khoản sử dụng</summary>
+                    <div class="details-content">
+                        Bằng việc sử dụng dịch vụ, bạn đồng ý với các điều khoản về bản quyền nội dung...
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Các câu hỏi thường gặp</summary>
+                    <div class="details-content">
+                        <b>1. Làm sao để đổi mật khẩu?</b><br>Bạn có thể vào tab Cài đặt -> Đổi mật khẩu.<br><br>
+                        <b>2. Làm sao để nâng cấp VIP?</b><br>Hãy truy cập trang Thanh toán để nâng cấp.
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Liên hệ & Phản ánh</summary>
+                    <div class="details-content">
+                        Hotline: 1900 xxxx<br>
+                        Email: support@nighthub.com<br>
+                        Địa chỉ: Tòa nhà ABC, TP.HCM.
+                    </div>
+                </details>
+            </div>
+
+            
+
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="images/logo.png" alt="nighthub logo">
+            </div>
+            
+            <div class="footer-links">
+                <div class="link-column">
+                    <h4>Về chúng tôi</h4>
+                    <a href="#">Giới thiệu Nighthub</a>
+                    <a href="#">Cơ hội nghề nghiệp</a>
+                    <a href="#">Thông tin báo chí</a>
+                </div>
+                
+                <div class="link-column">
+                    <h4>Hỗ trợ khách hàng</h4>
+                    <a href="#">Trung tâm trợ giúp</a>
+                    <a href="#">Câu hỏi thường gặp</a>
+                    <a href="#">Liên hệ với chúng tôi</a>
+                </div>
+                
+                <div class="link-column">
+                    <h4>Điều khoản & Chính sách</h4>
+                    <a href="#">Điều khoản sử dụng</a>
+                    <a href="#">Quyền riêng tư</a>
+                    <a href="#">Bảo mật & Cookie</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Nighthub. Nền tảng xem phim trực tuyến hàng đầu.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT: Xử lý chức năng -->
+    <script>
+        // 1. Logic chuyển đổi các Tab Cài Đặt
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
+                    
+                    btn.classList.add('active');
+                    const targetId = btn.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+            
+            const themeToggle = document.getElementById('theme-toggle');
+            if(themeToggle) {
+                themeToggle.addEventListener('change', (e) => {
+                    if(!e.target.checked) {
+                        alert("Đã chuyển sang Light Mode (Tính năng đang xây dựng màu CSS)");
+                    }
+                });
+            }
+        });
+
+        // 2. Logic Bộ lọc (Modal Filter)
+        function toggleFilter() {
+            const modal = document.getElementById('filterModal');
+            const overlay = document.getElementById('filterOverlay');
+            modal.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        document.querySelectorAll('.filter-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                const siblings = this.parentElement.querySelectorAll('.filter-tag');
+                siblings.forEach(sib => sib.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // 3. Logic chuông Thông báo
+        function toggleNotification(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('notiDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        document.addEventListener('click', function(event) {
+            const notiWrapper = document.querySelector('.notification-wrapper');
+            const notiDropdown = document.getElementById('notiDropdown');
+            
+            if (notiWrapper && !notiWrapper.contains(event.target)) {
+                notiDropdown.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
