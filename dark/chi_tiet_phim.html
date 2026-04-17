@@ -17,6 +17,10 @@
             --accent-color: #4DA8DA; 
             --accent-glow: rgba(77, 168, 218, 0.4);
             
+            --accent-red: #F86060; 
+            --accent-red-light: #FFD6D6; 
+            --accent-blue: #38bdf8; 
+            
             --text-main: #ffffff; 
             --text-muted: #9aaec4; 
             --star-color: #f5c518; 
@@ -32,12 +36,7 @@
 
         body {
             /* Nền xanh Dark Blue gradient 4 điểm */
-            background: linear-gradient(135deg, 
-                #32455F 17%, 
-                #1A324A 35%, 
-                #07101C 62%, 
-                #1A324A 84%
-            );
+            background: linear-gradient(135deg, #32455F 17%, #1A324A 35%, #07101C 62%, #1A324A 84%);
             background-attachment: fixed;
             color: var(--text-main);
             line-height: 1.6;
@@ -45,7 +44,7 @@
             overflow-x: hidden;
         }
 
-        /* ================= NAVBAR ================= */
+        /* ================= NAVBAR TỪ TRANG CHỦ ================= */
         header {
             background-color: var(--bg-nav);
             padding: 15px 50px;
@@ -61,76 +60,174 @@
             -webkit-backdrop-filter: blur(15px);
         }
 
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 40px;
-        }
+        .nav-left { display: flex; align-items: center; gap: 40px; }
+        .logo { display: flex; align-items: center; text-decoration: none; }
+        .logo img { height: 35px; width: auto; object-fit: contain; }
+        
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 20px; transition: all 0.3s ease; position: relative; }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-main); font-weight: 500; }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
+        .nav-right { display: flex; align-items: center; gap: 20px; }
 
-        .logo img {
-            height: 35px;
-            width: auto;
-            object-fit: contain;
-        }
+        /* --- TÌM KIẾM ẨN --- */
+        .search-wrapper { position: relative; display: flex; align-items: center; }
 
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--text-main);
-            font-weight: 500;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            color: var(--text-main);
-            font-size: 18px;
-            cursor: pointer;
-            transition: color 0.3s;
+        .search-box {
+            display: flex; align-items: center; justify-content: flex-start;
+            background-color: transparent; 
+            border-radius: 25px; 
+            height: 42px; 
+            width: 42px; 
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow: hidden;
         }
         
-        .icon-btn:hover {
-            color: var(--accent-color);
+        .search-box.active {
+            width: 280px; 
+            background-color: #1e293b; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
         }
+
+        .search-trigger {
+            width: 42px; height: 42px; flex-shrink: 0;
+            background: transparent; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        
+        .search-trigger svg { 
+            width: 22px; height: 22px; 
+            stroke: var(--text-main); 
+            stroke-width: 1.5; 
+            fill: none; 
+            transition: stroke 0.3s, transform 0.2s; 
+        }
+
+        .search-trigger:hover svg { transform: scale(1.1); }
+        
+        .search-input {
+            border: none; background: transparent; outline: none;
+            font-size: 14px; color: #ffffff; width: 100%;
+            opacity: 0; transition: opacity 0.2s; pointer-events: none;
+        }
+        .search-input::placeholder { color: #94a3b8; }
+        
+        .search-box.active .search-input { opacity: 1; pointer-events: auto; padding: 0 5px; }
+
+        .filter-toggle-btn {
+            background: transparent; border: none; border-radius: 8px;
+            width: 32px; height: 32px; flex-shrink: 0; margin-right: 5px;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: all 0.3s; cursor: pointer;
+        }
+        .filter-toggle-btn:hover { background-color: rgba(255, 255, 255, 0.1); }
+        .search-box.active .filter-toggle-btn { opacity: 1; pointer-events: auto; }
+        .filter-toggle-btn svg { width: 18px; height: 18px; stroke: #ffffff; }
+
+        /* --- THÔNG BÁO --- */
+        .notification-wrapper { position: relative; }
+        .noti-btn-container { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; width: 40px; height: 40px; }
+        .bell-icon { width: 24px; height: 24px; stroke: var(--text-main); transition: all 0.2s ease; user-select: none; fill: none; stroke-width: 1.5;}
+        .noti-btn-container:hover .bell-icon { transform: scale(1.1) rotate(10deg); stroke: var(--accent-color); }
+        .noti-badge {
+            position: absolute; top: 6px; right: 8px; width: 10px; height: 10px;
+            background-color: var(--accent-red); border-radius: 50%;
+            border: 2px solid var(--bg-nav);
+        }
+
+        .notification-dropdown {
+            position: absolute; top: 50px; right: -80px; width: 340px;
+            background: rgba(15, 23, 36, 0.95);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: none; flex-direction: column; z-index: 1000; overflow: hidden;
+            transform-origin: top right; animation: dropFade 0.2s ease;
+        }
+        .notification-dropdown.active { display: flex; }
+
+        @keyframes dropFade { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
+
+        .noti-header { padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 700; font-size: 16px; color: white; display: flex; justify-content: space-between; }
+        .noti-header span { font-size: 12px; color: var(--accent-color); cursor: pointer; font-weight: normal; }
+        .noti-list { max-height: 350px; overflow-y: auto; }
+        .noti-item { padding: 15px 20px; display: flex; gap: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; position: relative; transition: background 0.2s;}
+        .noti-item:hover { background: rgba(255,255,255,0.05); }
+        .noti-item.unread::before { content: ''; position: absolute; left: 8px; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; background-color: var(--accent-color); border-radius: 50%; }
+        .noti-img { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; }
+        .noti-content { flex: 1; }
+        .noti-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
+        .noti-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+        .noti-time { font-size: 11px; color: var(--accent-color); margin-top: 5px; }
+
+        /* ================= AVATAR & MENU DROPDOWN ================= */
+        .user-menu-wrapper { position: relative; }
 
         .avatar {
-            width: 35px;
-            height: 35px;
-            background-color: #32455F;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.4);
-            background-image: url('images/avatar.jpg');
-            background-size: cover;
-            transition: transform 0.3s ease;
+            width: 42px; height: 42px; background-color: #32455F; border-radius: 50%;
+            cursor: pointer; border: 2px solid rgba(255,255,255,0.2);
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
+            background-size: cover; transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .avatar:hover, .user-menu-wrapper.active .avatar { 
+            transform: scale(1.08); border-color: var(--text-main);
         }
 
-        .avatar:hover {
-            transform: scale(1.1);
+        .user-dropdown {
+            position: absolute; top: 55px; right: 0; width: 220px;
+            background: #1e293b; border: 1px solid rgba(255,255,255,0.08); 
+            border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            display: none; flex-direction: column; z-index: 1000;
+            padding: 8px 0; transform-origin: top right; animation: dropFade 0.2s ease;
         }
+        .user-dropdown.active { display: flex; }
+
+        .user-menu-item {
+            display: flex; align-items: center; gap: 15px; padding: 12px 20px; 
+            color: #cbd5e1; text-decoration: none; font-size: 14.5px; font-weight: 500; transition: all 0.2s ease;
+        }
+        .user-menu-item:hover { background: rgba(255,255,255,0.06); color: #ffffff; }
+        .user-menu-item.logout-btn { color: var(--accent-red); }
+        .user-menu-item.logout-btn:hover { background: rgba(248, 96, 96, 0.1); color: #ff6b81; }
+        .user-menu-item svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .user-menu-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 4px 0; }
+
+        /* ================= BỘ LỌC NÂNG CAO ================= */
+        .filter-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 9999; display: none; opacity: 0; transition: opacity 0.3s; }
+        .filter-overlay.active { display: block; opacity: 1; }
+
+        .filter-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%);
+            background: #0f172a; color: #ffffff; width: 90%; max-width: 400px;
+            border-radius: 12px; padding: 25px; z-index: 10000;
+            border: 1px solid var(--accent-blue); display: none; opacity: 0; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); max-height: 85vh; overflow-y: auto;
+        }
+        .filter-modal.active { display: block; opacity: 1; transform: translate(-50%, -50%); }
+
+        .filter-drag-handle { width: 50px; height: 5px; background: #334155; border-radius: 3px; margin: 0 auto 15px auto; }
+        
+        .filter-group { margin-bottom: 20px; }
+        .filter-group label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #ffffff; }
+        
+        .filter-select {
+            width: 100%; padding: 12px 15px; background-color: #1e293b; border: 1px solid #334155;
+            border-radius: 8px; color: #ffffff; font-size: 14px; outline: none; appearance: none; cursor: pointer;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat; background-position: right 15px center; background-size: 16px; transition: border-color 0.2s;
+        }
+        .filter-select:focus, .filter-select:hover { border-color: var(--accent-blue); }
+        .filter-select option { background-color: #1e293b; color: #ffffff; }
+
+        .filter-footer { display: flex; gap: 15px; margin-top: 30px; }
+        .btn-filter-apply { flex: 1; padding: 14px; background-color: var(--accent-blue); color: #0f172a; border-radius: 8px; font-size: 15px; font-weight: 700; border: none; cursor: pointer; transition: transform 0.2s; }
+        .btn-filter-apply:hover { background-color: #2ea2d6; transform: translateY(-2px); }
+        .btn-filter-cancel { flex: 1; padding: 14px; background-color: #334155; color: #ffffff; border-radius: 8px; font-size: 15px; font-weight: 600; border: none; cursor: pointer; transition: transform 0.2s; }
+        .btn-filter-cancel:hover { background-color: #475569; transform: translateY(-2px); }
+        .filter-modal::-webkit-scrollbar { width: 6px; }
+        .filter-modal::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
         /* ================= BỐ CỤC CHUNG ================= */
         .detail-wrapper {
@@ -141,316 +238,96 @@
             margin-bottom: 50px;
         }
 
-        .detail-bg {
-            position: absolute;
-            background-size: cover;
-            z-index: 1;
-        }
-
-        .detail-content {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+        .detail-bg { position: absolute; background-size: cover; z-index: 1; }
+        .detail-content { position: relative; z-index: 10; display: flex; flex-direction: column; justify-content: center; }
 
         .detail-bg::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 30%;
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 30%;
             background: linear-gradient(to top, var(--c-darkest) 0%, transparent 100%);
         }
 
         /* ---------------------------------------------------
-           PHƯƠNG ÁN 1: CSS CHO POSTER ĐỨNG (BÊN PHẢI)
+           CSS CHO POSTER NGANG (NỬA TRÊN)
         --------------------------------------------------- */
-        .vertical-poster {
-            padding: 100px 0 50px 0; 
-            align-items: center;
+        .horizontal-poster { padding: 45vh 0 50px 0; align-items: flex-start; }
+        .horizontal-poster .detail-bg {
+            top: 0; left: 0; width: 100%; height: 95vh; background-position: top center;
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 90%, rgba(0,0,0,0) 100%);
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 90%, rgba(0,0,0,0) 100%);
         }
+        .horizontal-poster .detail-content { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 50px; }
 
+        .vertical-poster { padding: 100px 0 50px 0; align-items: center; }
         .vertical-poster .detail-bg {
-            top: 0;
-            right: 0; 
-            width: 50%; 
-            height: 100%;
-            background-position: center;
+            top: 0; right: 0; width: 50%; height: 100%; background-position: center;
             -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%);
             mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%);
         }
-
-        .vertical-poster .detail-content {
-            width: 55%; 
-            margin-left: 0;
-            padding: 40px 50px;
-        }
-
-        /* ---------------------------------------------------
-           PHƯƠNG ÁN 2: CSS CHO POSTER NGANG (NỬA TRÊN)
-        --------------------------------------------------- */
-        .horizontal-poster {
-            padding: 45vh 0 50px 0; 
-            align-items: flex-start;
-        }
-
-        .horizontal-poster .detail-bg {
-            top: 0;
-            left: 0; 
-            width: 100%;
-            height: 95vh;
-            background-position: top center;
-
-            -webkit-mask-image: linear-gradient(
-                to bottom,
-                rgba(0,0,0,1) 90%,
-                rgba(0,0,0,0) 100%
-            );
-            mask-image: linear-gradient(
-                to bottom,
-                rgba(0,0,0,1) 90%,
-                rgba(0,0,0,0) 100%
-            );
-        }
-
-        .horizontal-poster .detail-content {
-            width: 100%; 
-            max-width: 1200px;
-            margin: 0 auto; 
-            padding: 0 50px;
-        }
+        .vertical-poster .detail-content { width: 55%; margin-left: 0; padding: 40px 50px; }
 
         /* ================= THÀNH PHẦN BÊN TRONG ================= */
-        .detail-thumb {
-            width: 160px;
-            border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .detail-title {
-            font-size: 4rem;
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 15px;
-            margin-top: 350px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
-            letter-spacing: -1px;
-        }
-
-        .detail-meta {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 30px;
-            font-size: 15px;
-            font-weight: 500;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-        }
-
-        .meta-rating {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: var(--text-main);
-            font-size: 16px;
-        }
-        
-        .meta-rating .stars {
-            color: var(--star-color);
-            letter-spacing: 2px;
-            font-size: 18px;
-        }
-
+        .detail-thumb { width: 160px; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .detail-title { font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 15px; margin-top: 350px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); letter-spacing: -1px; }
+        .detail-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; font-size: 15px; font-weight: 500; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+        .meta-rating { display: flex; align-items: center; gap: 5px; color: var(--text-main); font-size: 16px; }
+        .meta-rating .stars { color: var(--star-color); letter-spacing: 2px; font-size: 18px; }
         .meta-year { color: var(--text-main); }
-
-        .meta-badge {
-            border: 1px solid rgba(255,255,255,0.5);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 13px;
-            background: rgba(0,0,0,0.4);
-            letter-spacing: 0.5px;
-        }
-
-        .meta-hd {
-            border-color: var(--text-main);
-            color: var(--text-main);
-            font-weight: 700;
-        }
-
+        .meta-badge { border: 1px solid rgba(255,255,255,0.5); padding: 3px 8px; border-radius: 4px; font-size: 13px; background: rgba(0,0,0,0.4); letter-spacing: 0.5px; }
+        .meta-hd { border-color: var(--text-main); color: var(--text-main); font-weight: 700; }
         .meta-duration { color: var(--text-muted); }
 
-        .detail-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 40px; 
-        }
-
+        .detail-actions { display: flex; align-items: center; gap: 15px; margin-bottom: 40px; }
         .action-btn {
-            height: 50px;
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            background: rgba(26, 50, 74, 0.6);
-            backdrop-filter: blur(5px);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-            font-weight: 600;
-            padding: 0 25px;
-            gap: 8px;
+            height: 50px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(26, 50, 74, 0.6); backdrop-filter: blur(5px); color: white; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; transition: all 0.3s ease; font-size: 16px; font-weight: 600; padding: 0 25px; gap: 8px;
         }
-
-        .action-btn.play {
-            background: var(--text-main);
-            color: #000;
-            border-color: var(--text-main);
-        }
-
+        .action-btn.play { background: var(--text-main); color: #000; border-color: var(--text-main); }
         .action-btn.play svg { fill: #000; }
+        .action-btn.icon-only { width: 50px; padding: 0; border-radius: 50%; }
+        .action-btn:hover { border-color: var(--text-main); background: rgba(255,255,255,0.2); color: var(--text-main); transform: scale(1.05); }
+        .action-btn.play:hover { background: rgba(255,255,255,0.8); color: #000; }
 
-        .action-btn.icon-only {
-            width: 50px;
-            padding: 0;
-            border-radius: 50%;
-        }
-
-        .action-btn:hover {
-            border-color: var(--text-main);
-            background: rgba(255,255,255,0.2);
-            color: var(--text-main);
-            transform: scale(1.05);
-        }
-        
-        .action-btn.play:hover {
-            background: rgba(255,255,255,0.8);
-            color: #000;
-        }
-
-        /* KHỐI TRAILERS (CUỘN NGANG 16:10) */
-        .trailer-section {
-            margin-bottom: 30px;
-            width: 100%;
-        }
-
-        .section-title {
-            font-size: 15px;
-            color: var(--text-muted);
-            margin-bottom: 15px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .trailer-list {
-            display: flex;
-            gap: 15px;
-            overflow-x: auto; 
-            padding-bottom: 15px;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255,255,255,0.2) transparent;
-        }
-
+        /* KHỐI TRAILERS */
+        .trailer-section { margin-bottom: 30px; width: 100%; }
+        .section-title { font-size: 15px; color: var(--text-muted); margin-bottom: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .trailer-list { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.2) transparent; }
         .trailer-list::-webkit-scrollbar { height: 6px; }
         .trailer-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-
         .trailer-item {
-            flex: 0 0 auto; 
-            width: 240px; 
-            aspect-ratio: 16 / 10; 
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            flex: 0 0 auto; width: 240px; aspect-ratio: 16 / 10; border-radius: 8px; overflow: hidden; position: relative;
+            cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
-
-        .trailer-item:hover {
-            border-color: var(--text-main);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.8);
-        }
-
-        .trailer-item img {
-            width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;
-        }
+        .trailer-item:hover { border-color: var(--text-main); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.8); }
+        .trailer-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .trailer-item:hover img { transform: scale(1.05); }
-
         .trailer-play {
-            position: absolute;
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 40px; height: 40px; background: rgba(0,0,0,0.6);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px;
+            background: rgba(0,0,0,0.6); border-radius: 50%; display: flex; align-items: center; justify-content: center;
             border: 1px solid rgba(255,255,255,0.5); backdrop-filter: blur(4px); transition: all 0.3s ease;
         }
         .trailer-play svg { width: 16px; height: 16px; fill: white; margin-left: 3px; }
-
-        .trailer-item:hover .trailer-play {
-            background: var(--text-main); border-color: var(--text-main);
-            transform: translate(-50%, -50%) scale(1.15);
-        }
+        .trailer-item:hover .trailer-play { background: var(--text-main); border-color: var(--text-main); transform: translate(-50%, -50%) scale(1.15); }
         .trailer-item:hover .trailer-play svg { fill: black; }
 
-        .detail-desc {
-            font-size: 1.15rem; color: #e2e8f0; line-height: 1.6;
-            margin-bottom: 20px; max-width: 95%; text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
-        }
-
+        .detail-desc { font-size: 1.15rem; color: #e2e8f0; line-height: 1.6; margin-bottom: 20px; max-width: 95%; text-shadow: 1px 1px 4px rgba(0,0,0,0.8); }
         .detail-cast { font-size: 14px; color: var(--text-muted); line-height: 1.8; }
         .detail-cast span { color: var(--text-main); }
 
         /* ================= TABS MÔ TẢ (TẬP PHIM, LIÊN QUAN, BÌNH LUẬN) ================= */
-        .tabs-wrapper {
-            margin-top: 50px;
-            width: 100%;
-            max-width: 900px;
-            margin-bottom: 80px; /* Thêm khoảng trống xích xuống dưới để hover không bị Footer đè */
-        }
-
-        .tab-headers {
-            display: flex;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 25px; gap: 30px;
-        }
-
-        .tab-btn {
-            background: none; border: none; color: var(--text-muted);
-            font-size: 16px; font-weight: 600; padding-bottom: 12px;
-            cursor: pointer; position: relative; transition: color 0.3s;
-        }
-
+        .tabs-wrapper { margin-top: 50px; width: 100%; max-width: 900px; margin-bottom: 80px; }
+        .tab-headers { display: flex; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 25px; gap: 30px; }
+        .tab-btn { background: none; border: none; color: var(--text-muted); font-size: 16px; font-weight: 600; padding-bottom: 12px; cursor: pointer; position: relative; transition: color 0.3s; }
         .tab-btn:hover, .tab-btn.active { color: var(--text-main); }
-
-        .tab-btn.active::after {
-            content: ''; position: absolute; bottom: -1px; left: 0;
-            width: 100%; height: 3px; background-color: var(--accent-color); border-radius: 3px 3px 0 0;
-        }
-
+        .tab-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 3px; background-color: var(--accent-color); border-radius: 3px 3px 0 0; }
         .tab-pane { display: none; animation: fadeIn 0.4s ease; }
         .tab-pane.active { display: block; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* TAB: DANH SÁCH TẬP PHIM (Series) */
+        /* TAB: TẬP PHIM */
         .episode-list { display: flex; flex-direction: column; gap: 15px; }
-        .episode-item {
-            display: flex; align-items: center; gap: 20px; padding: 10px; border-radius: 8px;
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
-            transition: background 0.3s; cursor: pointer;
-        }
+        .episode-item { display: flex; align-items: center; gap: 20px; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); transition: background 0.3s; cursor: pointer; }
         .episode-item:hover { background: rgba(255,255,255,0.1); }
         .ep-img { width: 140px; aspect-ratio: 16/9; border-radius: 6px; object-fit: cover; }
         .ep-info { flex: 1; }
@@ -459,187 +336,111 @@
         .ep-download { color: var(--text-main); background: none; border: none; cursor: pointer; padding: 10px; margin-right: 10px; transition: color 0.3s; }
         .ep-download:hover { color: var(--accent-color); }
 
-        /* ================= TAB: PHIM LIÊN QUAN (CSS LIQUID GLASS GIỐNG HOME) ================= */
-        .related-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr); /* Giống lưới trang chủ */
-            gap: 15px;
-            padding-bottom: 60px; /* Thêm khoảng trống padding bên trong để card trồi lên an toàn */
-            padding-top: 10px;
-        }
-
-        /* Tái sử dụng class .movie-card từ trang chủ cho Phim liên quan */
+        /* TAB: PHIM LIÊN QUAN (CSS LIQUID GLASS) */
+        .related-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding-bottom: 60px; padding-top: 10px; }
         .movie-card {
-            background: var(--bg-card); border-radius: 12px; overflow: hidden; 
-            cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            border: none; text-decoration: none; color: var(--text-main); display: block; 
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); position: relative; aspect-ratio: 2 / 3; 
-            isolation: isolate; transform: translateZ(0); -webkit-mask-image: -webkit-radial-gradient(white, black); 
+            background: var(--bg-card); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: none; text-decoration: none; color: var(--text-main); display: block; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); position: relative; aspect-ratio: 2 / 3; 
+            isolation: isolate; transform: translateZ(0); -webkit-mask-image: -webkit-radial-gradient(white, black); mask-image: -webkit-radial-gradient(white, black); 
         }
-
-        .movie-card::before {
-            content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-25deg); transition: all 0.6s ease; z-index: 10; pointer-events: none;
-        }
-
+        .movie-card::before { content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); transition: all 0.6s ease; z-index: 10; pointer-events: none; }
         .movie-card:hover::before { left: 200%; }
         .movie-card:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 15px 40px rgba(0,0,0,0.9); z-index: 10; }
-        
         .movie-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; position: relative; z-index: 1; display: block; }
         .movie-card:hover img { transform: scale(1.05); }
-
         .card-info {
-            padding: 40px 17px 17px 17px; position: absolute; 
-            bottom: -2px; left: -2px; right: -2px; z-index: 5; 
+            padding: 40px 17px 17px 17px; position: absolute; bottom: -2px; left: -2px; right: -2px; z-index: 5; 
             background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 10%, rgba(0, 0, 0, 0.7) 60%, rgba(0, 0, 0, 0) 100%);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
-            mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
-            border-bottom-left-radius: 0; border-bottom-right-radius: 0;
-            transform: translateY(102%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%); mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+            border-bottom-left-radius: 0; border-bottom-right-radius: 0; transform: translateY(102%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-
         .movie-card:hover .card-info { transform: translateY(0); }
-
         .card-actions { display: flex; gap: 8px; opacity: 0; margin-bottom: 12px; transform: translateY(10px); transition: all 0.3s ease 0.1s; }
         .movie-card:hover .card-actions { opacity: 1; transform: translateY(0); }
-        .card-action-btn { /* Dùng tên khác xíu để không đụng action-btn ở trên */
-            width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.6); 
-            background: rgba(20, 20, 20, 0.6); color: white; display: flex; align-items: center; 
-            justify-content: center; cursor: pointer; transition: all 0.2s ease; 
-        }
+        .card-action-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.6); background: rgba(20, 20, 20, 0.6); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; }
         .card-action-btn.play { background: var(--text-main); color: #000; border-color: var(--text-main); padding-left: 3px; }
         .card-action-btn:hover { border-color: var(--text-main); background: rgba(255,255,255,0.3); color: var(--text-main); transform: scale(1.15); }
         .card-action-btn.play:hover { background: rgba(255,255,255,0.9); color: #000; }
-
         .card-title { font-size: 15px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 800; color: var(--text-main); text-shadow: 1px 1px 3px rgba(0,0,0,1); }
         .card-desc { font-size: 11.5px; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; }
 
-
         /* TAB: BÌNH LUẬN */
-        .comment-section {
-            color: var(--text-muted);
-            font-size: 15px;
-            text-align: center;
-            padding: 60px 0;
-            background: rgba(0,0,0,0.2);
-            border-radius: 8px;
-        }
+        .comment-section { color: var(--text-muted); font-size: 15px; text-align: center; padding: 60px 0; background: rgba(0,0,0,0.2); border-radius: 8px; }
 
-        /* ================= FOOTER MỚI (Y HỆT TRANG CHỦ NIGHTHUB) ================= */
+        /* ================= CHATBOT TRÔI NỔI ================= */
+        .chat-widget-wrapper { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; z-index: 9998; }
+        .chat-fab { width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #4DA8DA, #8A2BE2); display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 20px rgba(0,0,0,0.5); cursor: grab; user-select: none; transition: transform 0.2s ease; overflow: hidden; }
+        .chat-fab:active { cursor: grabbing; }
+        .chat-fab:hover { transform: scale(1.05); }
+        .chat-fab img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; pointer-events: none; }
+        
+        .chat-window { position: absolute; bottom: 75px; right: 0; width: 320px; height: 450px; background: rgba(15, 23, 36, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: none; flex-direction: column; overflow: hidden; transform-origin: bottom right; animation: popUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .chat-window.active { display: flex; }
+        @keyframes popUp { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
+        .chat-header { background: rgba(0,0,0,0.3); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .chat-header h4 { font-size: 16px; color: white; display: flex; align-items: center; gap: 8px;}
+        .chat-header h4 span { display: inline-block; width: 8px; height: 8px; background-color: #46d369; border-radius: 50%; }
+        .close-chat-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 20px; transition: color 0.2s; }
+        .close-chat-btn:hover { color: var(--accent-red); }
+        .chat-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .chat-msg { max-width: 80%; padding: 10px 15px; border-radius: 12px; font-size: 14px; line-height: 1.4;}
+        .chat-msg.bot { background: rgba(255,255,255,0.1); color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .chat-msg.user { background: var(--accent-color); color: #000; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 500; }
+        .chat-input-area { padding: 15px; background: rgba(0,0,0,0.2); border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 10px; }
+        .chat-input-area input { flex: 1; padding: 10px 15px; border-radius: 20px; border: none; outline: none; background: rgba(255,255,255,0.1); color: white; font-size: 14px; }
+        .chat-input-area input::placeholder { color: #888; }
+        .chat-send-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-color); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .chat-send-btn svg { width: 16px; height: 16px; fill: #000; margin-left: 2px;}
+
+        /* ================= FOOTER ================= */
         .footer {
-            position: relative;
-            z-index: 100; /* Z-index lớn để chắc chắn đè lên nếu lướt qua */
-            background-color: rgba(7, 16, 28, 0.6);
-            backdrop-filter: blur(10px);
-            padding: 60px 50px 20px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            margin-top: 0;
+            position: relative; z-index: 100; background-color: rgba(7, 16, 28, 0.6); backdrop-filter: blur(10px);
+            padding: 60px 50px 20px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 0;
         }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-logo img {
-            height: 150px; /* Logo to chuẩn Nighthub */
-            margin-bottom: 20px;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 80px;
-            flex-wrap: wrap;
-        }
-
-        .link-column {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .link-column h4 {
-            color: var(--text-main);
-            font-size: 16px;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .link-column a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s;
-        }
-
-        .link-column a:hover {
-            color: var(--text-main);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            color: var(--text-muted);
-            font-size: 13px;
-        }
+        .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; max-width: 1200px; margin: 0 auto; }
+        .footer-logo img { height: 150px; margin-bottom: 20px; }
+        .footer-links { display: flex; gap: 80px; flex-wrap: wrap; }
+        .link-column { display: flex; flex-direction: column; gap: 12px; }
+        .link-column h4 { color: var(--text-main); font-size: 16px; margin-bottom: 8px; font-weight: 600; }
+        .link-column a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.3s; }
+        .link-column a:hover { color: var(--text-main); }
+        .footer-bottom { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); font-size: 13px; }
 
         /* ================= RESPONSIVE ================= */
         @media (max-width: 1200px) {
-            .nav-links { display: none; }
-            .detail-title { font-size: 3.5rem; }
-            .related-grid { grid-template-columns: repeat(3, 1fr); }
+            .nav-links { display: none; } .detail-title { font-size: 3.5rem; } .related-grid { grid-template-columns: repeat(3, 1fr); }
+            .search-box { width: 200px; }
         }
         @media (max-width: 900px) {
-            .detail-wrapper {
-                flex-direction: column;
-                justify-content: flex-end;
-                padding-top: 0;
-            }
-            .vertical-poster .detail-bg {
-                width: 100%; height: 70vh;
-                -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%);
-                mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%);
-            }
-            .vertical-poster .detail-content, .horizontal-poster .detail-content {
-                width: 100%; margin-left: 0; padding: 20px;
-            }
+            .detail-wrapper { flex-direction: column; justify-content: flex-end; padding-top: 0; }
+            .vertical-poster .detail-bg { width: 100%; height: 70vh; -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%); mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%); }
+            .vertical-poster .detail-content, .horizontal-poster .detail-content { width: 100%; margin-left: 0; padding: 20px; }
             .vertical-poster .detail-content { margin-top: 40vh; }
-            .horizontal-poster { padding-top: 45vh; }
-            .detail-desc { max-width: 100%; }
-            .detail-meta { justify-content: flex-start; }
-            .detail-title { font-size: 2.8rem; }
-            .footer-links { gap: 40px; }
-            .ep-img { width: 100px; }
-            .related-grid { grid-template-columns: repeat(3, 1fr); }
+            .horizontal-poster { padding-top: 50vw; } 
+            .horizontal-poster .detail-bg { aspect-ratio: 4 / 3; } 
+            .detail-desc { max-width: 100%; } .detail-meta { justify-content: flex-start; } .detail-title { font-size: 2.8rem; margin-top: 0;}
+            .footer-links { gap: 40px; } .ep-img { width: 100px; } .related-grid { grid-template-columns: repeat(3, 1fr); }
         }
         @media (max-width: 600px) {
-            header { padding: 15px 20px; }
-            .detail-thumb { width: 120px; }
-            .detail-title { font-size: 2.2rem; }
-            .action-btn { font-size: 14px; padding: 0 20px; }
-            .action-btn.icon-only { width: 45px; height: 45px; }
-            .footer { padding: 40px 20px 20px; }
-            .footer-links { gap: 20px; flex-direction: column; }
-            .related-grid { grid-template-columns: repeat(2, 1fr); }
+            header { padding: 15px 20px; } .detail-thumb { width: 120px; } .detail-title { font-size: 2.2rem; }
+            .action-btn { font-size: 14px; padding: 0 20px; } .action-btn.icon-only { width: 45px; height: 45px; }
+            .footer { padding: 40px 20px 20px; } .footer-links { gap: 20px; flex-direction: column; } .related-grid { grid-template-columns: repeat(2, 1fr); }
+            .search-box.active { width: 180px; }
+            .notification-dropdown { width: 300px; right: -80px; }
+            .user-dropdown { right: -20px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR -->
+    <!-- NAVBAR MỚI (TỪ TRANG CHỦ) -->
     <header>
         <div class="nav-left">
             <a href="#" class="logo">
-                <img src="images/only_logo.png" alt="Nighthub Logo">
+                <img src="images/only_logo.png" alt="Nighthub logo">
             </a>
+            
             <nav class="nav-links">
                 <a href="#" class="active">Trang chủ</a>
                 <a href="#">Phim điện ảnh</a>
@@ -649,120 +450,168 @@
                 <a href="#">Danh sách của tôi</a>
             </nav>
         </div>
+        
         <div class="nav-right">
-            <button class="icon-btn" title="Tìm kiếm">🔍</button>
-            <button class="icon-btn" title="Thông báo">🔔</button>
-            <div class="avatar" title="Tài khoản"></div>
+            
+            <!-- CỤM TÌM KIẾM ẨN VÀ BỘ LỌC -->
+            <div class="search-wrapper" id="searchWrapper">
+                <div class="search-box" id="searchBox">
+                    <button class="search-trigger" onclick="toggleSearch()" title="Tìm kiếm">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Tìm kiếm phim...">
+                    <button class="filter-toggle-btn" onclick="toggleFilter()" title="Bộ lọc nâng cao">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="17" cy="8" r="3"></circle>
+                            <line x1="3" y1="8" x2="14" y2="8"></line>
+                            <circle cx="7" cy="16" r="3"></circle>
+                            <line x1="10" y1="16" x2="21" y2="16"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CHỨC NĂNG THÔNG BÁO -->
+            <div class="notification-wrapper">
+                <div class="noti-btn-container" onclick="toggleNotification(event)">
+                    <svg class="bell-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <div class="noti-badge"></div>
+                </div>
+
+                <div class="notification-dropdown" id="notiDropdown">
+                    <div class="noti-header">Thông báo<span>Đánh dấu đã đọc</span></div>
+                    <div class="noti-list">
+                        <div class="noti-item unread">
+                            <img src="images/poster_doc_2.webp" alt="Phim" class="noti-img">
+                            <div class="noti-content">
+                                <div class="noti-title">Tập mới đã có sẵn!</div>
+                                <div class="noti-desc">Dune: Part Two (Tập 12) vừa được cập nhật. Xem ngay nào!</div>
+                                <div class="noti-time">10 phút trước</div>
+                            </div>
+                        </div>
+                        <div class="noti-item">
+                            <img src="images/avatar.jpg" alt="Phim" class="noti-img">
+                            <div class="noti-content">
+                                <div class="noti-title">Gợi ý cho bạn</div>
+                                <div class="noti-desc">Dựa trên Interstellar, chúng tôi đề xuất The Dark Knight.</div>
+                                <div class="noti-time">2 giờ trước</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AVATAR TÀI KHOẢN VÀ MENU XỔ XUỐNG -->
+            <div class="user-menu-wrapper">
+                <div class="avatar" title="Tài khoản" onclick="toggleUserMenu(event)"></div>
+                
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="profile.html" class="user-menu-item">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>Trang Cá Nhân</span>
+                    </a>
+                    <a href="settings.html" class="user-menu-item">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span>Cài Đặt</span>
+                    </a>
+                    <a href="select-profile.html" class="user-menu-item">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span>Chuyển Hồ Sơ</span>
+                    </a>
+                    <div class="user-menu-divider"></div>
+                    <a href="login.html" class="user-menu-item logout-btn">
+                        <svg viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        <span>Đăng Xuất</span>
+                    </a>
+                </div>
+            </div>
+
         </div>
     </header>
 
-    <!-- =========================================================================
-         BƯỚC 1: LỰA CHỌN BỐ CỤC POSTER
-         - Thay class "horizontal-poster" thành "vertical-poster" nếu muốn poster đứng bên phải.
-         - Mặc định đang để "horizontal-poster" (poster ngang).
-    ========================================================================== -->
-    <!-- <div class="detail-wrapper vertical-poster">
-        
-        <div class="detail-bg" style="background-image: url('images/poster-phim-hoat-hinh-5.jpg');"></div>
-
-        <div class="detail-content">
-            <img src="https://image.tmdb.org/t/p/w500/8tZYtuWezp8JbcsvHYO0O46tFbo.jpg" alt="Poster Thumbnail" class="detail-thumb">
-
-            <h1 class="detail-title">Mad Max: Fury Road</h1>
-            
-            <div class="detail-meta">
-                <span class="meta-rating"><span class="stars">★★★★★</span> 4.9/5</span>
-                <span class="meta-year">2015</span>
-                <span class="meta-badge">18+</span>
-                <span class="meta-duration">2 giờ 00 phút</span>
-                <span class="meta-badge meta-hd">FULL HD</span>
-            </div>
-
-            <div class="detail-actions">
-                <button class="action-btn play">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                    Xem phim
-                </button>
-                <button class="action-btn icon-only" title="Lưu phim">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-                </button>
-                <button class="action-btn icon-only" title="Chi tiết">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                </button>
-            </div>
-
-            <div class="trailer-section">
-                <h4 class="section-title">Trailers & Đoạn cắt</h4>
-                <div class="trailer-list">
-                    <div class="trailer-item">
-                        <img src="https://image.tmdb.org/t/p/w500/h8gHn0G41qAdvG3tzqwH4kGvB9S.jpg" alt="Trailer 1">
-                        <div class="trailer-play"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
-                    </div>
-                    <div class="trailer-item">
-                        <img src="https://image.tmdb.org/t/p/w500/A0x8C1o7bL3oD2oYlKqD6nIe9Zp.jpg" alt="Trailer 2">
-                        <div class="trailer-play"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
-                    </div>
-                </div>
-            </div>
-
-            <p class="detail-desc">Trong một thế giới cạn kiệt tài nguyên sau tận thế, hai người nổi loạn có thể là cơ hội cuối cùng để lập lại trật tự...</p>
-            <div class="detail-cast">
-                <p><span>Đạo diễn:</span> George Miller</p>
-                <p><span>Diễn viên:</span> Tom Hardy, Charlize Theron, Nicholas Hoult</p>
-            </div>
-
-            <div class="tabs-wrapper">
-                <div class="tab-headers">
-                    <button class="tab-btn active" onclick="openTab(event, 'related-movie')">Phim liên quan</button>
-                    <button class="tab-btn" onclick="openTab(event, 'comments-movie')">Bình luận</button>
-                </div>
-                <div class="tab-content">
-                    <div id="related-movie" class="tab-pane active">
-                        <div class="related-grid">
-                            
-                            <a href="#" class="movie-card">
-                                <img src="images/banner.jpeg" alt="Phim">
-                                <div class="card-info">
-                                    <div class="card-actions">
-                                        <button class="card-action-btn play" title="Xem phim">▶</button>
-                                        <button class="card-action-btn" title="Lưu phim"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
-                                        <button class="card-action-btn" title="Chi tiết"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
-                                    </div>
-                                    <h4 class="card-title">Interstellar</h4>
-                                    <p class="card-desc">Khi Trái Đất đang chết mòn, một nhóm phi hành gia phải thực hiện sứ mệnh quan trọng nhất lịch sử nhân loại.</p>
-                                </div>
-                            </a>
-                            <a href="#" class="movie-card">
-                                <img src="images/banner.jpeg" alt="Phim">
-                                <div class="card-info">
-                                    <div class="card-actions">
-                                        <button class="card-action-btn play" title="Xem phim">▶</button>
-                                        <button class="card-action-btn" title="Lưu phim"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
-                                        <button class="card-action-btn" title="Chi tiết"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
-                                    </div>
-                                    <h4 class="card-title">Oppenheimer</h4>
-                                    <p class="card-desc">Sự ra đời của bom nguyên tử làm thay đổi hoàn toàn cục diện thế giới.</p>
-                                </div>
-                            </a>
-
-                        </div>
-                    </div>
-                    <div id="comments-movie" class="tab-pane">
-                        <div class="comment-section">Chưa có bình luận nào. Hãy là người đầu tiên!</div>
-                    </div>
-                </div>
-            </div>
-
+    <!-- GIAO DIỆN BỘ LỌC NÂNG CAO (DROPDOWN MODAL MỚI TỪ TRANG CHỦ) -->
+    <div class="filter-overlay" id="filterOverlay" onclick="toggleFilter()"></div>
+    
+    <div class="filter-modal" id="filterModal">
+        <div class="filter-drag-handle"></div>
+        <div class="filter-group">
+            <label>Danh mục</label>
+            <select class="filter-select">
+                <option>Tất cả</option>
+                <option>Phim điện ảnh</option>
+                <option>Phim truyền hình</option>
+                <option>Phim hoạt hình</option>
+            </select>
         </div>
-    </div> -->
+        <div class="filter-group">
+            <label>Khu vực</label>
+            <select class="filter-select">
+                <option>Tất cả</option>
+                <option>Việt Nam</option>
+                <option>Âu Mỹ</option>
+                <option>Hàn Quốc</option>
+                <option>Trung Quốc</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Thể loại</label>
+            <select class="filter-select">
+                <option>Tất cả</option>
+                <option>Hành động</option>
+                <option>Tình cảm</option>
+                <option>Kinh dị</option>
+                <option>Hài hước</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Thời gian phát hành</label>
+            <select class="filter-select">
+                <option>Tất cả</option>
+                <option>2025</option>
+                <option>2024</option>
+                <option>2023</option>
+                <option>2022</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Sắp xếp theo</label>
+            <select class="filter-select">
+                <option>Phổ biến</option>
+                <option>Mới cập nhật</option>
+                <option>Đánh giá cao</option>
+                <option>Xem nhiều nhất</option>
+            </select>
+        </div>
+        <div class="filter-footer">
+            <button class="btn-filter-apply" onclick="toggleFilter()">Áp dụng</button>
+            <button class="btn-filter-cancel" onclick="toggleFilter()">Xóa bộ lọc</button>
+        </div>
+    </div>
 
 
-    <!-- =========================================================================
-         PHƯƠNG ÁN 2: DÀNH CHO POSTER NGANG (CHIẾM TOÀN BỘ NỬA TRÊN MÀN HÌNH)
-         Bạn hãy xóa Phương án 1 bên trên đi nếu chọn dùng Phương án 2 này.
-    ========================================================================== -->
+    <!-- ================= BỐ CỤC CHI TIẾT PHIM ================= -->
     <div class="detail-wrapper horizontal-poster">
-        
         <div class="detail-bg" style="background-image: url('images/poster_1.jpeg');"></div>
 
         <div class="detail-content">
@@ -809,10 +658,7 @@
                 <p><span>Diễn viên:</span> Tom Hardy, Charlize Theron, Nicholas Hoult</p>
             </div>
 
-            <!-- =========================================================================
-                 BƯỚC 2: LỰA CHỌN TABS CHO PHIM BỘ (CÓ TẬP PHIM)
-            ========================================================================== -->
-            
+            <!-- TABS MÔ TẢ (TẬP PHIM, LIÊN QUAN, BÌNH LUẬN) -->
             <div class="tabs-wrapper">
                 <div class="tab-headers">
                     <button class="tab-btn active" onclick="openTab(event, 'episodes-series')">Tập phim</button>
@@ -821,6 +667,7 @@
                 </div>
 
                 <div class="tab-content">
+                    <!-- Tab: Tập Phim -->
                     <div id="episodes-series" class="tab-pane active">
                         <div class="episode-list">
                             <div class="episode-item">
@@ -846,10 +693,9 @@
                         </div>
                     </div>
 
+                    <!-- Tab: Phim Liên Quan -->
                     <div id="related-series" class="tab-pane">
                         <div class="related-grid">
-                            
-                            <!-- Bắt đầu Thẻ Phim 1 -->
                             <a href="#" class="movie-card">
                                 <img src="images/poster_doc_2.webp" alt="Phim 1">
                                 <div class="card-info">
@@ -862,8 +708,6 @@
                                     <p class="card-desc">Khi Trái Đất đang chết mòn, một nhóm phi hành gia phải thực hiện sứ mệnh quan trọng nhất lịch sử nhân loại.</p>
                                 </div>
                             </a>
-
-                            <!-- Bắt đầu Thẻ Phim 2 -->
                             <a href="#" class="movie-card">
                                 <img src="images/poster_doc_2.webp" alt="Phim 2">
                                 <div class="card-info">
@@ -876,8 +720,6 @@
                                     <p class="card-desc">Hiệp sĩ bóng đêm Batman phải đối mặt với thử thách lớn nhất từ trước đến nay mang tên Joker.</p>
                                 </div>
                             </a>
-
-                            <!-- Bắt đầu Thẻ Phim 3 -->
                             <a href="#" class="movie-card">
                                 <img src="images/poster_doc_2.webp" alt="Phim 3">
                                 <div class="card-info">
@@ -890,8 +732,6 @@
                                     <p class="card-desc">Bộ phim kể lại câu chuyện về J. Robert Oppenheimer và sự ra đời của bom nguyên tử.</p>
                                 </div>
                             </a>
-
-                            <!-- Bắt đầu Thẻ Phim 4 -->
                             <a href="#" class="movie-card">
                                 <img src="images/poster_doc_2.webp" alt="Phim 4">
                                 <div class="card-info">
@@ -904,10 +744,10 @@
                                     <p class="card-desc">Hành trình qua một thế giới bóng tối gián điệp quốc tế với nhiệm vụ thao túng nghịch lý thời gian.</p>
                                 </div>
                             </a>
-
                         </div>
                     </div>
 
+                    <!-- Tab: Bình luận -->
                     <div id="comments-series" class="tab-pane">
                         <div class="comment-section">Chưa có bình luận nào. Hãy là người đầu tiên!</div>
                     </div>
@@ -917,7 +757,7 @@
         </div>
     </div>
 
-    <!-- ================= FOOTER (Y HỆT TRANG CHỦ NIGHTHUB) ================= -->
+    <!-- ================= FOOTER ================= -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">
@@ -952,8 +792,32 @@
         </div>
     </footer>
 
-    <!-- SCRIPT ĐIỀU KHIỂN CHUYỂN TAB -->
+    <!-- ================================= CHATBOT TRÔI NỔI KÉO THẢ ================================= -->
+    <div class="chat-widget-wrapper" id="chatWrapper">
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h4><span></span> Nighthub Support</h4>
+                <button class="close-chat-btn" onclick="toggleChat()">✖</button>
+            </div>
+            <div class="chat-body">
+                <div class="chat-msg bot">Xin chào! 👋 Mình là trợ lý ảo của Nighthub. Mình có thể giúp gì cho bạn hôm nay?</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" placeholder="Nhập tin nhắn...">
+                <button class="chat-send-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="chat-fab" id="chatFab" title="Hỗ trợ trực tuyến">
+            <img src="images/chatbox-removebg-preview.png" alt="Chatbot Icon">
+        </div>
+    </div>
+
+    <!-- SCRIPT CHUNG -->
     <script>
+        // 1. Chuyển Tab
         function openTab(evt, tabId) {
             const wrapper = evt.currentTarget.closest('.tabs-wrapper');
             const panes = wrapper.querySelectorAll('.tab-pane');
@@ -965,7 +829,174 @@
             document.getElementById(tabId).classList.add('active');
             evt.currentTarget.classList.add('active');
         }
-    </script>
 
+        // 2. Tìm kiếm
+        function toggleSearch() {
+            const searchBox = document.getElementById('searchBox');
+            const searchInput = document.getElementById('searchInput');
+            searchBox.classList.toggle('active');
+            
+            if(searchBox.classList.contains('active')) {
+                searchInput.focus();
+            }
+        }
+
+        // 3. Bộ lọc nâng cao
+        function toggleFilter() {
+            const modal = document.getElementById('filterModal');
+            const overlay = document.getElementById('filterOverlay');
+            modal.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // 4. Menu Thông báo
+        function toggleNotification(event) {
+            event.stopPropagation(); 
+            const dropdown = document.getElementById('notiDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        // 5. Menu Tài khoản
+        function toggleUserMenu(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        // 6. Đóng các menu khi click ra ngoài
+        document.addEventListener('click', function(event) {
+            const notiWrapper = document.querySelector('.notification-wrapper');
+            const notiDropdown = document.getElementById('notiDropdown');
+            const userWrapper = document.querySelector('.user-menu-wrapper');
+            const userDropdown = document.getElementById('userDropdown');
+            const searchBox = document.getElementById('searchBox');
+            const filterModal = document.getElementById('filterModal');
+            
+            // Đóng Thông báo
+            if (notiWrapper && notiDropdown && !notiWrapper.contains(event.target)) {
+                notiDropdown.classList.remove('active');
+            }
+
+            // Đóng Menu Tài khoản
+            if (userWrapper && userDropdown && !userWrapper.contains(event.target)) {
+                userDropdown.classList.remove('active');
+            }
+
+            // Đóng thanh Tìm kiếm
+            if (searchBox && searchBox.classList.contains('active') && !searchBox.contains(event.target)) {
+                if (!filterModal || !filterModal.contains(event.target)) {
+                    searchBox.classList.remove('active');
+                }
+            }
+        });
+
+        // 7. Nút Chat kéo thả
+        let lastToggleTime = 0;
+        
+        function toggleChat() {
+            const now = Date.now();
+            if (now - lastToggleTime < 300) return; 
+            lastToggleTime = now;
+            
+            const chatWindow = document.getElementById('chatWindow');
+            chatWindow.classList.toggle('active');
+        }
+
+        const fab = document.getElementById('chatFab');
+        const chatWrapper = document.getElementById('chatWrapper');
+        const chatWindow = document.getElementById('chatWindow');
+        let isDragging = false;
+        let dragStartX, dragStartY;
+
+        function updateChatPosition(clientX, clientY) {
+            let newX = clientX - 30; 
+            let newY = clientY - 30;
+
+            if (newX < 320) {
+                chatWindow.style.right = 'auto';
+                chatWindow.style.left = '0';
+                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('right', 'left');
+            } else {
+                chatWindow.style.right = '0';
+                chatWindow.style.left = 'auto';
+                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('left', 'right');
+            }
+
+            if (newY < 480) {
+                chatWindow.style.bottom = 'auto';
+                chatWindow.style.top = '75px';
+                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('bottom', 'top');
+            } else {
+                chatWindow.style.bottom = '75px';
+                chatWindow.style.top = 'auto';
+                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('top', 'bottom');
+            }
+
+            const maxX = window.innerWidth - 60;
+            const maxY = window.innerHeight - 60;
+            newX = Math.max(0, Math.min(newX, maxX));
+            newY = Math.max(0, Math.min(newY, maxY));
+
+            chatWrapper.style.left = newX + 'px';
+            chatWrapper.style.top = newY + 'px';
+            chatWrapper.style.bottom = 'auto';
+            chatWrapper.style.right = 'auto';
+        }
+
+        fab.addEventListener('mousedown', function(e) {
+            isDragging = false; 
+            dragStartX = e.clientX;
+            dragStartY = e.clientY;
+            
+            function onMouseMove(moveEvent) {
+                if (Math.abs(moveEvent.clientX - dragStartX) > 3 || Math.abs(moveEvent.clientY - dragStartY) > 3) {
+                    isDragging = true;
+                }
+                if (isDragging) {
+                    updateChatPosition(moveEvent.clientX, moveEvent.clientY);
+                }
+            }
+
+            function onMouseUp(upEvent) {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+                if (!isDragging) {
+                    toggleChat();
+                }
+            }
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+
+        fab.addEventListener('touchstart', function(e) {
+            isDragging = false;
+            const touch = e.touches[0];
+            dragStartX = touch.clientX;
+            dragStartY = touch.clientY;
+
+            function onTouchMove(moveEvent) {
+                const touchMove = moveEvent.touches[0];
+                if (Math.abs(touchMove.clientX - dragStartX) > 3 || Math.abs(touchMove.clientY - dragStartY) > 3) {
+                    isDragging = true;
+                }
+                if (isDragging) {
+                    moveEvent.preventDefault(); 
+                    updateChatPosition(touchMove.clientX, touchMove.clientY);
+                }
+            }
+
+            function onTouchEnd() {
+                document.removeEventListener('touchmove', onTouchMove);
+                document.removeEventListener('touchend', onTouchEnd);
+                if (!isDragging) {
+                    toggleChat();
+                }
+            }
+
+            document.addEventListener('touchmove', onTouchMove, {passive: false});
+            document.addEventListener('touchend', onTouchEnd);
+        });
+    </script>
 </body>
 </html>
