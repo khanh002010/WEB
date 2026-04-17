@@ -62,7 +62,7 @@
         .logo img { height: 35px; width: auto; object-fit: contain; }
         
         .nav-links { display: flex; gap: 20px; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: all 0.3s ease; position: relative; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 20px; transition: all 0.3s ease; position: relative; }
         .nav-links a:hover, .nav-links a.active { color: var(--text-main); font-weight: 500; }
 
         .nav-right { display: flex; align-items: center; gap: 20px; }
@@ -226,10 +226,33 @@
         }
 
         .player-wrapper:fullscreen { border-radius: 0; border: none; background: #000; }
-        .player-wrapper:fullscreen .video-mock-img { object-fit: cover; width: 100vw; height: 100vh; }
+        .player-wrapper:fullscreen .main-video { object-fit: contain; width: 100vw; height: 100vh; }
         .player-wrapper:fullscreen .player-bottom-overlay { padding: 30px 40px; }
 
-        .video-mock-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        /* Đã đổi img thành video thật */
+        .main-video { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; cursor: pointer;}
+        
+        /* Subtitle Mock Overlay */
+        .subtitle-overlay {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            width: 80%;
+            pointer-events: none;
+            display: none; /* Ẩn mặc định */
+        }
+        .subtitle-text {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 18px;
+            text-shadow: 1px 1px 2px black;
+            font-weight: 500;
+        }
 
         .player-bottom-overlay {
             position: absolute;
@@ -244,7 +267,7 @@
             background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.5) 60%, transparent 100%);
         }
 
-        .player-wrapper:hover .player-bottom-overlay { opacity: 1; }
+        .player-wrapper:hover .player-bottom-overlay, .player-wrapper.force-show-controls .player-bottom-overlay { opacity: 1; }
 
         .vid-ctrl-btn {
             background: none; border: none; color: white; cursor: pointer;
@@ -259,6 +282,50 @@
         
         .player-controls-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
         .player-left-ctrl, .player-right-ctrl { display: flex; gap: 20px; align-items: center; }
+
+        /* --- THANH TIẾN TRÌNH (Tích hợp Kéo/Tua) --- */
+        .progress-container {
+            width: 100%; height: 5px; background: rgba(255,255,255,0.3);
+            border-radius: 5px; cursor: pointer; position: relative; transition: height 0.2s;
+        }
+        .player-wrapper:hover .progress-container { height: 7px; }
+        .progress-filled { width: 0%; height: 100%; background: var(--accent-red); border-radius: 5px; position: relative; pointer-events: none;}
+        .progress-thumb {
+            position: absolute; right: -7px; top: 50%; transform: translateY(-50%);
+            width: 16px; height: 16px; background: var(--accent-red); border-radius: 50%; opacity: 0; transition: opacity 0.2s, transform 0.1s; box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            pointer-events: none;
+        }
+        .progress-container:hover .progress-thumb { opacity: 1; transform: translateY(-50%) scale(1.2); }
+        .time-display { font-size: 14px; font-weight: 500; color: #fff; letter-spacing: 0.5px;}
+
+        /* --- THANH ÂM LƯỢNG --- */
+        .volume-container {
+            display: flex; align-items: center; position: relative; gap: 0;
+            margin-left: 5px;
+        }
+        .volume-slider-wrapper {
+            width: 0; overflow: hidden; opacity: 0;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+            display: flex; align-items: center; height: 26px;
+        }
+        .volume-container:hover .volume-slider-wrapper {
+            width: 70px; opacity: 1; padding: 0 5px; margin-left: 5px;
+        }
+        .volume-slider {
+            width: 100%; height: 4px; background: rgba(255,255,255,0.3);
+            border-radius: 2px; position: relative; cursor: pointer;
+        }
+        .volume-slider-progress {
+            height: 100%; background: #fff; border-radius: 2px; pointer-events: none; width: 100%;
+        }
+        .volume-slider-thumb {
+            width: 12px; height: 12px; background: #fff; border-radius: 50%;
+            position: absolute; top: 50%; transform: translate(-50%, -50%);
+            pointer-events: none; left: 100%;
+        }
+        .volume-container:hover .volume-slider-progress, .volume-container:hover .volume-slider-thumb {
+            background: #fff; 
+        }
 
         /* MENU CÀI ĐẶT VIDEO - DẠNG ĐỘNG (INTERACTIVE) */
         .settings-wrapper { position: relative; }
@@ -348,21 +415,6 @@
         .setting-label { flex: 1; font-size: 15px; }
         .setting-value-group { display: flex; align-items: center; color: #aaa; font-size: 14px; gap: 5px; }
         .setting-value-group svg { width: 16px; height: 16px; }
-
-        /* THANH TIẾN TRÌNH */
-        .progress-container {
-            width: 100%; height: 5px; background: rgba(255,255,255,0.3);
-            border-radius: 5px; cursor: pointer; position: relative; transition: height 0.2s;
-        }
-        .player-wrapper:hover .progress-container { height: 7px; }
-        .progress-filled { width: 45%; height: 100%; background: var(--accent-red); border-radius: 5px; position: relative; }
-        .progress-thumb {
-            position: absolute; right: -7px; top: 50%; transform: translateY(-50%);
-            width: 16px; height: 16px; background: var(--accent-red); border-radius: 50%; opacity: 0; transition: opacity 0.2s, transform 0.1s; box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-        .progress-container:hover .progress-thumb { opacity: 1; transform: translateY(-50%) scale(1.2); }
-        .time-display { font-size: 14px; font-weight: 500; color: #fff; letter-spacing: 0.5px;}
-
 
         /* THÔNG TIN PHIM DƯỚI VIDEO */
         .movie-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; margin-top: 10px;}
@@ -620,13 +672,6 @@
                         </svg>
                         <span>Trang Cá Nhân</span>
                     </a>
-                    <a href="settings.html" class="user-menu-item">
-                        <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="3"></circle>
-                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                        </svg>
-                        <span>Cài Đặt</span>
-                    </a>
                     <a href="select-profile.html" class="user-menu-item">
                         <svg viewBox="0 0 24 24">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -636,6 +681,14 @@
                         </svg>
                         <span>Chuyển Hồ Sơ</span>
                     </a>
+                    <a href="settings.html" class="user-menu-item">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span>Cài Đặt</span>
+                    </a>
+                    
                     <div class="user-menu-divider"></div>
                     <a href="login.html" class="user-menu-item logout-btn">
                         <svg viewBox="0 0 24 24" stroke="currentColor">
@@ -724,41 +777,68 @@
             <div class="watch-main">
                 
                 <!-- TRÌNH PHÁT VIDEO CHUYÊN NGHIỆP -->
-                <div class="player-wrapper">
-                    <!-- Ảnh mô phỏng nội dung video -->
-                    <img src="images/poster_1.jpeg" alt="Movie Scene" class="video-mock-img">
+                <div class="player-wrapper" id="playerWrapper">
                     
-                    <!-- OVERLAY ĐIỀU KHIỂN VIDEO (LIQUID GLASS) -->
+                    <!-- THÊM VIDEO THẬT .mp4 -->
+                    <video id="mainVideo" class="main-video" src="video/videoplayback.mp4" playsinline></video>
+                    
+                    <!-- Subtitle MOCK Overlay -->
+                    <div class="subtitle-overlay" id="subtitleOverlay">
+                        <span class="subtitle-text" id="subtitleText">Đây là một đoạn phụ đề mẫu đang hiển thị...</span>
+                    </div>
+                    
+                    <!-- OVERLAY ĐIỀU KHIỂN VIDEO -->
                     <div class="player-bottom-overlay">
                         
-                        <!-- Thanh Tiến Trình đỏ -->
-                        <div class="progress-container">
-                            <div class="progress-filled"><div class="progress-thumb"></div></div>
+                        <!-- Thanh Tiến Trình (Click/Drag để tua) -->
+                        <div class="progress-container" id="progressContainer">
+                            <div class="progress-filled" id="progressFilled"></div>
+                            <div class="progress-thumb" id="progressThumb"></div>
                         </div>
 
                         <!-- Cụm các nút điều khiển -->
                         <div class="player-controls-row">
                             
-                            <!-- Trái: Tua lại, Pause, Tua tới, Thời gian -->
+                            <!-- Trái: Tua lại, Pause, Tua tới, Volume, Thời gian -->
                             <div class="player-left-ctrl">
-                                <button class="vid-ctrl-btn" title="Tua lại 10s">
+                                <button class="vid-ctrl-btn" title="Tua lại 10s" onclick="seekVideo(-10)">
                                     <svg viewBox="0 0 24 24"><polygon points="11 19 2 12 11 5 11 19"></polygon><polygon points="22 19 13 12 22 5 22 19"></polygon></svg>
                                 </button>
-                                <button class="vid-ctrl-btn" title="Tạm dừng" style="transform: scale(1.2);" onclick="togglePlayPause(this)">
-                                    <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                                <button class="vid-ctrl-btn" title="Phát" id="playPauseBtn" style="transform: scale(1.2);" onclick="togglePlayPause()">
+                                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                                 </button>
-                                <button class="vid-ctrl-btn" title="Tua tới 10s">
+                                <button class="vid-ctrl-btn" title="Tua tới 10s" onclick="seekVideo(10)">
                                     <svg viewBox="0 0 24 24"><polygon points="13 19 22 12 13 5 13 19"></polygon><polygon points="2 19 11 12 2 5 2 19"></polygon></svg>
                                 </button>
-                                <span class="time-display">45:20 / 2:28:00</span>
+                                
+                                <!-- VOLUME CONTROL -->
+                                <div class="volume-container">
+                                    <button class="vid-ctrl-btn" title="Tắt tiếng" id="muteBtn">
+                                        <svg height="26" viewBox="0 0 24 24" width="26">
+                                            <path d="M 11.60 2.08 L 11.48 2.14 L 3.91 6.68 C 3.02 7.21 2.28 7.97 1.77 8.87 C 1.26 9.77 1.00 10.79 1 11.83 V 12.16 L 1.01 12.56 C 1.07 13.52 1.37 14.46 1.87 15.29 C 2.38 16.12 3.08 16.81 3.91 17.31 L 11.48 21.85 C 11.63 21.94 11.80 21.99 11.98 21.99 C 12.16 22.00 12.33 21.95 12.49 21.87 C 12.64 21.78 12.77 21.65 12.86 21.50 C 12.95 21.35 13 21.17 13 21 V 3 C 12.99 2.83 12.95 2.67 12.87 2.52 C 12.80 2.37 12.68 2.25 12.54 2.16 C 12.41 2.07 12.25 2.01 12.08 2.00 C 11.92 1.98 11.75 2.01 11.60 2.08 Z" fill="currentColor"></path>
+                                            <path d=" M 15.53 7.05 C 15.35 7.22 15.25 7.45 15.24 7.70 C 15.23 7.95 15.31 8.19 15.46 8.38 L 15.53 8.46 L 15.70 8.64 C 16.09 9.06 16.39 9.55 16.61 10.08 L 16.70 10.31 C 16.90 10.85 17 11.42 17 12 L 16.99 12.24 C 16.96 12.73 16.87 13.22 16.70 13.68 L 16.61 13.91 C 16.36 14.51 15.99 15.07 15.53 15.53 C 15.35 15.72 15.25 15.97 15.26 16.23 C 15.26 16.49 15.37 16.74 15.55 16.92 C 15.73 17.11 15.98 17.21 16.24 17.22 C 16.50 17.22 16.76 17.12 16.95 16.95 C 17.6 16.29 18.11 15.52 18.46 14.67 L 18.59 14.35 C 18.82 13.71 18.95 13.03 18.99 12.34 L 19 12 C 18.99 11.19 18.86 10.39 18.59 9.64 L 18.46 9.32 C 18.15 8.57 17.72 7.89 17.18 7.3 L 16.95 7.05 L 16.87 6.98 C 16.68 6.82 16.43 6.74 16.19 6.75 C 15.94 6.77 15.71 6.87 15.53 7.05" fill="currentColor" transform="translate(18, 12) scale(1) translate(-18,-12)"></path>
+                                            <path d="M18.36 4.22C18.18 4.39 18.08 4.62 18.07 4.87C18.05 5.12 18.13 5.36 18.29 5.56L18.36 5.63L18.66 5.95C19.36 6.72 19.91 7.60 20.31 8.55L20.47 8.96C20.82 9.94 21 10.96 21 11.99L20.98 12.44C20.94 13.32 20.77 14.19 20.47 15.03L20.31 15.44C19.86 16.53 19.19 17.52 18.36 18.36C18.17 18.55 18.07 18.80 18.07 19.07C18.07 19.33 18.17 19.59 18.36 19.77C18.55 19.96 18.80 20.07 19.07 20.07C19.33 20.07 19.59 19.96 19.77 19.77C20.79 18.75 21.61 17.54 22.16 16.20L22.35 15.70C22.72 14.68 22.93 13.62 22.98 12.54L23 12C22.99 10.73 22.78 9.48 22.35 8.29L22.16 7.79C21.67 6.62 20.99 5.54 20.15 4.61L19.77 4.22L19.70 4.15C19.51 3.99 19.26 3.91 19.02 3.93C18.77 3.94 18.53 4.04 18.36 4.22 Z" fill="currentColor" transform="translate(22, 12) scale(1) translate(-22,-12)"></path>
+                                        </svg>
+                                    </button>
+                                    <div class="volume-slider-wrapper">
+                                        <div class="volume-slider" id="volumeSlider">
+                                            <div class="volume-slider-progress" id="volumeProgress" style="width: 100%;"></div>
+                                            <div class="volume-slider-thumb" id="volumeThumb" style="left: 100%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
                             </div>
 
-                            <!-- Phải: CC, Setting, Toàn màn hình -->
+                            <!-- Phải: CC, Setting, PiP, Toàn màn hình -->
                             <div class="player-right-ctrl">
                                 
-                                <!-- Nút Phụ đề (CC) mới mang ra ngoài -->
-                                <button class="vid-ctrl-btn stroke" title="Bật/Tắt Phụ đề (C)" onclick="toggleCC(this)">
-                                    <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect><path d="M9 15H7a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h2"></path><path d="M19 15h-2a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h2"></path></svg>
+                                <!-- ICON CC -->
+                                <button class="vid-ctrl-btn" title="Bật/Tắt Phụ đề (C)" id="ccToggleBtn" onclick="toggleCCBtn()">
+                                    <svg fill="none" height="26" viewBox="0 0 24 24" width="26">
+                                        <path d="M21.20 3.01L21 3H3L2.79 3.01C2.30 3.06 1.84 3.29 1.51 3.65C1.18 4.02 .99 4.50 1 5V19L1.01 19.20C1.05 19.66 1.26 20.08 1.58 20.41C1.91 20.73 2.33 20.94 2.79 20.99L3 21H21L21.20 20.98C21.66 20.94 22.08 20.73 22.41 20.41C22.73 20.08 22.94 19.66 22.99 19.20L23 19V5C23.00 4.50 22.81 4.02 22.48 3.65C22.15 3.29 21.69 3.06 21.20 3.01ZM3 19V5H21V19H3ZM8 11H6C5.73 11 5.48 11.10 5.29 11.29C5.10 11.48 5 11.73 5 12C5 12.26 5.10 12.51 5.29 12.70C5.48 12.89 5.73 13 6 13H8C8.26 13 8.51 12.89 8.70 12.70C8.89 12.51 9 12.26 9 12C9 11.73 8.89 11.48 8.70 11.29C8.51 11.10 8.26 11 8 11ZM18 11H12C11.73 11 11.48 11.10 11.29 11.29C11.10 11.48 11 11.73 11 12C11 12.26 11.10 12.51 11.29 12.70C11.48 12.89 11.73 13 12 13H18C18.26 13 18.51 12.89 18.70 12.70C18.89 12.51 19 12.26 19 12C19 11.73 18.89 11.48 18.70 11.29C18.51 11.10 18.26 11 18 11ZM18 15H16C15.73 15 15.48 15.10 15.29 15.29C15.10 15.48 15 15.73 15 16C15 16.26 15.10 16.51 15.29 16.70C15.48 16.89 15.73 17 16 17H18C18.26 17 18.51 16.89 18.70 16.70C18.89 16.51 19 16.26 19 16C19 15.73 18.89 15.48 18.70 15.29C18.51 15.10 18.26 15 18 15ZM12 15H6C5.73 15 5.48 15.10 5.29 15.29C5.10 15.48 5 15.73 5 16C5 16.26 5.10 16.51 5.29 16.70C5.48 16.89 5.73 17 6 17H12C12.26 17 12.51 16.89 12.70 16.70C12.89 16.51 13 16.26 13 16C13 15.73 12.89 15.48 12.70 15.29C12.51 15.10 12.26 15 12 15Z" fill="currentColor"></path>
+                                    </svg>
                                 </button>
 
                                 <!-- Nút Settings -->
@@ -767,28 +847,38 @@
                                         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                                     </button>
                                     
-                                    <!-- Popup Cài đặt Video (Interactive Menu) -->
+                                    <!-- Popup Cài đặt Video -->
                                     <div class="settings-menu" id="videoSettingsMenu" onclick="event.stopPropagation()">
-                                        
                                         <!-- MENU CHÍNH -->
                                         <div class="menu-panel active" id="menu-main">
-                                            <!-- Ngôn ngữ (thay thế Phụ đề) -->
-                                            <div class="setting-item" onclick="openSubMenu('menu-lang')">
+                                            <!-- MỤC PHỤ ĐỀ -->
+                                            <div class="setting-item" onclick="openSubMenu('menu-sub')">
                                                 <div class="setting-icon">
-                                                    <!-- Icon Trái Đất mới -->
-                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                                        <circle cx="12" cy="12" r="10"></circle>
-                                                        <line x1="2" y1="12" x2="22" y2="12"></line>
-                                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                                    <svg fill="none" height="22" viewBox="0 0 24 24" width="22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                        <rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect>
+                                                        <path d="M9 15H7a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h2"></path>
+                                                        <path d="M19 15h-2a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h2"></path>
                                                     </svg>
                                                 </div>
-                                                <div class="setting-label">Ngôn ngữ</div>
+                                                <div class="setting-label">Phụ đề</div>
                                                 <div class="setting-value-group">
-                                                    <span id="val-lang">Tiếng Việt</span>
+                                                    <span id="val-sub">Tắt</span>
                                                     <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
                                                 </div>
                                             </div>
-                                            
+                                            <!-- MỤC ÂM THANH -->
+                                            <div class="setting-item" onclick="openSubMenu('menu-audio')">
+                                                <div class="setting-icon">
+                                                    <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M24.2426 35V31.6667C24.2426 29.8986 23.7317 28.2029 22.8225 26.9526C21.9132 25.7024 20.68 25 19.3941 25H9.69712C8.41122 25 7.17799 25.7024 6.26872 26.9526C5.35945 28.2029 4.84863 29.8986 4.84863 31.6667V35M19.3941 11.6667C19.3941 15.3486 17.2233 18.3333 14.5456 18.3333C11.8679 18.3333 9.69712 15.3486 9.69712 11.6667C9.69712 7.98477 11.8679 5 14.5456 5C17.2233 5 19.3941 7.98477 19.3941 11.6667Z" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="setting-label">Âm thanh</div>
+                                                <div class="setting-value-group">
+                                                    <span id="val-audio">Tiếng Việt</span>
+                                                    <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                                </div>
+                                            </div>
                                             <!-- Tốc độ phát -->
                                             <div class="setting-item" onclick="openSubMenu('menu-speed')">
                                                 <div class="setting-icon">
@@ -800,7 +890,6 @@
                                                     <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
                                                 </div>
                                             </div>
-
                                             <!-- Chất lượng -->
                                             <div class="setting-item" onclick="openSubMenu('menu-quality')">
                                                 <div class="setting-icon">
@@ -814,15 +903,25 @@
                                             </div>
                                         </div>
 
-                                        <!-- SUB-MENU: NGÔN NGỮ -->
-                                        <div class="menu-panel" id="menu-lang">
+                                        <!-- SUB-MENU: PHỤ ĐỀ -->
+                                        <div class="menu-panel" id="menu-sub">
                                             <div class="menu-back" onclick="closeSubMenu()">
                                                 <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                                                Ngôn ngữ
+                                                Phụ đề
                                             </div>
-                                            <div class="setting-option selected" onclick="selectOption('lang', 'Tiếng Việt', this)">Tiếng Việt</div>
-                                            <div class="setting-option" onclick="selectOption('lang', 'Tiếng Anh', this)">Tiếng Anh</div>
-                                            <div class="setting-option" onclick="selectOption('lang', 'Tiếng Hàn', this)">Tiếng Hàn</div>
+                                            <div class="setting-option" onclick="changeSubtitle('Tiếng Việt', this)">Tiếng Việt</div>
+                                            <div class="setting-option" onclick="changeSubtitle('Tiếng Anh', this)">Tiếng Anh</div>
+                                            <div class="setting-option selected" onclick="changeSubtitle('Tắt', this)">Tắt</div>
+                                        </div>
+
+                                        <!-- SUB-MENU: ÂM THANH -->
+                                        <div class="menu-panel" id="menu-audio">
+                                            <div class="menu-back" onclick="closeSubMenu()">
+                                                <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                                                Âm thanh
+                                            </div>
+                                            <div class="setting-option selected" onclick="selectOption('audio', 'Tiếng Việt', this)">Tiếng Việt</div>
+                                            <div class="setting-option" onclick="selectOption('audio', 'Tiếng Anh', this)">Tiếng Anh</div>
                                         </div>
 
                                         <!-- SUB-MENU: TỐC ĐỘ -->
@@ -831,12 +930,12 @@
                                                 <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
                                                 Tốc độ phát
                                             </div>
-                                            <div class="setting-option" onclick="selectOption('speed', '0.5x', this)">0.5x</div>
-                                            <div class="setting-option" onclick="selectOption('speed', '0.75x', this)">0.75x</div>
-                                            <div class="setting-option selected" onclick="selectOption('speed', 'Chuẩn', this)">Chuẩn</div>
-                                            <div class="setting-option" onclick="selectOption('speed', '1.25x', this)">1.25x</div>
-                                            <div class="setting-option" onclick="selectOption('speed', '1.5x', this)">1.5x</div>
-                                            <div class="setting-option" onclick="selectOption('speed', '2x', this)">2x</div>
+                                            <div class="setting-option" onclick="changePlaybackSpeed(0.5, this)">0.5x</div>
+                                            <div class="setting-option" onclick="changePlaybackSpeed(0.75, this)">0.75x</div>
+                                            <div class="setting-option selected" onclick="changePlaybackSpeed(1, this)">Chuẩn</div>
+                                            <div class="setting-option" onclick="changePlaybackSpeed(1.25, this)">1.25x</div>
+                                            <div class="setting-option" onclick="changePlaybackSpeed(1.5, this)">1.5x</div>
+                                            <div class="setting-option" onclick="changePlaybackSpeed(2, this)">2x</div>
                                         </div>
 
                                         <!-- SUB-MENU: CHẤT LƯỢNG -->
@@ -849,14 +948,20 @@
                                             <div class="setting-option" onclick="selectOption('quality', '1080p Premium', this)">1080p Premium</div>
                                             <div class="setting-option" onclick="selectOption('quality', '1080p', this)">1080p</div>
                                             <div class="setting-option" onclick="selectOption('quality', '720p', this)">720p</div>
+                                            <div class="setting-option" onclick="selectOption('quality', '480p', this)">480p</div>
+                                            <div class="setting-option" onclick="selectOption('quality', '360p', this)">360p</div>
                                             <div class="setting-option selected" onclick="selectOption('quality', 'Tự động', this)">Tự động</div>
                                         </div>
-
                                     </div>
                                 </div>
 
+                                <!-- Thêm nút Picture-in-Picture (PiP) -->
+                                <button class="vid-ctrl-btn stroke" title="Trình phát thu nhỏ (i)" id="pipBtn" onclick="togglePiP()">
+                                    <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect><rect x="12" y="11" width="7" height="6" rx="1" ry="1"></rect></svg>
+                                </button>
+
                                 <!-- Fullscreen -->
-                                <button class="vid-ctrl-btn stroke" title="Toàn màn hình" onclick="toggleFullScreen()">
+                                <button class="vid-ctrl-btn stroke" title="Toàn màn hình (F)" onclick="toggleFullScreen()">
                                     <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
                                 </button>
                             </div>
@@ -868,9 +973,9 @@
                 <!-- THÔNG TIN PHIM DƯỚI VIDEO -->
                 <div class="movie-header">
                     <div class="movie-info">
-                        <h1>Mad Max: Fury Road (Tập 5)</h1>
+                        <h1 id="movieTitleText">Big Buck Bunny (Phim Test)</h1>
                         <div class="movie-stats">
-                            <span>🎬 2015</span>
+                            <span>🎬 2026</span>
                             <span>👁️ 1.2M Lượt xem</span>
                             <span style="color: var(--star-color);">★ 4.9 Đánh giá</span>
                             <span style="border: 1px solid #9aaec4; padding: 2px 6px; border-radius: 4px; font-size: 12px;">FULL HD</span>
@@ -887,7 +992,6 @@
                             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
                             Chia sẻ
                         </button>
-                        <!-- Nút Báo cáo Lỗi -->
                         <button class="btn-action">
                             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
                             Báo cáo
@@ -896,14 +1000,13 @@
                 </div>
 
                 <div class="movie-desc">
-                    <strong>Nội dung:</strong> Trong một thế giới cạn kiệt tài nguyên sau tận thế, hai người nổi loạn có thể là cơ hội cuối cùng để lập lại trật tự. Max, một người đàn ông kiệm lời tìm kiếm sự bình yên sau khi mất đi vợ con, và Furiosa, một nữ chiến binh tin rằng con đường sống sót duy nhất là vượt qua sa mạc để trở về quê hương.
+                    <strong>Ghi chú:</strong> Video mẫu này được dùng để test UX Control (Tua, Space, Volume, Scroll, Progress bar). Bạn có thể bấm các phím tắt M, F, Mũi tên trái/phải/lên/xuống trên Desktop để trải nghiệm.
                 </div>
 
                 <!-- TƯƠNG TÁC: ĐÁNH GIÁ (TRÁI) VÀ PHIM LIÊN QUAN (PHẢI) -->
                 <div class="interaction-section">
                     <div class="rating-related-wrapper">
                         
-                        <!-- Box Đánh Giá (Nằm bên trái - Đã căn giữa) -->
                         <div class="rating-box">
                             <h3>Đánh giá phim</h3>
                             <div class="rating-score" id="score-display">4.9</div>
@@ -917,18 +1020,15 @@
                             <div class="rating-text" id="rating-msg">Click vào sao để đánh giá</div>
                         </div>
 
-                        <!-- Box Phim Liên Quan (Nằm bên phải) -->
                         <div class="related-box">
                             <h3>Có thể bạn sẽ thích</h3>
                             <div class="related-card-grid">
                                 
                                 <a href="#" class="movie-card">
-                                    <img src="images/poster_doc_2.webp" alt="Phim 1">
+                                    <img src="images/poster_doc_2.webp" alt="Phim 1" onerror="this.src='https://via.placeholder.com/150x225/1A324A/fff?text=Poster'">
                                     <div class="card-info">
                                         <div class="card-actions">
                                             <button class="card-action-btn play" title="Xem phim">▶</button>
-                                            <button class="card-action-btn" title="Lưu phim"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
-                                            <button class="card-action-btn" title="Chi tiết"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
                                         </div>
                                         <h4 class="card-title">Interstellar</h4>
                                         <p class="card-desc">Sứ mệnh lịch sử.</p>
@@ -936,12 +1036,10 @@
                                 </a>
 
                                 <a href="#" class="movie-card">
-                                    <img src="images/poster_doc_2.webp" alt="Phim 2">
+                                    <img src="images/poster_doc_2.webp" alt="Phim 2" onerror="this.src='https://via.placeholder.com/150x225/1A324A/fff?text=Poster'">
                                     <div class="card-info">
                                         <div class="card-actions">
                                             <button class="card-action-btn play" title="Xem phim">▶</button>
-                                            <button class="card-action-btn" title="Lưu phim"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
-                                            <button class="card-action-btn" title="Chi tiết"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
                                         </div>
                                         <h4 class="card-title">The Dark Knight</h4>
                                         <p class="card-desc">Hiệp sĩ bóng đêm.</p>
@@ -949,12 +1047,10 @@
                                 </a>
 
                                 <a href="#" class="movie-card">
-                                    <img src="images/poster_doc_2.webp" alt="Phim 3">
+                                    <img src="images/poster_doc_2.webp" alt="Phim 3" onerror="this.src='https://via.placeholder.com/150x225/1A324A/fff?text=Poster'">
                                     <div class="card-info">
                                         <div class="card-actions">
                                             <button class="card-action-btn play" title="Xem phim">▶</button>
-                                            <button class="card-action-btn" title="Lưu phim"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
-                                            <button class="card-action-btn" title="Chi tiết"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
                                         </div>
                                         <h4 class="card-title">Oppenheimer</h4>
                                         <p class="card-desc">Bom nguyên tử.</p>
@@ -968,23 +1064,10 @@
                     <div class="comment-box">
                         <h3>Bình luận (128)</h3>
                         <div class="comment-input-area">
-                            <img src="images/avatar.jpg" alt="My Avatar">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="My Avatar">
                             <div class="input-wrapper">
                                 <textarea placeholder="Bạn nghĩ gì về tập phim này?"></textarea>
                                 <button class="btn-submit">Đăng bình luận</button>
-                            </div>
-                        </div>
-
-                        <div class="comment-list">
-                            <div class="comment-item">
-                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" class="comment-avatar">
-                                <div class="comment-content">
-                                    <div class="comment-header">
-                                        <span class="comment-name">Hoàng Nam</span>
-                                        <span class="comment-time">2 giờ trước</span>
-                                    </div>
-                                    <div class="comment-text">Tập này plot twist xoắn não quá mọi người ơi. Chờ tập tuần sau mỏi mòn luôn!</div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -998,39 +1081,32 @@
                     <div class="episode-title">Danh Sách Tập</div>
                 </div>
 
-                <div class="episode-list">
-                    <div class="episode-item">
-                        <img src="images/poster_1.jpeg" alt="Tập 1" class="ep-img">
+                <div class="episode-list" id="episodeListContainer">
+                    <div class="episode-item active" onclick="playEpisode(this, 'Tập 1')">
+                        <img src="https://via.placeholder.com/100x56/1A324A/fff?text=Ep+1" alt="Tập 1" class="ep-img">
                         <div class="ep-info">
-                            <div class="ep-title">Tập 1</div>
-                            <div class="ep-duration">1h 0m 2s</div>
-                        </div>
-                    </div>
-                    
-                    <div class="episode-item">
-                        <img src="images/poster_1.jpeg" alt="Tập 2" class="ep-img">
-                        <div class="ep-info">
-                            <div class="ep-title">Tập 2</div>
-                            <div class="ep-duration">1h 3m 36s</div>
-                        </div>
-                    </div>
-
-                    <!-- Thêm class "active" cho tập đang xem -->
-                    <div class="episode-item active">
-                        <img src="images/poster_1.jpeg" alt="Tập 5" class="ep-img">
-                        <div class="ep-info">
-                            <div class="ep-title">Tập 5 (Đang xem)</div>
-                            <div class="ep-duration">52m 21s</div>
+                            <div class="ep-title">Tập 1 (Đang xem)</div>
+                            <div class="ep-duration">9m 56s</div>
                         </div>
                         <svg class="ep-playing-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                     </div>
                     
-                    <div class="episode-item">
-                        <img src="images/poster_1.jpeg" alt="Tập 6" class="ep-img">
+                    <div class="episode-item" onclick="playEpisode(this, 'Tập 2')">
+                        <img src="https://via.placeholder.com/100x56/1A324A/fff?text=Ep+2" alt="Tập 2" class="ep-img">
                         <div class="ep-info">
-                            <div class="ep-title">Tập 6</div>
-                            <div class="ep-duration">1h 2m 45s</div>
+                            <div class="ep-title">Tập 2</div>
+                            <div class="ep-duration">1h 3m 36s</div>
                         </div>
+                        <svg class="ep-playing-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </div>
+
+                    <div class="episode-item" onclick="playEpisode(this, 'Tập 3')">
+                        <img src="https://via.placeholder.com/100x56/1A324A/fff?text=Ep+3" alt="Tập 3" class="ep-img">
+                        <div class="ep-info">
+                            <div class="ep-title">Tập 3</div>
+                            <div class="ep-duration">52m 21s</div>
+                        </div>
+                        <svg class="ep-playing-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                     </div>
                 </div>
             </div>
@@ -1038,64 +1114,359 @@
         </div> 
     </div>
 
-    <!-- ================= FOOTER ================= -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-logo">
-                <img src="images/logo.png" alt="Nighthub logo">
-            </div>
-            <div class="footer-links">
-                <div class="link-column">
-                    <h4>Về chúng tôi</h4>
-                    <a href="#">Giới thiệu Nighthub</a>
-                    <a href="#">Cơ hội nghề nghiệp</a>
-                    <a href="#">Thông tin báo chí</a>
-                </div>
-                <div class="link-column">
-                    <h4>Hỗ trợ khách hàng</h4>
-                    <a href="#">Trung tâm trợ giúp</a>
-                    <a href="#">Câu hỏi thường gặp</a>
-                    <a href="#">Liên hệ với chúng tôi</a>
-                </div>
-                <div class="link-column">
-                    <h4>Điều khoản & Chính sách</h4>
-                    <a href="#">Điều khoản sử dụng</a>
-                    <a href="#">Quyền riêng tư</a>
-                    <a href="#">Bảo mật & Cookie</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Nighthub. Nền tảng xem phim trực tuyến hàng đầu.</p>
-        </div>
-    </footer>
-
-    <!-- ================= CHATBOT TRÔI NỔI ================= -->
-    <div class="chat-widget-wrapper" id="chatWrapper">
-        <div class="chat-window" id="chatWindow">
-            <div class="chat-header">
-                <h4><span></span> Nighthub Support</h4>
-                <button class="close-chat-btn" onclick="toggleChat()">✖</button>
-            </div>
-            <div class="chat-body">
-                <div class="chat-msg bot">Xin chào! 👋 Mình là trợ lý ảo của Nighthub. Phim này có đoạn nào chưa hiểu bạn cứ hỏi mình nhé!</div>
-            </div>
-            <div class="chat-input-area">
-                <input type="text" placeholder="Nhập tin nhắn...">
-                <button class="chat-send-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
-                </button>
-            </div>
-        </div>
-
-        <div class="chat-fab" id="chatFab" title="Hỗ trợ trực tuyến">
-            <img src="images/chatbox-removebg-preview.png" alt="Chatbot Icon">
-        </div>
-    </div>
-
-    <!-- SCRIPT CHUNG -->
+    <!-- SCRIPT CHUNG VÀ LOGIC VIDEO CỰC KỲ QUAN TRỌNG -->
     <script>
-        // 1. Tìm kiếm
+        // DOM Elements cho Video Player
+        const video = document.getElementById('mainVideo');
+        const playerWrapper = document.getElementById('playerWrapper');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const timeDisplay = document.getElementById('timeDisplay');
+        
+        // Elements Progress Bar
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFilled = document.getElementById('progressFilled');
+        const progressThumb = document.getElementById('progressThumb');
+        
+        // Elements Volume
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeProgress = document.getElementById('volumeProgress');
+        const volumeThumb = document.getElementById('volumeThumb');
+        const muteBtn = document.getElementById('muteBtn');
+        
+        // Elements Subtitle
+        const ccToggleBtn = document.getElementById('ccToggleBtn');
+        const subtitleOverlay = document.getElementById('subtitleOverlay');
+        const subtitleText = document.getElementById('subtitleText');
+        const valSub = document.getElementById('val-sub');
+
+        let isPlaying = false;
+
+        // ================= 1. PLAY/PAUSE LOGIC =================
+        function togglePlayPause() {
+            if (video.paused) {
+                video.play();
+            } else {
+                video.pause();
+            }
+        }
+
+        // Cập nhật UI khi video play/pause tự nhiên
+        video.addEventListener('play', () => {
+            isPlaying = true;
+            playPauseBtn.innerHTML = '<svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
+            playPauseBtn.title = "Tạm dừng";
+        });
+
+        video.addEventListener('pause', () => {
+            isPlaying = false;
+            playPauseBtn.innerHTML = '<svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
+            playPauseBtn.title = "Phát (Space)";
+        });
+
+        // Click vào chính giữa video để play/pause
+        video.addEventListener('click', togglePlayPause);
+
+
+        // ================= 2. THỜI GIAN & PROGRESS BAR (SEEK) =================
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = Math.floor(seconds % 60);
+            if (h > 0) return `${h}:${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+            return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        video.addEventListener('loadedmetadata', () => {
+            timeDisplay.innerText = `00:00 / ${formatTime(video.duration)}`;
+        });
+
+        video.addEventListener('timeupdate', () => {
+            if(!video.duration) return;
+            const percent = (video.currentTime / video.duration) * 100;
+            progressFilled.style.width = `${percent}%`;
+            progressThumb.style.left = `${percent}%`;
+            timeDisplay.innerText = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+        });
+
+        // Tua Video (Bằng Nút Hoặc Phím)
+        function seekVideo(amount) {
+            video.currentTime += amount;
+        }
+
+        // Tua bằng cách Drag/Click Progress Bar
+        let isDraggingProgress = false;
+
+        function updateProgressFromEvent(e) {
+            const rect = progressContainer.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            x = Math.max(0, Math.min(x, rect.width)); // Limit to bar width
+            const percent = x / rect.width;
+            video.currentTime = percent * video.duration;
+            progressFilled.style.width = `${percent * 100}%`;
+            progressThumb.style.left = `${percent * 100}%`;
+        }
+
+        progressContainer.addEventListener('mousedown', (e) => {
+            isDraggingProgress = true;
+            updateProgressFromEvent(e);
+            video.pause(); // Tạm dừng khi đang kéo
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDraggingProgress) updateProgressFromEvent(e);
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isDraggingProgress) {
+                isDraggingProgress = false;
+                video.play();
+            }
+        });
+
+
+        // ================= 3. LOGIC ÂM LƯỢNG (MOUSE WHEEL & CLICK) =================
+        let currentVolume = 1; 
+        let lastVolume = 1;
+        let isDraggingVolume = false;
+
+        const volFullIcon = `<svg height="26" viewBox="0 0 24 24" width="26">
+            <path d="M 11.60 2.08 L 11.48 2.14 L 3.91 6.68 C 3.02 7.21 2.28 7.97 1.77 8.87 C 1.26 9.77 1.00 10.79 1 11.83 V 12.16 L 1.01 12.56 C 1.07 13.52 1.37 14.46 1.87 15.29 C 2.38 16.12 3.08 16.81 3.91 17.31 L 11.48 21.85 C 11.63 21.94 11.80 21.99 11.98 21.99 C 12.16 22.00 12.33 21.95 12.49 21.87 C 12.64 21.78 12.77 21.65 12.86 21.50 C 12.95 21.35 13 21.17 13 21 V 3 C 12.99 2.83 12.95 2.67 12.87 2.52 C 12.80 2.37 12.68 2.25 12.54 2.16 C 12.41 2.07 12.25 2.01 12.08 2.00 C 11.92 1.98 11.75 2.01 11.60 2.08 Z" fill="currentColor"></path>
+            <path d=" M 15.53 7.05 C 15.35 7.22 15.25 7.45 15.24 7.70 C 15.23 7.95 15.31 8.19 15.46 8.38 L 15.53 8.46 L 15.70 8.64 C 16.09 9.06 16.39 9.55 16.61 10.08 L 16.70 10.31 C 16.90 10.85 17 11.42 17 12 L 16.99 12.24 C 16.96 12.73 16.87 13.22 16.70 13.68 L 16.61 13.91 C 16.36 14.51 15.99 15.07 15.53 15.53 C 15.35 15.72 15.25 15.97 15.26 16.23 C 15.26 16.49 15.37 16.74 15.55 16.92 C 15.73 17.11 15.98 17.21 16.24 17.22 C 16.50 17.22 16.76 17.12 16.95 16.95 C 17.6 16.29 18.11 15.52 18.46 14.67 L 18.59 14.35 C 18.82 13.71 18.95 13.03 18.99 12.34 L 19 12 C 18.99 11.19 18.86 10.39 18.59 9.64 L 18.46 9.32 C 18.15 8.57 17.72 7.89 17.18 7.3 L 16.95 7.05 L 16.87 6.98 C 16.68 6.82 16.43 6.74 16.19 6.75 C 15.94 6.77 15.71 6.87 15.53 7.05" fill="currentColor" transform="translate(18, 12) scale(1) translate(-18,-12)"></path>
+            <path d="M18.36 4.22C18.18 4.39 18.08 4.62 18.07 4.87C18.05 5.12 18.13 5.36 18.29 5.56L18.36 5.63L18.66 5.95C19.36 6.72 19.91 7.60 20.31 8.55L20.47 8.96C20.82 9.94 21 10.96 21 11.99L20.98 12.44C20.94 13.32 20.77 14.19 20.47 15.03L20.31 15.44C19.86 16.53 19.19 17.52 18.36 18.36C18.17 18.55 18.07 18.80 18.07 19.07C18.07 19.33 18.17 19.59 18.36 19.77C18.55 19.96 18.80 20.07 19.07 20.07C19.33 20.07 19.59 19.96 19.77 19.77C20.79 18.75 21.61 17.54 22.16 16.20L22.35 15.70C22.72 14.68 22.93 13.62 22.98 12.54L23 12C22.99 10.73 22.78 9.48 22.35 8.29L22.16 7.79C21.67 6.62 20.99 5.54 20.15 4.61L19.77 4.22L19.70 4.15C19.51 3.99 19.26 3.91 19.02 3.93C18.77 3.94 18.53 4.04 18.36 4.22 Z" fill="currentColor" transform="translate(22, 12) scale(1) translate(-22,-12)"></path>
+        </svg>`;
+        
+        const volMutedIcon = `<svg height="26" viewBox="0 0 24 24" width="26">
+            <path d="M 11.60 2.08 L 11.48 2.14 L 3.91 6.68 C 3.02 7.21 2.28 7.97 1.77 8.87 C 1.26 9.77 1.00 10.79 1 11.83 V 12.16 L 1.01 12.56 C 1.07 13.52 1.37 14.46 1.87 15.29 C 2.38 16.12 3.08 16.81 3.91 17.31 L 11.48 21.85 C 11.63 21.94 11.80 21.99 11.98 21.99 C 12.16 22.00 12.33 21.95 12.49 21.87 C 12.64 21.78 12.77 21.65 12.86 21.50 C 12.95 21.35 13 21.17 13 21 V 3 C 12.99 2.83 12.95 2.67 12.87 2.52 C 12.80 2.37 12.68 2.25 12.54 2.16 C 12.41 2.07 12.25 2.01 12.08 2.00 C 11.92 1.98 11.75 2.01 11.60 2.08 Z" fill="currentColor"></path>
+            <line x1="14" y1="8" x2="20" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
+            <line x1="20" y1="8" x2="14" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line>
+        </svg>`;
+
+        function changeVolume(vol) {
+            vol = Math.max(0, Math.min(1, vol));
+            video.volume = vol;
+            currentVolume = vol;
+            
+            const percent = vol * 100;
+            volumeProgress.style.width = percent + '%';
+            volumeThumb.style.left = percent + '%';
+            
+            if (vol === 0) {
+                muteBtn.innerHTML = volMutedIcon;
+            } else {
+                muteBtn.innerHTML = volFullIcon;
+                lastVolume = vol; // Lưu lại volume để unmute
+            }
+        }
+
+        // Hover Scroll Chuột trên trình phát để đổi âm lượng
+        playerWrapper.addEventListener('wheel', (e) => {
+            e.preventDefault(); // Ngăn cuộn trang web
+            if (e.deltaY < 0) {
+                changeVolume(currentVolume + 0.1); // Scroll lên -> To
+            } else {
+                changeVolume(currentVolume - 0.1); // Scroll xuống -> Nhỏ
+            }
+        });
+
+        function setVolumeFromEvent(e) {
+            const rect = volumeSlider.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            x = Math.max(0, Math.min(x, rect.width));
+            changeVolume(x / rect.width);
+        }
+
+        muteBtn.addEventListener('click', () => {
+            if (currentVolume > 0) {
+                changeVolume(0);
+            } else {
+                changeVolume(lastVolume > 0 ? lastVolume : 1);
+            }
+        });
+
+        volumeSlider.addEventListener('mousedown', (e) => {
+            isDraggingVolume = true;
+            setVolumeFromEvent(e);
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDraggingVolume) setVolumeFromEvent(e);
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDraggingVolume = false;
+        });
+
+
+        // ================= 4. INTERACTION BẰNG BÀN PHÍM CỰC QUAN TRỌNG =================
+        document.addEventListener('keydown', (e) => {
+            // Bỏ qua nếu đang gõ vào input, textarea
+            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+            switch(e.code) {
+                case 'Space':
+                    e.preventDefault(); // Tránh bị cuộn trang
+                    togglePlayPause();
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    seekVideo(10);
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    seekVideo(-10);
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    changeVolume(currentVolume + 0.1);
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    changeVolume(currentVolume - 0.1);
+                    break;
+                case 'KeyF':
+                    e.preventDefault();
+                    toggleFullScreen();
+                    break;
+                case 'KeyM':
+                    e.preventDefault();
+                    muteBtn.click();
+                    break;
+                case 'KeyC':
+                    e.preventDefault();
+                    toggleCCBtn();
+                    break;
+            }
+        });
+
+        // ================= 5. PICTURE-IN-PICTURE (PiP) =================
+        async function togglePiP() {
+            try {
+                if (document.pictureInPictureElement) {
+                    await document.exitPictureInPicture();
+                } else if (document.pictureInPictureEnabled) {
+                    await video.requestPictureInPicture();
+                }
+            } catch (error) {
+                console.error("Lỗi khởi chạy PiP:", error);
+            }
+        }
+
+        // ================= 6. AUTO-NEXT MÔ PHỎNG & CHỌN TẬP =================
+        video.addEventListener('ended', () => {
+            // Khi video hết, giả vờ chuyển sang tập tiếp theo
+            const episodes = document.querySelectorAll('.episode-item');
+            let currentIndex = -1;
+            episodes.forEach((ep, index) => {
+                if(ep.classList.contains('active')) currentIndex = index;
+            });
+
+            if(currentIndex !== -1 && currentIndex < episodes.length - 1) {
+                episodes[currentIndex + 1].click();
+            } else {
+                // Chạy lại từ đầu nếu là tập cuối
+                video.currentTime = 0;
+                video.play();
+            }
+        });
+
+        function playEpisode(element, title) {
+            const episodes = document.querySelectorAll('.episode-item');
+            episodes.forEach(ep => {
+                ep.classList.remove('active');
+                // Reset title text
+                const titleEl = ep.querySelector('.ep-title');
+                titleEl.innerText = titleEl.innerText.replace(' (Đang xem)', '');
+            });
+            
+            element.classList.add('active');
+            const newTitleEl = element.querySelector('.ep-title');
+            newTitleEl.innerText = newTitleEl.innerText + " (Đang xem)";
+            
+            document.getElementById('movieTitleText').innerText = `Big Buck Bunny - ${title}`;
+            
+            // Giả lập load video mới bằng cách reset
+            video.currentTime = 0;
+            video.play();
+        }
+
+
+        // ================= 7. MEDIA OPTIONS VÀ MENU SETTING =================
+        
+        // Tốc độ phát
+        function changePlaybackSpeed(speed, element) {
+            video.playbackRate = speed;
+            let displaySpeed = speed === 1 ? 'Chuẩn' : speed + 'x';
+            selectOption('speed', displaySpeed, element);
+        }
+
+        // Phụ đề
+        function changeSubtitle(lang, element) {
+            selectOption('sub', lang, element);
+            if (lang === 'Tắt') {
+                ccToggleBtn.classList.remove('active-cc');
+                subtitleOverlay.style.display = 'none';
+            } else {
+                ccToggleBtn.classList.add('active-cc');
+                subtitleOverlay.style.display = 'block';
+                if(lang === 'Tiếng Việt') subtitleText.innerText = "Xin chào! (Đang hiển thị Phụ đề Tiếng Việt)";
+                if(lang === 'Tiếng Anh') subtitleText.innerText = "Hello! (Showing English Subtitles)";
+            }
+        }
+
+        // Toggle nút CC ngoài màn hình
+        function toggleCCBtn() {
+            const isOff = valSub.innerText === 'Tắt';
+            const subOptions = document.querySelectorAll('#menu-sub .setting-option');
+            
+            if (isOff) {
+                // Đang Tắt -> Bật (Tiếng Việt)
+                subOptions[0].click(); // Click option Tiếng Việt
+            } else {
+                // Đang Bật -> Tắt
+                subOptions[2].click(); // Click option Tắt
+            }
+        }
+
+        function toggleVideoSettings(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('videoSettingsMenu');
+            menu.classList.toggle('active');
+            if(!menu.classList.contains('active')) closeSubMenu();
+        }
+
+        function openSubMenu(menuId) {
+            const panels = document.querySelectorAll('#videoSettingsMenu .menu-panel');
+            panels.forEach(p => p.classList.remove('active'));
+            document.getElementById(menuId).classList.add('active');
+        }
+
+        function closeSubMenu() {
+            const panels = document.querySelectorAll('#videoSettingsMenu .menu-panel');
+            panels.forEach(p => p.classList.remove('active'));
+            document.getElementById('menu-main').classList.add('active');
+        }
+
+        function selectOption(type, value, element) {
+            document.getElementById('val-' + type).innerText = value;
+            const siblings = element.parentElement.querySelectorAll('.setting-option');
+            siblings.forEach(s => s.classList.remove('selected'));
+            element.classList.add('selected');
+            closeSubMenu();
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                if (playerWrapper.requestFullscreen) {
+                    playerWrapper.requestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // ================= SCRIPT DROPDOWNS KHÁC =================
         function toggleSearch() {
             const searchBox = document.getElementById('searchBox');
             const searchInput = document.getElementById('searchInput');
@@ -1103,15 +1474,11 @@
             if(searchBox.classList.contains('active')) searchInput.focus();
         }
 
-        // 2. Bộ lọc nâng cao
         function toggleFilter() {
-            const modal = document.getElementById('filterModal');
-            const overlay = document.getElementById('filterOverlay');
-            modal.classList.toggle('active');
-            overlay.classList.toggle('active');
+            document.getElementById('filterModal').classList.toggle('active');
+            document.getElementById('filterOverlay').classList.toggle('active');
         }
 
-        // 3. Menu Thông báo & Tài khoản
         function toggleNotification(event) {
             event.stopPropagation(); 
             document.getElementById('notiDropdown').classList.toggle('active');
@@ -1122,221 +1489,20 @@
             document.getElementById('userDropdown').classList.toggle('active');
         }
 
-        // 4. Các Hàm cho Menu Settings (Cài đặt) Video
-        function toggleVideoSettings(event) {
-            event.stopPropagation();
-            const menu = document.getElementById('videoSettingsMenu');
-            menu.classList.toggle('active');
-            
-            // Khi đóng, luôn reset về menu chính để lần sau mở lên không bị kẹt ở sub-menu
-            if(!menu.classList.contains('active')){
-                closeSubMenu();
-            }
-        }
-
-        // Đổi Sub-Menu trong Cài đặt Video
-        function openSubMenu(menuId) {
-            const panels = document.querySelectorAll('#videoSettingsMenu .menu-panel');
-            panels.forEach(p => p.classList.remove('active'));
-            document.getElementById(menuId).classList.add('active');
-        }
-
-        // Đóng Sub-Menu quay về Menu chính
-        function closeSubMenu() {
-            const panels = document.querySelectorAll('#videoSettingsMenu .menu-panel');
-            panels.forEach(p => p.classList.remove('active'));
-            document.getElementById('menu-main').classList.add('active');
-        }
-
-        // Hàm khi người dùng nhấp chọn 1 Option (VD: Tiếng Anh, 1.5x)
-        function selectOption(type, value, element) {
-            // Thay đổi Text hiển thị bên ngoài menu chính
-            document.getElementById('val-' + type).innerText = value;
-            
-            // Xóa class 'selected' ở tất cả các lựa chọn khác trong cùng menu
-            const siblings = element.parentElement.querySelectorAll('.setting-option');
-            siblings.forEach(s => s.classList.remove('selected'));
-            
-            // Thêm class 'selected' (dấu tích) cho lựa chọn hiện tại
-            element.classList.add('selected');
-            
-            // Đóng sub menu quay lại menu chính
-            closeSubMenu();
-        }
-
-        // Hàm bật tắt Phụ đề (Nút CC bên ngoài)
-        function toggleCC(btn) {
-            btn.classList.toggle('active-cc');
-        }
-
-        // Mở Video Player Toàn Màn Hình
-        function toggleFullScreen() {
-            const player = document.querySelector('.player-wrapper');
-            if (!document.fullscreenElement) {
-                if (player.requestFullscreen) {
-                    player.requestFullscreen().catch(err => {
-                        alert(`Lỗi khi bật toàn màn hình: ${err.message}`);
-                    });
-                }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
-        }
-
-        // 5. Tự động đóng các menu popup khi click ra ngoài
         document.addEventListener('click', function(event) {
             const notiDropdown = document.getElementById('notiDropdown');
             const userDropdown = document.getElementById('userDropdown');
             const searchBox = document.getElementById('searchBox');
-            const filterModal = document.getElementById('filterModal');
             const vidSettings = document.getElementById('videoSettingsMenu');
 
-            if (notiDropdown && !event.target.closest('.notification-wrapper')) {
-                notiDropdown.classList.remove('active');
-            }
-            if (userDropdown && !event.target.closest('.user-menu-wrapper')) {
-                userDropdown.classList.remove('active');
-            }
-            if (searchBox && searchBox.classList.contains('active') && !event.target.closest('.search-wrapper')) {
-                if (!filterModal || !filterModal.contains(event.target)) searchBox.classList.remove('active');
-            }
-            // Ẩn bảng Setting nếu click ra ngoài (để ý reset lại menu chính)
+            if (notiDropdown && !event.target.closest('.notification-wrapper')) notiDropdown.classList.remove('active');
+            if (userDropdown && !event.target.closest('.user-menu-wrapper')) userDropdown.classList.remove('active');
+            if (searchBox && searchBox.classList.contains('active') && !event.target.closest('.search-wrapper')) searchBox.classList.remove('active');
             if (vidSettings && vidSettings.classList.contains('active') && !event.target.closest('.settings-wrapper')) {
                 vidSettings.classList.remove('active');
                 closeSubMenu();
             }
         });
-
-        // 6. Nút Chat kéo thả
-        let lastToggleTime = 0;
-        function toggleChat() {
-            const now = Date.now();
-            if (now - lastToggleTime < 300) return; 
-            lastToggleTime = now;
-            document.getElementById('chatWindow').classList.toggle('active');
-        }
-
-        const fab = document.getElementById('chatFab');
-        const chatWrapper = document.getElementById('chatWrapper');
-        const chatWindow = document.getElementById('chatWindow');
-        let isDragging = false;
-        let dragStartX, dragStartY;
-
-        function updateChatPosition(clientX, clientY) {
-            let newX = clientX - 30; 
-            let newY = clientY - 30;
-
-            if (newX < 320) {
-                chatWindow.style.right = 'auto'; chatWindow.style.left = '0';
-                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('right', 'left');
-            } else {
-                chatWindow.style.right = '0'; chatWindow.style.left = 'auto';
-                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('left', 'right');
-            }
-
-            if (newY < 480) {
-                chatWindow.style.bottom = 'auto'; chatWindow.style.top = '75px';
-                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('bottom', 'top');
-            } else {
-                chatWindow.style.bottom = '75px'; chatWindow.style.top = 'auto';
-                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('top', 'bottom');
-            }
-
-            newX = Math.max(0, Math.min(newX, window.innerWidth - 60));
-            newY = Math.max(0, Math.min(newY, window.innerHeight - 60));
-
-            chatWrapper.style.left = newX + 'px';
-            chatWrapper.style.top = newY + 'px';
-            chatWrapper.style.bottom = 'auto';
-            chatWrapper.style.right = 'auto';
-        }
-
-        fab.addEventListener('mousedown', function(e) {
-            isDragging = false; dragStartX = e.clientX; dragStartY = e.clientY;
-            function onMouseMove(moveEvent) {
-                if (Math.abs(moveEvent.clientX - dragStartX) > 3 || Math.abs(moveEvent.clientY - dragStartY) > 3) isDragging = true;
-                if (isDragging) updateChatPosition(moveEvent.clientX, moveEvent.clientY);
-            }
-            function onMouseUp() {
-                document.removeEventListener('mousemove', onMouseMove);
-                document.removeEventListener('mouseup', onMouseUp);
-                if (!isDragging) toggleChat();
-            }
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
-        });
-
-        fab.addEventListener('touchstart', function(e) {
-            isDragging = false; const touch = e.touches[0];
-            dragStartX = touch.clientX; dragStartY = touch.clientY;
-            function onTouchMove(moveEvent) {
-                const touchMove = moveEvent.touches[0];
-                if (Math.abs(touchMove.clientX - dragStartX) > 3 || Math.abs(touchMove.clientY - dragStartY) > 3) isDragging = true;
-                if (isDragging) { moveEvent.preventDefault(); updateChatPosition(touchMove.clientX, touchMove.clientY); }
-            }
-            function onTouchEnd() {
-                document.removeEventListener('touchmove', onTouchMove);
-                document.removeEventListener('touchend', onTouchEnd);
-                if (!isDragging) toggleChat();
-            }
-            document.addEventListener('touchmove', onTouchMove, {passive: false});
-            document.addEventListener('touchend', onTouchEnd);
-        });
-
-        // 7. Chuyển Tab Mô Tả Phim
-        function openTab(evt, tabId) {
-            const wrapper = evt.currentTarget.closest('.tabs-wrapper');
-            const panes = wrapper.querySelectorAll('.tab-pane');
-            panes.forEach(pane => pane.classList.remove('active'));
-            
-            const btns = wrapper.querySelectorAll('.tab-btn');
-            btns.forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            evt.currentTarget.classList.add('active');
-        }
-
-        // 8. Tính năng đánh giá SAO
-        const starContainer = document.getElementById('star-rating');
-        const stars = starContainer.querySelectorAll('span');
-        const msgDisplay = document.getElementById('rating-msg');
-        let hasRated = false;
-
-        stars.forEach(star => {
-            star.addEventListener('click', function() {
-                if (hasRated) return; 
-                
-                const value = this.getAttribute('data-val');
-                hasRated = true;
-                starContainer.classList.add('locked');
-                
-                stars.forEach(s => {
-                    if (s.getAttribute('data-val') <= value) {
-                        s.classList.add('active');
-                    } else {
-                        s.classList.remove('active');
-                    }
-                });
-
-                msgDisplay.innerHTML = `Cảm ơn bạn đã đánh giá <b>${value} Sao</b>!`;
-                msgDisplay.style.color = '#46d369';
-            });
-        });
-
-        // 9. Nút Phát/Tạm dừng
-        let isPlaying = true;
-        function togglePlayPause(btn) {
-            isPlaying = !isPlaying;
-            if (isPlaying) {
-                btn.innerHTML = '<svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
-                btn.title = "Tạm dừng";
-            } else {
-                btn.innerHTML = '<svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
-                btn.title = "Phát";
-            }
-        }
     </script>
 </body>
 </html>

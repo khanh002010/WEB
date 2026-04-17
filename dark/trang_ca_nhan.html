@@ -47,7 +47,7 @@
             flex-direction: column;
         }
 
-        /* =================  (TỪ TRANG HOME) ================= */
+        /* ================= NAVBAR (TỪ TRANG HOME) ================= */
         header {
             background-color: var(--bg-nav);
             padding: 15px 50px;
@@ -57,7 +57,7 @@
             position: fixed;
             width: 100%;
             top: 0;
-            z-index: 1000; /* Tăng z-index để không bị đè */
+            z-index: 1000;
             border-bottom: 1px solid rgba(255,255,255,0.05);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
@@ -235,7 +235,7 @@
 
         .user-details h2 {
             font-size: 26px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             color: #fff;
             line-height: 1.2;
         }
@@ -245,19 +245,19 @@
             align-items: center;
             gap: 10px;
             color: var(--text-muted);
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             font-size: 14.5px;
         }
         
         .info-row svg {
-            width: 16px; height: 16px; stroke: var(--accent-color); fill: none; stroke-width: 2;
+            width: 18px; height: 18px; stroke: var(--accent-color); fill: none; stroke-width: 2;
             stroke-linecap: round; stroke-linejoin: round;
         }
 
         .info-row span { color: #e2e8f0; font-weight: 500; }
 
         .btn-edit-profile {
-            margin-top: 15px;
+            margin-top: 10px;
             padding: 8px 20px;
             border-radius: 20px;
             border: 1px solid rgba(255,255,255,0.2);
@@ -621,17 +621,17 @@
                 <div class="avatar" title="Tài khoản" onclick="toggleUserMenu(event)"></div>
                 
                 <div class="user-dropdown" id="userDropdown">
-                    <a href="profile.html" class="user-menu-item">
+                    <a href="trang_ca_nhan.html" class="user-menu-item">
                         <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         <span>Trang Cá Nhân</span>
-                    </a>
-                    <a href="settings.html" class="user-menu-item">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                        <span>Cài Đặt</span>
                     </a>
                     <a href="select-profile.html" class="user-menu-item">
                         <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                         <span>Chuyển Hồ Sơ</span>
+                    </a>
+                    <a href="setting.html" class="user-menu-item">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        <span>Cài Đặt</span>
                     </a>
                     <div class="user-menu-divider"></div>
                     <a href="login.html" class="user-menu-item logout-btn">
@@ -726,19 +726,9 @@
                 <div class="user-details">
                     <h2>Nguyễn Hoàng Nam</h2>
                     
-                    <div class="info-row" title="Email">
-                        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                        <span>nam.nguyen@example.com</span>
-                    </div>
-                    
-                    <div class="info-row" title="Số điện thoại">
-                        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                        <span>0987 654 321</span>
-                    </div>
-                    
-                    <div class="info-row" title="Ngày sinh">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                        <span>15 / 08 / 1998</span>
+                    <div class="info-row" title="Trạng thái tài khoản">
+                        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="var(--star-color)" stroke="none"></path></svg>
+                        <span style="color: var(--star-color); font-weight: 600;">VIP (Đang hoạt động)</span>
                     </div>
 
                     <button class="btn-edit-profile" id="btnEditProfile">Chỉnh sửa hồ sơ</button>
@@ -771,21 +761,9 @@
         <div class="edit-profile-section" id="editProfileSection">
             <h3 class="edit-profile-title">Chỉnh Sửa Hồ Sơ</h3>
             <div class="edit-form-grid">
-                <div class="form-group">
+                <div class="form-group" style="grid-column: span 2;">
                     <label>Họ và tên</label>
                     <input type="text" value="Nguyễn Hoàng Nam">
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" value="nam.nguyen@example.com">
-                </div>
-                <div class="form-group">
-                    <label>Số điện thoại</label>
-                    <input type="tel" value="0987 654 321">
-                </div>
-                <div class="form-group">
-                    <label>Ngày sinh</label>
-                    <input type="text" value="15 / 08 / 1998">
                 </div>
                 <div class="edit-form-actions">
                     <button class="btn-cancel" id="btnCancelEdit">Hủy</button>
@@ -953,7 +931,7 @@
                 <button class="close-chat-btn" onclick="toggleChat()">✖</button>
             </div>
             <div class="chat-body">
-                <div class="chat-msg bot">Xin chào! 👋 Mình là trợ lý ảo của Nighthub. Cần tìm thông tin tài khoản hay phim gì cứ hỏi mình nhé!</div>
+                <div class="chat-msg bot">Xin chào! 👋 Mình là trợ lý ảo của Nighthub. Cần tìm thông tin tài khoản hay cài đặt gì cứ hỏi mình nhé!</div>
             </div>
             <div class="chat-input-area">
                 <input type="text" placeholder="Nhập tin nhắn...">
@@ -968,7 +946,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT CHUNG -->
+    <!-- SCRIPT CHUNG VÀ XỬ LÝ TAB -->
     <script>
         // 1. Tìm kiếm
         function toggleSearch() {
@@ -982,22 +960,25 @@
         function toggleFilter() {
             const modal = document.getElementById('filterModal');
             const overlay = document.getElementById('filterOverlay');
-            modal.classList.toggle('active');
-            overlay.classList.toggle('active');
+            if(modal && overlay) {
+                modal.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
         }
 
         // 3. Menu Thông báo & Tài khoản
         function toggleNotification(event) {
             event.stopPropagation(); 
-            document.getElementById('notiDropdown').classList.toggle('active');
+            const dropdown = document.getElementById('notiDropdown');
+            if(dropdown) dropdown.classList.toggle('active');
         }
 
         function toggleUserMenu(event) {
             event.stopPropagation();
-            document.getElementById('userDropdown').classList.toggle('active');
+            const dropdown = document.getElementById('userDropdown');
+            if(dropdown) dropdown.classList.toggle('active');
         }
 
-        // 4. Tự động đóng các menu popup khi click ra ngoài
         document.addEventListener('click', function(event) {
             const notiDropdown = document.getElementById('notiDropdown');
             const userDropdown = document.getElementById('userDropdown');
@@ -1015,7 +996,7 @@
             }
         });
 
-        // 5. Nút Chat kéo thả
+        // 4. Nút Chat kéo thả
         let lastToggleTime = 0;
         function toggleChat() {
             const now = Date.now();
@@ -1031,9 +1012,7 @@
         let dragStartX, dragStartY;
 
         function updateChatPosition(clientX, clientY) {
-            let newX = clientX - 30; 
-            let newY = clientY - 30;
-
+            let newX = clientX - 30; let newY = clientY - 30;
             if (newX < 320) {
                 chatWindow.style.right = 'auto'; chatWindow.style.left = '0';
                 chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('right', 'left');
@@ -1041,7 +1020,6 @@
                 chatWindow.style.right = '0'; chatWindow.style.left = 'auto';
                 chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('left', 'right');
             }
-
             if (newY < 480) {
                 chatWindow.style.bottom = 'auto'; chatWindow.style.top = '75px';
                 chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('bottom', 'top');
@@ -1049,10 +1027,8 @@
                 chatWindow.style.bottom = '75px'; chatWindow.style.top = 'auto';
                 chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('top', 'bottom');
             }
-
             newX = Math.max(0, Math.min(newX, window.innerWidth - 60));
             newY = Math.max(0, Math.min(newY, window.innerHeight - 60));
-
             chatWrapper.style.left = newX + 'px';
             chatWrapper.style.top = newY + 'px';
             chatWrapper.style.bottom = 'auto';
@@ -1066,12 +1042,10 @@
                 if (isDragging) updateChatPosition(moveEvent.clientX, moveEvent.clientY);
             }
             function onMouseUp() {
-                document.removeEventListener('mousemove', onMouseMove);
-                document.removeEventListener('mouseup', onMouseUp);
+                document.removeEventListener('mousemove', onMouseMove); document.removeEventListener('mouseup', onMouseUp);
                 if (!isDragging) toggleChat();
             }
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
+            document.addEventListener('mousemove', onMouseMove); document.addEventListener('mouseup', onMouseUp);
         });
 
         fab.addEventListener('touchstart', function(e) {
@@ -1083,15 +1057,13 @@
                 if (isDragging) { moveEvent.preventDefault(); updateChatPosition(touchMove.clientX, touchMove.clientY); }
             }
             function onTouchEnd() {
-                document.removeEventListener('touchmove', onTouchMove);
-                document.removeEventListener('touchend', onTouchEnd);
+                document.removeEventListener('touchmove', onTouchMove); document.removeEventListener('touchend', onTouchEnd);
                 if (!isDragging) toggleChat();
             }
-            document.addEventListener('touchmove', onTouchMove, {passive: false});
-            document.addEventListener('touchend', onTouchEnd);
+            document.addEventListener('touchmove', onTouchMove, {passive: false}); document.addEventListener('touchend', onTouchEnd);
         });
 
-        // 6. Logic Chỉnh Sửa Hồ Sơ (Trượt mượt mà)
+        // 5. Logic Chỉnh Sửa Hồ Sơ (Trượt mượt mà)
         const btnEditProfile = document.getElementById('btnEditProfile');
         const editProfileSection = document.getElementById('editProfileSection');
         const btnCancelEdit = document.getElementById('btnCancelEdit');
