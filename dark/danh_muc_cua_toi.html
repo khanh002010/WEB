@@ -27,7 +27,6 @@
             --text-main: #ffffff; 
             --text-muted: #9aaec4; 
             --bg-card: rgba(15, 23, 36, 0.6);
-            --bg-input: rgba(255, 255, 255, 0.05);
             --border-color: rgba(255, 255, 255, 0.1);
         }
 
@@ -40,8 +39,8 @@
         }
 
         body {
-            /* Màu nền chính xác như ảnh mẫu */
-            background: #070B11;
+            background: linear-gradient(135deg, #32455F 17%, #1A324A 35%, #07101C 62%, #1A324A 84%);
+            background-attachment: fixed;
             color: var(--text-main);
             line-height: 1.6;
             min-height: 100vh;
@@ -50,7 +49,7 @@
             flex-direction: column;
         }
 
-        /* ================= NAVBAR ================= */
+        /* ================= NAVBAR (TỪ TRANG HOME) ================= */
         header {
             background-color: var(--bg-nav);
             padding: 15px 50px;
@@ -168,141 +167,184 @@
         .btn-filter-cancel:hover { background-color: #475569; transform: translateY(-2px); }
 
 
-        /* ================= KHU VỰC CHÍNH: DANH SÁCH TRỐNG ================= */
-        .empty-list-wrapper {
+        /* ================= MAIN CONTAINER CHUNG ================= */
+        .main-container {
             flex: 1;
+            max-width: 1300px;
+            width: 100%;
+            margin: 100px auto 50px;
+            padding: 0 30px;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: var(--text-main);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
             display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* ================= KHỐI CÓ PHIM (POPULATED LIST) ================= */
+        .card-grid { 
+            display: grid; 
+            grid-template-columns: repeat(5, 1fr); 
+            gap: 20px; 
+        }
+
+        /* THẺ PHIM & LIQUID GLASS TỪ DƯỚI LÊN (INFO) */
+        .movie-card {
+            background: rgba(26, 50, 74, 0.2); 
+            border-radius: 12px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: none; 
+            text-decoration: none; 
+            color: var(--text-main); 
+            display: block; 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); 
+            position: relative; 
+            aspect-ratio: 2 / 3; 
+            isolation: isolate; 
+            transform: translateZ(0); 
+            -webkit-mask-image: -webkit-radial-gradient(white, black); 
+            mask-image: -webkit-radial-gradient(white, black); 
+        }
+        
+        .movie-card::before { 
+            content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%; 
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%); 
+            transform: skewX(-25deg); transition: all 0.6s ease; z-index: 10; pointer-events: none; 
+        }
+        .movie-card:hover::before { left: 200%; }
+        .movie-card:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 40px rgba(0,0,0,0.9); z-index: 10; }
+        
+        .movie-card img.poster { 
+            width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; position: relative; z-index: 1; display: block; 
+        }
+        .movie-card:hover img.poster { transform: scale(1.05); }
+
+        /* Liquid Glass Dưới (Info) */
+        .card-info {
+            padding: 30px 12px 12px 12px; position: absolute; bottom: -2px; left: -2px; right: -2px; z-index: 5; 
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 10%, rgba(0, 0, 0, 0.7) 60%, rgba(0, 0, 0, 0) 100%);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%); mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+            border-bottom-left-radius: 0; border-bottom-right-radius: 0; transform: translateY(102%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .movie-card:hover .card-info { transform: translateY(0); }
+        .card-actions { display: flex; gap: 6px; opacity: 0; margin-bottom: 8px; transform: translateY(10px); transition: all 0.3s ease 0.1s; }
+        .movie-card:hover .card-actions { opacity: 1; transform: translateY(0); }
+        .card-action-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.6); background: rgba(20, 20, 20, 0.6); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; }
+        .card-action-btn.play { background: var(--text-main); color: #000; border-color: var(--text-main); padding-left: 2px; }
+        .card-action-btn:hover { border-color: var(--text-main); background: rgba(255,255,255,0.3); color: var(--text-main); transform: scale(1.15); }
+        .card-action-btn.play:hover { background: rgba(255,255,255,0.9); color: #000; }
+        .card-action-btn svg { width: 14px; height: 14px; }
+        .card-title { font-size: 13px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 800; color: var(--text-main); text-shadow: 1px 1px 3px rgba(0,0,0,1); }
+        .card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; }
+
+        /* ================= LIQUID GLASS TỪ TRÊN XUỐNG (NÚT XÓA) ================= */
+        .card-delete-top {
+            padding: 12px 12px 30px 12px; /* Padding dưới nhiều hơn để gradient mờ đi mượt mà */
+            position: absolute; 
+            top: -2px; left: -2px; right: -2px; z-index: 15; 
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 10%, rgba(0, 0, 0, 0.7) 60%, rgba(0, 0, 0, 0) 100%);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            /* Mask làm mờ dần xuống dưới */
+            -webkit-mask-image: linear-gradient(to top, transparent 0%, black 25%); 
+            mask-image: linear-gradient(to top, transparent 0%, black 25%);
+            
+            transform: translateY(-102%); 
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex; justify-content: flex-end; align-items: flex-start;
+        }
+
+        .movie-card:hover .card-delete-top { transform: translateY(0); }
+
+        .btn-delete-glass {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255, 71, 87, 0.15); 
+            border: 1px solid rgba(255, 71, 87, 0.4);
+            color: white; 
+            padding: 6px 14px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn-delete-glass:hover { 
+            background: var(--accent-red); 
+            border-color: var(--accent-red); 
+            transform: scale(1.05); 
+        }
+
+        .btn-delete-glass img { 
+            width: 14px; height: 14px; object-fit: contain;
+            /* Đảm bảo icon img có màu nguyên bản, không dùng invert vì user đã yêu cầu xóa */
+        }
+
+        /* ================= KHU VỰC DANH SÁCH TRỐNG (ẨN MẶC ĐỊNH) ================= */
+        .empty-list-wrapper {
+            display: none; /* Sẽ được bật bằng JS khi xóa hết phim */
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin-top: 80px; /* Bù trừ thanh navbar */
-            padding: 40px 20px;
+            padding: 80px 20px;
             text-align: center;
             position: relative;
         }
 
+        /* Đường kẻ ngang màu xanh phía sau (như thiết kế cũ) */
+        .empty-list-wrapper::before {
+            content: ''; position: absolute; top: 30%; left: 0; width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.5) 50%, transparent);
+            z-index: -1;
+        }
 
-        /* Hình ảnh tài liệu mô phỏng */
         .empty-icon-container {
-            position: relative;
-            width: 180px;
-            height: 180px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position: relative; width: 180px; height: 180px; margin-bottom: 20px;
+            display: flex; justify-content: center; align-items: center;
         }
 
-        /* Dùng CSS vẽ mô phỏng 2 bìa hồ sơ */
         .doc-back {
-            position: absolute;
-            width: 110px;
-            height: 140px;
-            background: #d4d4d8;
-            border-radius: 8px;
-            transform: rotate(-10deg) translateX(-20px);
-            z-index: 1;
-            box-shadow: -5px 5px 15px rgba(0,0,0,0.5);
+            position: absolute; width: 110px; height: 140px; background: #d4d4d8; border-radius: 8px;
+            transform: rotate(-10deg) translateX(-20px); z-index: 1; box-shadow: -5px 5px 15px rgba(0,0,0,0.5);
         }
-        .doc-back::before {
-            content: ''; position: absolute; top: 0; left: 10%; width: 30px; height: 10px; background: #ef4444; border-radius: 4px 4px 0 0;
-        }
+        .doc-back::before { content: ''; position: absolute; top: 0; left: 10%; width: 30px; height: 10px; background: #ef4444; border-radius: 4px 4px 0 0; }
+        
         .doc-front {
-            position: absolute;
-            width: 115px;
-            height: 145px;
-            background: #ffffff;
-            border-radius: 8px;
-            transform: rotate(5deg) translateX(10px);
-            z-index: 2;
-            box-shadow: 5px 5px 20px rgba(0,0,0,0.6);
+            position: absolute; width: 115px; height: 145px; background: #ffffff; border-radius: 8px;
+            transform: rotate(5deg) translateX(10px); z-index: 2; box-shadow: 5px 5px 20px rgba(0,0,0,0.6);
         }
-        .doc-front::before {
-            content: ''; position: absolute; top: -5px; left: 50%; transform: translateX(-50%); width: 40px; height: 15px; background: #ef4444; border-radius: 4px;
-        }
+        .doc-front::before { content: ''; position: absolute; top: -5px; left: 50%; transform: translateX(-50%); width: 40px; height: 15px; background: #ef4444; border-radius: 4px; }
 
-        .empty-title {
-            font-size: 28px;
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 10px;
-            letter-spacing: 0.5px;
-        }
+        .empty-title { font-size: 28px; font-weight: 800; color: #ffffff; margin-bottom: 10px; letter-spacing: 0.5px; }
+        .empty-subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 40px; }
 
-        .empty-subtitle {
-            font-size: 15px;
-            color: var(--text-muted);
-            margin-bottom: 40px;
-        }
-
-        /* Container chứa 2 nút */
-        .action-buttons {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
+        .action-buttons { display: flex; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; justify-content: center; }
         .btn-primary-action, .btn-secondary-action {
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.2s ease;
+            padding: 12px 25px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; gap: 10px; transition: all 0.2s ease;
         }
+        .btn-primary-action { background-color: #2b3b55; color: #ffffff; border: 1px solid transparent; }
+        .btn-primary-action:hover { background-color: #3b5074; transform: translateY(-2px); }
+        .btn-secondary-action { background-color: #1a1a1a; color: #ffffff; border: 1px solid rgba(255,255,255,0.2); }
+        .btn-secondary-action:hover { background-color: #2a2a2a; border-color: rgba(255,255,255,0.4); transform: translateY(-2px); }
 
-        .btn-primary-action {
-            background-color: #2b3b55; /* Màu xanh xám như thiết kế */
-            color: #ffffff;
-            border: 1px solid transparent;
-        }
-        .btn-primary-action:hover {
-            background-color: #3b5074;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary-action {
-            background-color: #1a1a1a;
-            color: #ffffff;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        .btn-secondary-action:hover {
-            background-color: #2a2a2a;
-            border-color: rgba(255,255,255,0.4);
-            transform: translateY(-2px);
-        }
-
-        /* Khối Mẹo */
         .tip-box {
-            background-color: #0f1115; /* Màu nền siêu tối */
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 8px;
-            padding: 18px 30px;
-            font-size: 14px;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            max-width: 550px;
-            line-height: 1.5;
+            background-color: #0f1115; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;
+            padding: 18px 30px; font-size: 14px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; max-width: 550px; line-height: 1.5;
         }
-        .tip-box span {
-            color: #ffffff;
-        }
-        .tip-box svg {
-            width: 14px;
-            height: 14px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-            vertical-align: middle;
-            margin: 0 2px;
-        }
+        .tip-box span { color: #ffffff; }
+        .tip-box svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; vertical-align: middle; margin: 0 2px; }
+
 
         /* ================= FOOTER ================= */
         .footer { background-color: rgba(7, 16, 28, 0.6); backdrop-filter: blur(10px); padding: 60px 50px 20px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; }
@@ -341,18 +383,24 @@
         .chat-send-btn svg { width: 16px; height: 16px; fill: #000; margin-left: 2px;}
 
         /* ================= RESPONSIVE ================= */
+        @media (max-width: 1024px) { 
+            .card-grid { grid-template-columns: repeat(4, 1fr); } 
+            .nav-links { display: none; }
+        }
         @media (max-width: 900px) {
+            .card-grid { grid-template-columns: repeat(3, 1fr); }
             .footer-links { gap: 40px; }
         }
         @media (max-width: 600px) {
             header { padding: 15px 20px; } 
-            .nav-links { display: none; }
+            .main-container { padding: 0 15px; margin-top: 80px;}
+            .card-grid { grid-template-columns: repeat(2, 1fr); }
             .search-box { width: 140px; }
             .notification-dropdown { width: 300px; right: -60px; }
             .user-dropdown { right: -20px; }
             .footer-links { flex-direction: column; gap: 20px; }
             .empty-title { font-size: 22px; }
-            .action-buttons { flex-direction: column; width: 100%; max-width: 300px; }
+            .action-buttons { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto 40px; }
             .btn-primary-action, .btn-secondary-action { justify-content: center; }
         }
     </style>
@@ -370,7 +418,7 @@
                 <a href="#">Phim điện ảnh</a>
                 <a href="#">Phim truyền hình</a>
                 <a href="#">Phim hoạt hình</a>
-                <a href="#">Phim tài liệu</a>
+                <a href="phim_tai_lieu.html">Phim tài liệu</a>
                 <a href="danh_sach.html" class="active">Danh sách của tôi</a>
             </nav>
         </div>
@@ -449,7 +497,7 @@
         </div>
     </header>
 
-    <!-- BỘ LỌC NÂNG CAO DROPDOWN -->
+    <!-- BỘ LỌC NÂNG CAO DROPDOWN MỚI TỪ TRANG CHỦ -->
     <div class="filter-overlay" id="filterOverlay" onclick="toggleFilter()"></div>
     <div class="filter-modal" id="filterModal">
         <div class="filter-drag-handle"></div>
@@ -457,33 +505,9 @@
             <label>Danh mục</label>
             <select class="filter-select">
                 <option>Tất cả</option>
-                <option>Phim điện ảnh</option>
-                <option>Phim truyền hình</option>
-                <option>Phim hoạt hình</option>
-            </select>
-        </div>
-        <div class="filter-group">
-            <label>Khu vực</label>
-            <select class="filter-select">
-                <option>Tất cả</option>
-                <option>Việt Nam</option>
-                <option>Âu Mỹ</option>
-                <option>Hàn Quốc</option>
-                <option>Trung Quốc</option>
-                <option>Nhật Bản</option>
-                <option>Thái Lan</option>
-            </select>
-        </div>
-        <div class="filter-group">
-            <label>Thể loại</label>
-            <select class="filter-select">
-                <option>Tất cả</option>
-                <option>Hành động</option>
-                <option>Tình cảm</option>
-                <option>Kinh dị</option>
-                <option>Khoa học viễn tưởng</option>
-                <option>Hài hước</option>
-                <option>Cổ trang</option>
+                <option>Thế giới động vật</option>
+                <option>Khoa học & Vũ trụ</option>
+                <option>Lịch sử & Con người</option>
             </select>
         </div>
         <div class="filter-group">
@@ -492,18 +516,7 @@
                 <option>Tất cả</option>
                 <option>2025</option>
                 <option>2024</option>
-                <option>2023</option>
-                <option>2022</option>
-                <option>Trước 2022</option>
-            </select>
-        </div>
-        <div class="filter-group">
-            <label>Sắp xếp theo</label>
-            <select class="filter-select">
-                <option>Phổ biến</option>
-                <option>Mới cập nhật</option>
-                <option>Đánh giá cao</option>
-                <option>Nhiều lượt xem</option>
+                <option>Trước 2024</option>
             </select>
         </div>
         <div class="filter-footer">
@@ -513,8 +526,103 @@
     </div>
 
 
-    <!-- ================= KHU VỰC CHÍNH: DANH SÁCH TRỐNG ================= -->
-    <main class="empty-list-wrapper">
+    <!-- ================= MAIN CONTENT: TRẠNG THÁI CÓ PHIM ================= -->
+    <main class="main-container" id="populatedList">
+        
+        <h1 class="section-title">
+            Danh sách của tôi
+        </h1>
+
+        <!-- Lưới danh sách phim -->
+        <div class="card-grid" id="movieGrid">
+            
+            <!-- THẺ PHIM 1 -->
+            <a href="xem_phim.html" class="movie-card" id="movie-1">
+                <!-- Lớp Kính lỏng từ trên xuống (Nút Xóa) -->
+                <div class="card-delete-top">
+                    <!-- Nút Xóa có gọi event.preventDefault() để chặn thẻ a -->
+                    <button class="btn-delete-glass" onclick="removeMovie('movie-1', event)">
+                        <img src="images/trash can.png" alt="Delete"> Xóa
+                    </button>
+                </div>
+                
+                <img src="images/poster_doc_2.webp" alt="Phim 1" class="poster">
+                
+                <div class="card-info">
+                    <div class="card-actions">
+                        <button class="card-action-btn play" title="Xem phim">▶</button>
+                        <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                    </div>
+                    <h4 class="card-title">Interstellar</h4>
+                    <p class="card-desc">Sứ mệnh quan trọng nhất lịch sử nhân loại.</p>
+                </div>
+            </a>
+
+            <!-- THẺ PHIM 2 -->
+            <a href="xem_phim.html" class="movie-card" id="movie-2">
+                <div class="card-delete-top">
+                    <button class="btn-delete-glass" onclick="removeMovie('movie-2', event)">
+                        <img src="images/trash can.png" alt="Delete"> Xóa
+                    </button>
+                </div>
+                
+                <img src="images/poster_doc_2.webp" alt="Phim 2" class="poster">
+                
+                <div class="card-info">
+                    <div class="card-actions">
+                        <button class="card-action-btn play" title="Xem phim">▶</button>
+                        <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                    </div>
+                    <h4 class="card-title">The Dark Knight</h4>
+                    <p class="card-desc">Hiệp sĩ bóng đêm đối mặt với Joker.</p>
+                </div>
+            </a>
+
+            <!-- THẺ PHIM 3 -->
+            <a href="xem_phim.html" class="movie-card" id="movie-3">
+                <div class="card-delete-top">
+                    <button class="btn-delete-glass" onclick="removeMovie('movie-3', event)">
+                        <img src="images/trash can.png" alt="Delete"> Xóa
+                    </button>
+                </div>
+                
+                <img src="images/poster_doc_2.webp" alt="Phim 3" class="poster">
+                
+                <div class="card-info">
+                    <div class="card-actions">
+                        <button class="card-action-btn play" title="Xem phim">▶</button>
+                        <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                    </div>
+                    <h4 class="card-title">Oppenheimer</h4>
+                    <p class="card-desc">Sự ra đời của bom nguyên tử chấn động.</p>
+                </div>
+            </a>
+
+            <!-- THẺ PHIM 4 -->
+            <a href="xem_phim.html" class="movie-card" id="movie-4">
+                <div class="card-delete-top">
+                    <button class="btn-delete-glass" onclick="removeMovie('movie-4', event)">
+                        <img src="images/trash can.png" alt="Delete"> Xóa
+                    </button>
+                </div>
+                
+                <img src="images/poster_doc_2.webp" alt="Phim 4" class="poster">
+                
+                <div class="card-info">
+                    <div class="card-actions">
+                        <button class="card-action-btn play" title="Xem phim">▶</button>
+                        <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                    </div>
+                    <h4 class="card-title">Tenet</h4>
+                    <p class="card-desc">Nhiệm vụ thao túng nghịch lý thời gian.</p>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- ================= KHU VỰC DANH SÁCH TRỐNG (ẨN MẶC ĐỊNH) ================= -->
+    <main class="empty-list-wrapper" id="emptyList">
         
         <div class="empty-icon-container">
             <div class="doc-back"></div>
@@ -583,7 +691,7 @@
                 <button class="close-chat-btn" onclick="toggleChat()">✖</button>
             </div>
             <div class="chat-body">
-                <div class="chat-msg bot">Xin chào! 👋 Mình là trợ lý ảo của Nighthub. Mình có thể giúp bạn tìm kiếm phim mới hoặc hướng dẫn sử dụng tính năng xem sau nhé!</div>
+                <div class="chat-msg bot">Xin chào! 👋 Cần tìm phim tài liệu nào cứ nói với mình nhé!</div>
             </div>
             <div class="chat-input-area">
                 <input type="text" placeholder="Nhập tin nhắn...">
@@ -598,9 +706,8 @@
         </div>
     </div>
 
-    <!-- SCRIPT CHUNG -->
+    <!-- SCRIPT CHUNG VÀ XỬ LÝ XÓA PHIM -->
     <script>
-        // 1. Tìm kiếm & Bộ lọc
         function toggleSearch() {
             const searchBox = document.getElementById('searchBox');
             const searchInput = document.getElementById('searchInput');
@@ -617,7 +724,6 @@
             }
         }
 
-        // 2. Thông báo & Menu Tài khoản
         function toggleNotification(event) {
             event.stopPropagation(); 
             const dropdown = document.getElementById('notiDropdown');
@@ -630,7 +736,6 @@
             if(dropdown) dropdown.classList.toggle('active');
         }
 
-        // Tự động đóng các menu popup khi click ra ngoài
         document.addEventListener('click', function(event) {
             const notiDropdown = document.getElementById('notiDropdown');
             const userDropdown = document.getElementById('userDropdown');
@@ -648,7 +753,7 @@
             }
         });
 
-        // 3. Chatbot Kéo Thả
+        // Nút Chat kéo thả
         let lastToggleTime = 0;
         function toggleChat() {
             const now = Date.now();
@@ -718,6 +823,42 @@
             }
             document.addEventListener('touchmove', onTouchMove, {passive: false}); document.addEventListener('touchend', onTouchEnd);
         });
+
+        /* ================= TÍNH NĂNG XÓA PHIM TRONG DANH SÁCH ================= */
+        function removeMovie(id, event) {
+            // Ngăn việc nhấn nút bị chuyển trang
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const card = document.getElementById(id);
+            if (card) {
+                // Hiệu ứng mờ đi và thu nhỏ
+                card.style.transform = 'scale(0.8)';
+                card.style.opacity = '0';
+                
+                // Đợi 300ms cho hiệu ứng chạy xong rồi xóa khỏi DOM
+                setTimeout(() => {
+                    card.remove();
+                    checkEmptyList();
+                }, 300);
+            }
+        }
+
+        // Kiểm tra nếu không còn thẻ phim nào thì hiện danh sách trống
+        function checkEmptyList() {
+            const grid = document.getElementById('movieGrid');
+            const remainingCards = grid.querySelectorAll('.movie-card');
+            
+            if (remainingCards.length === 0) {
+                document.getElementById('populatedList').style.display = 'none';
+                
+                // Hiển thị khung danh sách trống
+                const emptyList = document.getElementById('emptyList');
+                emptyList.style.display = 'flex';
+                // Thêm hiệu ứng trồi lên
+                emptyList.style.animation = 'fadeIn 0.5s ease-out';
+            }
+        }
     </script>
 </body>
 </html>
