@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nighthub - Đăng Ký</title>
+    <style>
+        /* ================= CÀI ĐẶT BIẾN MÀU SẮC ================= */
+        :root {
+            --c-blue-1: #32455F;
+            --c-blue-2: #1A324A;
+            --c-darkest: #07101C;
+            
+            --text-main: #ffffff;
+            --text-muted: #64748b; 
+            --accent-blue: #38bdf8; 
+            
+            --card-bg: rgba(15, 23, 36, 0.6);
+            --card-border: rgba(255, 255, 255, 0.08);
+            
+            --input-bg: rgba(255, 255, 255, 0.04);
+            --input-border: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ================= RESET CSS ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, 
+                var(--c-blue-1) 17%, 
+                var(--c-blue-2) 35%, 
+                var(--c-darkest) 62%, 
+                var(--c-blue-2) 84%
+            );
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Nút quay lại */
+        .back-link {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--text-main);
+        }
+
+        .back-link svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ================= LOGO SECTION ================= */
+        .logo-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon svg {
+            width: 50px;
+            height: 50px;
+            fill: #4DA8DA;
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #4DA8DA, #8A2BE2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        /* ================= REGISTER CARD ================= */
+        .register-card {
+            width: 100%;
+            max-width: 420px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 30px 35px 35px 35px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .card-title {
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--text-main);
+        }
+
+        /* ================= FORM NHẬP LIỆU ================= */
+        .register-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            color: #94a3b8;
+            display: flex;
+            pointer-events: none;
+        }
+
+        .input-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border-radius: 8px; 
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input::placeholder {
+            color: #64748b;
+        }
+
+        .input-group input:focus {
+            border-color: var(--accent-blue);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+        }
+        
+        .input-group input:focus + .input-icon {
+            color: var(--accent-blue);
+        }
+
+        /* --- Nút Đăng Ký --- */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            background-color: #334764; /* Màu xám xanh giống nút Login */
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+
+        .btn-submit:hover {
+            background-color: #40597a;
+            transform: translateY(-2px);
+        }
+
+        /* ================= ĐĂNG NHẬP LIÊN KẾT ================= */
+        .login-text {
+            text-align: center;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .login-text a {
+            color: var(--accent-blue); /* Màu xanh biển cho chữ Đăng nhập */
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 5px;
+            transition: opacity 0.2s;
+        }
+
+        .login-text a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        /* Responsive cho thiết bị di động nhỏ */
+        @media (max-width: 480px) {
+            .register-card {
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 20px;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+            }
+            .back-link {
+                top: 20px;
+                left: 20px;
+            }
+        }
+        .logo img { height: 150px; width: auto; object-fit: contain; display: flex; align-items: center; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Nút quay lại -->
+    <a href="home.html" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Trang chủ
+    </a>
+
+    <!-- Logo Phía trên Form -->
+    <div class="logo-section">
+        <div class="logo-wrapper">
+            <div class="logo img">
+                <img src="../images/logo.png" alt="Phim liên quan 2">
+            </div>
+        </div>
+    </div>
+
+    <!-- Khung Đăng Ký -->
+    <div class="register-card">
+        <h2 class="card-title">Đăng Ký</h2>
+        
+        <form class="register-form">
+            
+            <!-- Email -->
+            <div class="input-group">
+                <span class="input-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                </span>
+                <input type="email" placeholder="Email">
+            </div>
+
+            <!-- Password -->
+            <div class="input-group">
+                <span class="input-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </span>
+                <input type="password" placeholder="Mật khẩu">
+            </div>
+            
+            <!-- Confirm Password -->
+            <div class="input-group">
+                <span class="input-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </span>
+                <input type="password" placeholder="Xác nhận mật khẩu">
+            </div>
+            
+            <!-- Số điện thoại -->
+            <div class="input-group">
+                <span class="input-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                </span>
+                <input type="tel" placeholder="Số điện thoại">
+            </div>
+
+            <!-- Nút Đăng ký -->
+            <button type="button" class="btn-submit">Đăng Ký</button>
+
+            <!-- Footer text -->
+            <div class="login-text">
+                Đã có tài khoản? <a href="login.html">Đăng nhập</a>
+            </div>
+            
+        </form>
+    </div>
+
+</body>
+</html>

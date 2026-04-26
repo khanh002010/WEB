@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nighthub - Chọn Thể Loại Phim</title>
+    <style>
+        /* ================= CÀI ĐẶT BIẾN MÀU SẮC ================= */
+        :root {
+            --c-blue-1: #32455F;
+            --c-blue-2: #1A324A;
+            --c-darkest: #07101C;
+            
+            --text-main: #ffffff; 
+            --text-muted: #94a3b8; 
+            
+            /* Màu Gradient nghệ thuật cho vòng tròn được chọn */
+            --gradient-active: linear-gradient(135deg, #38bdf8, #8A2BE2);
+            --glow-active: rgba(56, 189, 248, 0.5);
+            
+            --circle-bg: rgba(255, 255, 255, 0.03); 
+            --circle-border: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ================= RESET CSS ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            /* Nền gradient tối, có thêm một vùng sáng mờ phía sau để tạo chiều sâu */
+            background: linear-gradient(135deg, #32455F 17%, #1A324A 35%, #07101C 62%, #1A324A 84%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            /* SỬA LỖI CUỘN TRANG Ở ĐÂY */
+            overflow-x: hidden; /* Ngăn cuộn ngang */
+            overflow-y: auto;   /* Cho phép cuộn dọc */
+            padding: 40px 0;    /* Thêm khoảng thở trên/dưới để không bị dính sát lề khi cuộn */
+        }
+
+        /* Vòng sáng nghệ thuật trôi nổi phía sau nền */
+        .ambient-light {
+            position: fixed; /* Chuyển thành fixed để luôn ở giữa màn hình khi cuộn */
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ================= KHUNG CHỌN THỂ LOẠI (ĐÃ BỎ NỀN KÍNH) ================= */
+        .selection-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 420px; 
+            padding: 50px 20px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            animation: containerFadeIn 1s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        @keyframes containerFadeIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 45px;
+            gap: 20px;
+        }
+
+        /* Logo giờ là thẻ a nên cần reset text-decoration */
+        .logo-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-active);
+            box-shadow: 0 10px 25px var(--glow-active);
+            margin-bottom: 10px;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px var(--glow-active);
+        }
+
+        .logo-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        .logo { display: flex; align-items: center; text-decoration: none; justify-content: center;}
+        .logo img { height: 150px; width: auto; object-fit: contain; }
+
+        .title {
+            font-size: 26px;
+            font-weight: 800;
+            line-height: 1.3;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+            text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* --- GRID THỂ LOẠI --- */
+        .genre-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 35px 25px;
+            flex-grow: 1; 
+            margin-bottom: 40px;
+        }
+
+        .genre-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0; /* Ẩn đi để làm animation */
+            animation: slideUp 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+
+        /* Hiệu ứng trượt lên theo nhịp */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .genre-item:nth-child(1) { animation-delay: 0.1s; }
+        .genre-item:nth-child(2) { animation-delay: 0.15s; }
+        .genre-item:nth-child(3) { animation-delay: 0.2s; }
+        .genre-item:nth-child(4) { animation-delay: 0.25s; }
+        .genre-item:nth-child(5) { animation-delay: 0.3s; }
+        .genre-item:nth-child(6) { animation-delay: 0.35s; }
+        .genre-item:nth-child(7) { animation-delay: 0.4s; }
+        .genre-item:nth-child(8) { animation-delay: 0.45s; }
+        .genre-item:nth-child(9) { animation-delay: 0.5s; }
+
+        /* Vòng tròn thể loại */
+        .genre-circle {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            background-color: var(--circle-bg);
+            border: 1px solid var(--circle-border);
+            margin-bottom: 15px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Tăng độ mờ kính (blur) để nổi bật trên nền hơn */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: inset 0 0 15px rgba(255,255,255,0.02);
+            overflow: hidden;
+        }
+
+        .genre-item:hover .genre-circle {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.4);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .genre-icon {
+            font-size: 28px;
+            opacity: 0.85; 
+            transition: all 0.3s ease;
+        }
+
+        /* TRẠNG THÁI ACTIVE (Nghệ thuật) */
+        .genre-item.active .genre-circle {
+            background: var(--gradient-active);
+            border-color: transparent;
+            box-shadow: 0 15px 30px var(--glow-active), inset 0 0 20px rgba(255,255,255,0.2);
+            transform: translateY(-8px) scale(1.05);
+        }
+
+        .genre-item.active .genre-icon {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .genre-name {
+            font-size: 13.5px;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .genre-item:hover .genre-name {
+            color: var(--text-main);
+        }
+
+        .genre-item.active .genre-name {
+            color: var(--text-main);
+            font-weight: 800;
+            text-shadow: 0 2px 10px var(--glow-active);
+        }
+
+        /* --- NÚT BẤM CUỐI TRANG --- */
+        .footer-actions {
+            display: flex;
+            gap: 15px;
+            opacity: 0;
+            animation: slideUp 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards 0.6s;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px 0;
+            border-radius: 14px; 
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+            letter-spacing: 0.5px;
+        }
+
+        /* Nút Bỏ qua */
+        .btn-skip {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-skip:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Nút Chọn */
+        .btn-select {
+            background: var(--text-main);
+            color: #000;
+            box-shadow: 0 8px 20px rgba(255,255,255,0.2);
+        }
+
+        .btn-select:hover {
+            transform: translateY(-3px);
+            background: #e2e8f0;
+            box-shadow: 0 12px 25px rgba(255,255,255,0.3);
+        }
+        
+        /* Hiệu ứng khi có ít nhất 1 mục được chọn */
+        .btn-select.highlight {
+            background: var(--gradient-active);
+            color: white;
+            box-shadow: 0 10px 25px var(--glow-active);
+        }
+        .btn-select.highlight:hover {
+            filter: brightness(1.15);
+            box-shadow: 0 15px 30px var(--glow-active);
+        }
+
+        @media (max-width: 480px) {
+            .genre-circle {
+                width: 75px;
+                height: 75px;
+            }
+            .genre-grid { gap: 25px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-light"></div>
+
+    <div class="selection-container">
+        
+        <!-- HEADER CÓ LOGO LÀ THẺ A VÀ TIÊU ĐỀ -->
+        <div class="header">
+            <a href="home.html" class="logo">
+                <img src="../images/logo.png" alt="Nighthub logo">
+            </a>
+            <div>
+                <h2 class="title">Bạn thích xem gì?</h2>
+                <p class="subtitle">Chọn 3 hoặc nhiều hơn để Nighthub gọi ý tốt nhất cho bạn.</p>
+            </div>
+        </div>
+
+        <!-- DANH SÁCH THỂ LOẠI -->
+        <div class="genre-grid">
+            <div class="genre-item">
+                <div class="genre-circle"><span class="genre-icon">👻</span></div>
+                <span class="genre-name">Kinh dị</span>
+            </div>
+            <div class="genre-item">
+                <div class="genre-circle"><span class="genre-icon">💥</span></div>
+                <span class="genre-name">Hành động</span>
+            </div>
+            <div class="genre-item">
+                <div class="genre-circle"><span class="genre-icon">😂</span></div>
+                <span class="genre-name">Hài hước</span>
+            </div>
+
+            <div class="genre-item">
+                <div class="genre-circle"><span class="genre-icon">🛸</span></div>
+                <span class="genre-name">Viễn tưởng</span>
+            </div>
+            <div class="genre-item">
+                <div class="genre-circle"><span class="genre-icon">💖</span></div>
+                <span class="genre-name">Lãng mạn</span>
+            </div>
+            <div class="genre-item">
+                <div class="genre-circle"><span class="genre-icon">🌍</span></div>
+                <span class="genre-name">Tài liệu</span>
+            </div>
+
+            <div class="genre-item">
+                <div class="genre-circle"><span class="genre-icon">🦄</span></div>
+                <span class="genre-name">Hoạt hình</span>
+            </div>
+            <div class="genre-item">
+                <div class="genre-circle"><span class="genre-icon">🧠</span></div>
+                <span class="genre-name">Tâm lý</span>
+            </div>
+            <div class="genre-item">
+                <div class="genre-circle"><span class="genre-icon">⚔️</span></div>
+                <span class="genre-name">Cổ trang</span>
+            </div>
+        </div>
+
+        <!-- CÁC NÚT ĐIỀU HƯỚNG -->
+        <div class="footer-actions">
+            <button class="btn btn-skip" onclick="location.href='home.html'">Bỏ qua</button>
+            <button class="btn btn-select" id="btnSelect" onclick="location.href='home.html'">Chọn</button>
+        </div>
+
+    </div>
+
+    <!-- Script tạo hiệu ứng Bấm chọn và sáng nút -->
+    <script>
+        const genreItems = document.querySelectorAll('.genre-item');
+        const btnSelect = document.getElementById('btnSelect');
+
+        genreItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Thêm/Xóa class active cho toàn bộ thẻ (để đổi nền tròn và chữ)
+                item.classList.toggle('active');
+                
+                // Kiểm tra xem có bao nhiêu mục đang được chọn
+                const activeCount = document.querySelectorAll('.genre-item.active').length;
+                
+                // Nếu chọn lớn hơn 0, làm nổi bật nút "Chọn"
+                if(activeCount > 0) {
+                    btnSelect.classList.add('highlight');
+                    btnSelect.innerText = `Tiếp tục (${activeCount})`;
+                } else {
+                    btnSelect.classList.remove('highlight');
+                    btnSelect.innerText = 'Chọn';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

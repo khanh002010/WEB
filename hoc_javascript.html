@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+    <script>
+      const students = [
+        { id: 1, name: "An", age: 20, score: 8.5 },
+        { id: 2, name: "Bình", age: 21, score: 6.0 },
+        { id: 3, name: "Chi", age: 19, score: 9.2 },
+        { id: 4, name: "Dũng", age: 22, score: 4.5 },
+        { id: 5, name: "Hà", age: 20, score: 7.0 }
+      ];
+      let BAI1=students.map(n=>n.name)
+      console.log(BAI1)
+
+      let bai2=students.filter(({score})=>score>7)
+      console.log(bai2)
+
+      let bai3=students.reduce((luu, {score})=>score+ luu, 0)/students.length
+      console.log(bai3)
+
+      let bai4=students.reduce((max, students)=> {
+        if(students.score>max.score) 
+        return students
+        return max
+        })
+      console.log(bai4)
+    </script>
+</body>
+</html>

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streamflix - Giao diện Phim</title>
+    <style>
+        /* ================= CÀI ĐẶT BIẾN MÀU SẮC ================= */
+        :root {
+            /* Các mã màu chuẩn theo yêu cầu */
+            --c-gold: #A1934B;
+            --c-green-dark: #024643;
+            --c-green-light: #105942;
+
+            /* Gán màu vào các thành phần UI để tone-sur-tone */
+            --bg-nav: rgba(2, 70, 67, 0.95); /* Xanh lá đậm mờ cho Navbar */
+            --bg-card: rgba(2, 70, 67, 0.5); /* Thẻ phim mờ ảo để lộ đường line vàng phía sau */
+            --bg-card-hover: rgba(0, 0, 0, 0.8); /* Nền đen đậm hơn khi hover */
+            --btn-primary: var(--c-green-light);
+            --border-color: rgba(161, 147, 75, 0.3);
+            
+            --accent-color: var(--c-gold);
+            --accent-glow: rgba(161, 147, 75, 0.5); /* Hào quang vàng */
+            
+            --text-main: #ffffff;
+            --text-muted: #d0e5df;
+        }
+
+        /* ================= RESET CSS ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            /* Hiệu ứng Linear Gradient chéo:
+               - Dùng 225deg (hướng từ trên-phải xuống dưới-trái) để 0% nằm đúng góc trên phải.
+               - Các điểm % (Stops) giống hệt ảnh bạn cung cấp.
+            */
+            background: linear-gradient(225deg, 
+                #A1934B 0%, 
+                #024643 65%, 
+                #A1934B 78%, 
+                #105942 98%
+            );
+            background-attachment: fixed; /* Giữ nền đứng im, các thẻ phim trượt lên trên cực đẹp */
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ================= NAVBAR ================= */
+        header {
+            background-color: var(--bg-nav);
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px); /* Kính mờ */
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-main);
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .icon-btn:hover {
+            color: var(--accent-color);
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+            background-color: var(--accent-color);
+            border-radius: 4px;
+            cursor: pointer;
+            border: 2px solid var(--text-main);
+        }
+
+        /* ================= HERO BANNER ================= */
+        .hero {
+            position: relative;
+            height: 80vh;
+            min-height: 600px;
+            background-image: url('images/banner.jpeg'); 
+            background-size: cover;
+            background-position: center;
+            margin-top: 60px;
+            display: flex;
+            align-items: flex-end;
+            padding: 50px;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Làm mờ dần phần chân banner để hòa quyện vào gradient xanh tối của nền */
+            background: linear-gradient(to top, rgba(2, 70, 67, 1) 0%, transparent 60%),
+                        linear-gradient(to right, rgba(2, 70, 67, 0.8) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 600px;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 15px;
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .hero-stats span:first-child {
+            color: var(--accent-color); 
+            font-weight: bold;
+        }
+
+        .hero-desc {
+            font-size: 16px;
+            margin-bottom: 25px;
+            color: #ffffff;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-play {
+            background-color: var(--accent-color);
+            color: #000000;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .btn-play:hover {
+            background-color: #d8c465; /* Vàng sáng hơn khi hover */
+            transform: scale(1.05);
+        }
+
+        .btn-info {
+            background-color: rgba(2, 70, 67, 0.7);
+            color: var(--text-main);
+            border: 1px solid var(--c-gold);
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-info:hover {
+            background-color: var(--c-green-light);
+        }
+
+        /* ================= MOVIE LISTS ================= */
+        .movie-sections {
+            padding: 20px 50px 50px 50px;
+        }
+
+        .row-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            margin-top: 30px;
+            font-weight: 600;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        /* --- LIQUID GLASS EFFECT CHO THẺ PHIM --- */
+        .movie-card {
+            background: rgba(2, 70, 67, 0.15); /* Nền siêu mờ để lộ cảnh phía sau */
+            border-radius: 16px; /* Bo góc mềm mại như chất lỏng */
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            
+            /* Viền sáng ở mép mô phỏng ánh sáng chiếu lên mặt kính */
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            border-top: 1px solid rgba(255, 255, 255, 0.25);
+            border-left: 1px solid rgba(255, 255, 255, 0.25);
+            
+            backdrop-filter: blur(16px) saturate(120%); 
+            -webkit-backdrop-filter: blur(16px) saturate(120%);
+            
+            text-decoration: none; 
+            color: var(--text-main);
+            display: block; 
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        /* Vệt sáng chớp qua như mặt kính (Glare effect) */
+        .movie-card::before {
+            content: '';
+            position: absolute;
+            top: 0; 
+            left: -150%;
+            width: 50%; 
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            transition: all 0.7s ease;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .movie-card:hover::before {
+            left: 200%; /* Lướt vệt sáng khi hover */
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px); 
+            background: var(--bg-card-hover); /* Tối màu lại đậm hơn khi tương tác */
+            border-color: var(--accent-color); 
+            box-shadow: 0 15px 35px var(--accent-glow), 0 0 20px rgba(0,0,0,0.5); 
+            z-index: 2;
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 280px; /* Cập nhật: tăng chiều cao để thẻ phim ra dáng poster dọc hơn */
+            object-fit: cover;
+            border-bottom: none;
+            transition: transform 0.5s ease;
+            position: relative;
+            z-index: 1;
+            display: block; /* Sửa lỗi viền dư dưới cùng của thẻ img */
+        }
+        
+        .movie-card:hover img {
+            transform: scale(1.08); /* Ảnh từ từ phóng to chìm dưới lớp kính */
+        }
+
+        /* --- Sửa khối thông tin: Ẩn đi và trượt lên khi hover --- */
+        .card-info {
+            padding: 15px;
+            position: absolute; /* Đặt khối nằm đè lên ảnh */
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 3; /* Đảm bảo nổi trên ảnh và vệt sáng */
+            /* Gradient màu đen nhám đậm dần để tăng tối đa sự tương phản */
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 15%, rgba(0, 0, 0, 0.6) 60%, rgba(0, 0, 0, 0) 100%);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(4px); /* Làm mờ ảnh phía sau text cho dễ đọc */
+            
+            /* Hiệu ứng giấu đi (Kéo xuống dưới 101% chiều cao của nó) */
+            transform: translateY(101%);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Kích hoạt trượt lên khi rê chuột vào cả thẻ phim */
+        .movie-card:hover .card-info {
+            transform: translateY(0); 
+        }
+
+        .card-title {
+            font-size: 16px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.3s ease;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        
+        /* Giữ nguyên màu trắng khi hover để tương phản với nền tối */
+        .movie-card:hover .card-title {
+            color: var(--text-main); 
+        }
+
+        .card-stats {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* --- NÚT BẤM (PLAY & BOOKMARK) BÊN TRONG POSTER --- */
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease 0.15s; /* Trượt lên có độ trễ nhẹ */
+        }
+
+        .movie-card:hover .card-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        /* Nút Play đặc biệt nổi bật hơn */
+        .action-btn.play {
+            background: var(--text-main);
+            color: #000;
+            border-color: var(--text-main);
+        }
+
+        .action-btn:hover {
+            border-color: var(--accent-color);
+            background: var(--accent-color);
+            color: #000;
+            transform: scale(1.1);
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 1024px) {
+            .card-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .card-grid { grid-template-columns: repeat(2, 1fr); }
+            header { padding: 15px 20px; }
+            .movie-sections, .hero { padding: 20px; }
+            .hero-title { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-left">
+            <div class="logo">LOGO</div>
+            <nav class="nav-links">
+                <a href="#" class="active">Trang chủ</a>
+                <a href="#">Phim bộ</a>
+                <a href="#">Phim lẻ</a>
+            </nav>
+        </div>
+        <div class="nav-right">
+            <button class="icon-btn">🔍</button>
+            <div class="avatar"></div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Tên Phim 1</h1>
+            <div class="hero-stats">
+                <span>⭐ 8.5/10</span>
+                <span>•</span>
+                <span>2024</span>
+                <span>•</span>
+                <span>2h</span>
+            </div>
+            <p class="hero-desc">
+                Một nhóm bạn lập trình viên tình cờ khám phá ra một đoạn mã bí ẩn có khả năng thay đổi giao diện thực tại, dẫn họ vào một cuộc phiêu lưu không lường trước.
+            </p>
+            <div class="hero-buttons">
+                <button class="btn btn-play">▶ Xem ngay</button>
+                <button class="btn btn-info">ⓘ Thông tin</button>
+            </div>
+        </div>
+    </section>
+
+    <main class="movie-sections">
+        
+        <h3 class="row-title">Danh sách phim 1</h3>
+        <div class="card-grid">
+            <a href="#" class="movie-card">
+                <img src="images/banner.jpeg" alt="Phim 1">
+                <div class="card-info">
+                    <h4 class="card-title">Tên Phim 1</h4>
+                    <div class="card-stats">2024 • 2h</div>
+                    <div class="card-actions">
+                        <button class="action-btn play" title="Xem ngay">▶</button>
+                        <button class="action-btn" title="Thêm vào danh sách">+</button>
+                    </div>
+                </div>
+            </a>
+            <a href="#" class="movie-card">
+                <img src="images/banner.jpeg" alt="Phim 1">
+                <div class="card-info">
+                    <h4 class="card-title">Tên Phim 1</h4>
+                    <div class="card-stats">2024 • 1h 30m</div>
+                    <div class="card-actions">
+                        <button class="action-btn play" title="Xem ngay">▶</button>
+                        <button class="action-btn" title="Thêm vào danh sách">+</button>
+                    </div>
+                </div>
+            </a>
+            <a href="#" class="movie-card">
+                <img src="images/banner.jpeg" alt="Phim 1">
+                <div class="card-info">
+                    <h4 class="card-title">Tên Phim 1</h4>
+                    <div class="card-stats">2025 • 10 tập</div>
+                    <div class="card-actions">
+                        <button class="action-btn play" title="Xem ngay">▶</button>
+                        <button class="action-btn" title="Thêm vào danh sách">+</button>
+                    </div>
+                </div>
+            </a>
+            <a href="#" class="movie-card">
+                <img src="images/banner.jpeg" alt="Phim 1">
+                <div class="card-info">
+                    <h4 class="card-title">Tên Phim 1</h4>
+                    <div class="card-stats">2024 • 2h 15m</div>
+                    <div class="card-actions">
+                        <button class="action-btn play" title="Xem ngay">▶</button>
+                        <button class="action-btn" title="Thêm vào danh sách">+</button>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <h3 class="row-title">Danh sách phim 2</h3>
+        <div class="card-grid">
+            <a href="#" class="movie-card">
+                <img src="images/banner.jpeg" alt="Phim 1">
+                <div class="card-info">
+                    <h4 class="card-title">Tên Phim 1</h4>
+                    <div class="card-stats">2024 • 2h</div>
+                    <div class="card-actions">
+                        <button class="action-btn play" title="Xem ngay">▶</button>
+                        <button class="action-btn" title="Thêm vào danh sách">+</button>
+                    </div>
+                </div>
+            </a>
+            <a href="#" class="movie-card">
+                <img src="images/banner.jpeg" alt="Phim 1">
+                <div class="card-info">
+                    <h4 class="card-title">Tên Phim 1</h4>
+                    <div class="card-stats">2024 • 1h 30m</div>
+                    <div class="card-actions">
+                        <button class="action-btn play" title="Xem ngay">▶</button>
+                        <button class="action-btn" title="Thêm vào danh sách">+</button>
+                    </div>
+                </div>
+            </a>
+            <a href="#" class="movie-card">
+                <img src="images/banner.jpeg" alt="Phim 1">
+                <div class="card-info">
+                    <h4 class="card-title">Tên Phim 1</h4>
+                    <div class="card-stats">2025 • 10 tập</div>
+                    <div class="card-actions">
+                        <button class="action-btn play" title="Xem ngay">▶</button>
+                        <button class="action-btn" title="Thêm vào danh sách">+</button>
+                    </div>
+                </div>
+            </a>
+            <a href="#" class="movie-card">
+                <img src="images/banner.jpeg" alt="Phim 1">
+                <div class="card-info">
+                    <h4 class="card-title">Tên Phim 1</h4>
+                    <div class="card-stats">2024 • 2h 15m</div>
+                    <div class="card-actions">
+                        <button class="action-btn play" title="Xem ngay">▶</button>
+                        <button class="action-btn" title="Thêm vào danh sách">+</button>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </main>
+
+</body>
+</html>
