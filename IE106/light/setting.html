@@ -5,25 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nighthub - Cài Đặt</title>
     <style>
-        /* ================= CÀI ĐẶT BIẾN MÀU SẮC ================= */
+        /* ================= CÀI ĐẶT BIẾN MÀU SẮC (EMERALD & GOLD BACKGROUND) ================= */
         :root {
-            --c-blue-1: #32455F;
-            --c-blue-2: #1A324A;
-            --c-darkest: #07101C;
-            --bg-nav: rgba(7, 16, 28, 0.85); 
-            
-            --accent-color: #4DA8DA; 
-            --accent-red: #ff4757; 
-            --accent-red-light: rgba(255, 71, 87, 0.1); 
-            --accent-blue: #38bdf8; 
-            --accent-green: #10b981;
-            --accent-gold: #f5c518;
-
-            --text-main: #ffffff; 
-            --text-muted: #9aaec4; 
-            --bg-card: rgba(15, 23, 36, 0.6);
+            /* Nền mờ cho các khối kính hòa quyện với gradient xanh rêu */
+            --bg-nav: rgba(4, 35, 30, 0.85); 
+            --bg-card: rgba(0, 0, 0, 0.35); 
             --bg-input: rgba(255, 255, 255, 0.05);
-            --border-color: rgba(255, 255, 255, 0.1);
+            
+            /* Màu nhấn (Vàng kim nhẹ nhàng cho các chi tiết nhỏ) */
+            --accent-color: #D4C368; 
+            
+            /* Các màu trạng thái */
+            --accent-red: #F86060; 
+            --accent-red-light: rgba(248, 96, 96, 0.1); 
+            --accent-green: #4ade80;
+            --star-color: #f5c518;
+            
+            /* Viền */
+            --border-color: rgba(197, 179, 88, 0.3);
+            --border-strong: rgba(197, 179, 88, 0.6);
+            --border-gold: #c5b358;
+
+            /* Màu chữ luôn trắng để dễ đọc nhất */
+            --text-main: #ffffff; 
+            --text-muted: #cbd5e1; 
         }
 
         /* ================= RESET CSS ================= */
@@ -35,7 +40,8 @@
         }
 
         body {
-            background: linear-gradient(135deg, #32455F 17%, #1A324A 35%, #07101C 62%, #1A324A 84%);
+            /* Background chính màu Ngọc Lục Bảo */
+            background: linear-gradient(135deg, #A1934B 0%, #024643 65%, #A1934B 78%, #105942 98%);
             background-attachment: fixed;
             color: var(--text-main);
             line-height: 1.6;
@@ -56,7 +62,7 @@
             width: 100%;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid var(--border-color);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
         }
@@ -77,13 +83,13 @@
             display: flex; align-items: center; justify-content: flex-start; background-color: transparent; 
             border-radius: 25px; height: 42px; width: 42px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); overflow: hidden;
         }
-        .search-box.active { width: 280px; background-color: #1e293b; box-shadow: 0 4px 10px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
+        .search-box.active { width: 280px; background-color: rgba(4, 35, 30, 0.95); box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid var(--border-color); }
         .search-trigger { width: 42px; height: 42px; flex-shrink: 0; background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .search-trigger svg { width: 22px; height: 22px; stroke: var(--text-main); stroke-width: 1.5; fill: none; transition: stroke 0.3s, transform 0.2s; }
-        .search-trigger:hover svg { transform: scale(1.1); }
+        .search-trigger:hover svg { transform: scale(1.1); stroke: var(--text-main); }
         .search-box.active .search-trigger svg { stroke: #ffffff; }
         .search-input { border: none; background: transparent; outline: none; font-size: 14px; color: #ffffff; width: 100%; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
-        .search-input::placeholder { color: #94a3b8; }
+        .search-input::placeholder { color: var(--text-muted); }
         .search-box.active .search-input { opacity: 1; pointer-events: auto; padding: 0 5px; }
 
         .filter-toggle-btn { background: transparent; border: none; border-radius: 8px; width: 32px; height: 32px; flex-shrink: 0; margin-right: 5px; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: all 0.3s; cursor: pointer; }
@@ -99,17 +105,17 @@
         .noti-badge { position: absolute; top: 6px; right: 8px; width: 10px; height: 10px; background-color: var(--accent-red); border-radius: 50%; border: 2px solid var(--bg-nav); }
 
         .notification-dropdown {
-            position: absolute; top: 50px; right: -80px; width: 340px; background: rgba(15, 23, 36, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: none; flex-direction: column; z-index: 1000; overflow: hidden; transform-origin: top right; animation: dropFade 0.2s ease;
+            position: absolute; top: 50px; right: -80px; width: 340px; background: rgba(4, 35, 30, 0.95); border: 1px solid var(--border-color); border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: none; flex-direction: column; z-index: 1000; overflow: hidden; transform-origin: top right; animation: dropFade 0.2s ease;
         }
         .notification-dropdown.active { display: flex; }
         @keyframes dropFade { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
 
-        .noti-header { padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 700; font-size: 16px; color: white; display: flex; justify-content: space-between; }
+        .noti-header { padding: 15px 20px; border-bottom: 1px solid var(--border-color); font-weight: 700; font-size: 16px; color: white; display: flex; justify-content: space-between; }
         .noti-header span { font-size: 12px; color: var(--accent-color); cursor: pointer; font-weight: normal; }
         .noti-list { max-height: 350px; overflow-y: auto; }
-        .noti-item { padding: 15px 20px; display: flex; gap: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; position: relative; transition: background 0.2s;}
-        .noti-item:hover { background: rgba(255,255,255,0.05); }
+        .noti-item { padding: 15px 20px; display: flex; gap: 15px; border-bottom: 1px solid var(--border-color); cursor: pointer; position: relative; transition: background 0.2s;}
+        .noti-item:hover { background: rgba(0,0,0,0.2); }
         .noti-item.unread::before { content: ''; position: absolute; left: 8px; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; background-color: var(--accent-color); border-radius: 50%; }
         .noti-img { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; }
         .noti-content { flex: 1; }
@@ -120,48 +126,47 @@
         /* --- AVATAR TÀI KHOẢN --- */
         .user-menu-wrapper { position: relative; }
         .avatar {
-            width: 42px; height: 42px; background-color: #32455F; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255,255,255,0.2);
+            width: 42px; height: 42px; background-color: rgba(255,255,255,0.1); border-radius: 50%; cursor: pointer; border: 2px solid rgba(255,255,255,0.2);
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'); background-size: cover; transition: transform 0.3s ease, border-color 0.3s ease;
         }
         .avatar:hover, .user-menu-wrapper.active .avatar { transform: scale(1.08); border-color: var(--text-main); }
 
         .user-dropdown {
-            position: absolute; top: 55px; right: 0; width: 220px; background: #1e293b; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            position: absolute; top: 55px; right: 0; width: 220px; background: rgba(4, 35, 30, 0.95); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(20px);
             display: none; flex-direction: column; z-index: 1000; padding: 8px 0; transform-origin: top right; animation: dropFade 0.2s ease;
         }
         .user-dropdown.active { display: flex; }
-        .user-menu-item { display: flex; align-items: center; gap: 15px; padding: 12px 20px; color: #cbd5e1; text-decoration: none; font-size: 14.5px; font-weight: 500; transition: all 0.2s ease; }
-        .user-menu-item:hover { background: rgba(255,255,255,0.06); color: #ffffff; }
+        .user-menu-item { display: flex; align-items: center; gap: 15px; padding: 12px 20px; color: var(--text-main); text-decoration: none; font-size: 14.5px; font-weight: 500; transition: all 0.2s ease; }
+        .user-menu-item:hover { background: rgba(0,0,0,0.2); color: var(--text-main); }
         .user-menu-item.logout-btn { color: var(--accent-red); }
         .user-menu-item.logout-btn:hover { background: rgba(248, 96, 96, 0.1); color: #ff6b81; }
         .user-menu-item svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .user-menu-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 4px 0; }
+        .user-menu-divider { height: 1px; background: var(--border-color); margin: 4px 0; }
 
         /* ================= BỘ LỌC NÂNG CAO (DROPDOWN) ================= */
-        .filter-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 9999; display: none; opacity: 0; transition: opacity 0.3s; }
+        .filter-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); z-index: 9999; display: none; opacity: 0; transition: opacity 0.3s; }
         .filter-overlay.active { display: block; opacity: 1; }
         .filter-modal {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%); background: #0f172a; color: #ffffff; width: 90%; max-width: 400px;
-            border-radius: 12px; padding: 25px; z-index: 10000; border: 1px solid var(--accent-blue); display: none; opacity: 0; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%); background: rgba(4, 35, 30, 0.95); backdrop-filter: blur(20px); color: var(--text-main); width: 90%; max-width: 400px;
+            border-radius: 12px; padding: 25px; z-index: 10000; border: 1px solid var(--border-color); display: none; opacity: 0; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); max-height: 85vh; overflow-y: auto;
         }
         .filter-modal.active { display: block; opacity: 1; transform: translate(-50%, -50%); }
-        .filter-drag-handle { width: 50px; height: 5px; background: #334155; border-radius: 3px; margin: 0 auto 15px auto; }
+        .filter-drag-handle { width: 50px; height: 5px; background: var(--border-strong); border-radius: 3px; margin: 0 auto 15px auto; }
         .filter-group { margin-bottom: 20px; }
-        .filter-group label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #ffffff; }
+        .filter-group label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
         .filter-select {
-            width: 100%; padding: 12px 15px; background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #ffffff; font-size: 14px; outline: none; appearance: none; cursor: pointer;
+            width: 100%; padding: 12px 15px; background-color: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 14px; outline: none; appearance: none; cursor: pointer;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat; background-position: right 15px center; background-size: 16px; transition: border-color 0.2s;
         }
-        .filter-select:focus, .filter-select:hover { border-color: var(--accent-blue); }
-        .filter-select option { background-color: #1e293b; color: #ffffff; }
+        .filter-select:focus, .filter-select:hover { border-color: var(--accent-color); }
+        .filter-select option { background-color: #024643; color: var(--text-main); }
         .filter-footer { display: flex; gap: 15px; margin-top: 30px; }
-        .btn-filter-apply { flex: 1; padding: 14px; background-color: var(--accent-blue); color: #0f172a; border-radius: 8px; font-size: 15px; font-weight: 700; border: none; cursor: pointer; transition: transform 0.2s; }
-        .btn-filter-apply:hover { background-color: #2ea2d6; transform: translateY(-2px); }
-        .btn-filter-cancel { flex: 1; padding: 14px; background-color: #334155; color: #ffffff; border-radius: 8px; font-size: 15px; font-weight: 600; border: none; cursor: pointer; transition: transform 0.2s; }
-        .btn-filter-cancel:hover { background-color: #475569; transform: translateY(-2px); }
-
+        .btn-filter-apply { flex: 1; padding: 14px; background: var(--accent-color); color: #000; border-radius: 8px; font-size: 15px; font-weight: 700; border: none; cursor: pointer; transition: transform 0.2s; }
+        .btn-filter-apply:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-filter-cancel { flex: 1; padding: 14px; background-color: rgba(0,0,0,0.3); color: var(--text-main); border-radius: 8px; font-size: 15px; font-weight: 600; border: none; cursor: pointer; transition: transform 0.2s; border: 1px solid var(--border-color);}
+        .btn-filter-cancel:hover { background-color: rgba(0,0,0,0.5); transform: translateY(-2px); }
 
         /* ================= MAIN CONTAINER SETTINGS ================= */
         .settings-layout {
@@ -178,7 +183,7 @@
         /* --- SIDEBAR TRÁI --- */
         .settings-sidebar {
             width: 280px;
-            background: rgba(15, 23, 36, 0.4);
+            background: rgba(4, 35, 30, 0.6); /* Đổi sang nền rêu */
             border-radius: 16px;
             padding: 20px 15px;
             border: 1px solid var(--border-color);
@@ -214,13 +219,13 @@
         }
 
         .sidebar-item:hover {
-            background: var(--bg-hover);
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-main);
         }
 
         .sidebar-item.active {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--accent-blue);
+            background: rgba(212, 195, 104, 0.1); /* Sáng nhẹ màu vàng kim */
+            color: var(--accent-color);
             font-weight: 600;
         }
 
@@ -257,7 +262,7 @@
         .tab-title {
             font-size: 28px;
             font-weight: 700;
-            color: #fff;
+            color: var(--text-main);
             margin-bottom: 8px;
         }
         .tab-desc {
@@ -267,7 +272,7 @@
 
         /* --- CARD THIẾT KẾ CHUNG --- */
         .setting-card {
-            background: rgba(15, 23, 36, 0.5);
+            background: var(--bg-card); /* Nền kính mờ đen nhẹ hòa quyện */
             border-radius: 16px;
             border: 1px solid var(--border-color);
             padding: 25px;
@@ -278,7 +283,7 @@
         .setting-card h3 {
             font-size: 18px;
             font-weight: 600;
-            color: #fff;
+            color: var(--text-main);
             margin-bottom: 5px;
         }
         .setting-card .card-desc {
@@ -301,18 +306,18 @@
             border-radius: 10px; color: white; font-size: 14px; outline: none;
             transition: border-color 0.2s; font-family: inherit;
         }
-        .form-control:focus { border-color: var(--accent-blue); }
+        .form-control:focus { border-color: var(--accent-color); }
         .form-control:disabled { opacity: 0.6; cursor: not-allowed; }
 
         .btn-primary {
-            background: var(--accent-blue); color: #000; border: none;
+            background: var(--accent-color); color: #000; border: none;
             padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;
             transition: all 0.2s; font-size: 14px;
         }
-        .btn-primary:hover { background: #2ea2d6; transform: translateY(-2px); }
+        .btn-primary:hover { background: #e3d386; transform: translateY(-2px); }
         
         .btn-secondary {
-            background: var(--bg-input); color: white; border: 1px solid var(--border-color);
+            background: var(--bg-input); color: var(--text-main); border: 1px solid var(--border-color);
             padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;
             transition: all 0.2s; font-size: 14px; display: inline-flex; align-items: center; justify-content: center;
         }
@@ -331,7 +336,7 @@
             position: absolute; content: ""; height: 18px; width: 18px;
             left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;
         }
-        input:checked + .slider { background-color: var(--accent-blue); }
+        input:checked + .slider { background-color: var(--accent-color); }
         input:checked + .slider:before { transform: translateX(20px); }
 
         /* Custom Radio Buttons */
@@ -341,10 +346,10 @@
             appearance: none; width: 18px; height: 18px; border: 2px solid var(--text-muted);
             border-radius: 50%; margin: 0; outline: none; position: relative; cursor: pointer; transition: border-color 0.2s;
         }
-        .radio-item input[type="radio"]:checked { border-color: var(--accent-blue); }
+        .radio-item input[type="radio"]:checked { border-color: var(--accent-color); }
         .radio-item input[type="radio"]:checked::after {
             content: ''; position: absolute; top: 3px; left: 3px; width: 8px; height: 8px;
-            background-color: var(--accent-blue); border-radius: 50%;
+            background-color: var(--accent-color); border-radius: 50%;
         }
 
         /* Segments (Kích thước phụ đề) */
@@ -355,7 +360,7 @@
             flex: 1; text-align: center; padding: 10px 0; font-size: 14px; font-weight: 500;
             color: var(--text-muted); cursor: pointer; border-radius: 8px; transition: all 0.2s;
         }
-        .segment-btn.active { background: var(--accent-blue); color: #000; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .segment-btn.active { background: var(--accent-color); color: #000; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 
         /* List Items (Connected accounts, Devices) */
         .list-item {
@@ -365,7 +370,6 @@
         .list-item:last-child { border-bottom: none; padding-bottom: 0; }
         .list-item-left { display: flex; align-items: center; gap: 15px; }
         
-        /* CẬP NHẬT: Cho phép chứa icon ảnh dễ dàng */
         .list-icon {
             width: 44px; height: 44px; background: rgba(255,255,255,0.05); border-radius: 8px;
             display: flex; align-items: center; justify-content: center; overflow: hidden;
@@ -378,7 +382,7 @@
         .list-info .status-red { color: var(--accent-red); font-size: 12px; font-weight: 500; }
         .list-action { font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: none; }
         .list-action.red { color: var(--accent-red); }
-        .list-action.blue { color: var(--accent-blue); }
+        .list-action.accent { color: var(--accent-color); }
 
         /* Select box custom */
         select.form-control {
@@ -386,11 +390,11 @@
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat; background-position: right 15px center; background-size: 16px;
         }
-        select.form-control option { background: var(--c-blue-2); color: white; }
+        select.form-control option { background: #024643; color: var(--text-main); }
 
         /* Tùy biến các Box Cảnh báo / Riêng biệt */
         .danger-box {
-            border: 1px solid rgba(255, 71, 87, 0.3); background: rgba(255, 71, 87, 0.05);
+            border: 1px solid rgba(248, 96, 96, 0.3); background: rgba(248, 96, 96, 0.05);
         }
         .warning-box {
             border: 1px solid rgba(245, 197, 24, 0.3); background: rgba(245, 197, 24, 0.05);
@@ -398,36 +402,64 @@
         .warning-box .warning-title { color: var(--star-color); display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-weight: 600;}
         
         .VIP-card {
-            background: linear-gradient(135deg, rgba(26, 50, 74, 0.8) 0%, rgba(15, 23, 36, 0.9) 100%);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 25px; position: relative; overflow: hidden;
-            margin-bottom: 25px;
+            background: linear-gradient(135deg, rgba(2, 70, 67, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+            border: 1px solid var(--border-color); border-radius: 16px; padding: 25px; position: relative; overflow: hidden;
+            margin-bottom: 25px; backdrop-filter: blur(10px);
         }
         .VIP-badge {
             display: inline-flex; align-items: center; gap: 10px; background: rgba(245, 197, 24, 0.15);
             padding: 10px 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(245, 197, 24, 0.3);
         }
         
-        .VIP-badge div h4 { font-size: 18px; color: white; line-height: 1; margin-bottom: 4px; }
+        .VIP-badge div h4 { font-size: 18px; color: var(--text-main); line-height: 1; margin-bottom: 4px; }
         .VIP-badge div p { font-size: 12px; color: var(--star-color); line-height: 1; }
         
         .plan-details { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
-        .plan-box { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; }
+        .plan-box { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; border: 1px solid var(--border-color); }
         .plan-box p { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
-        .plan-box h5 { font-size: 18px; color: white; }
+        .plan-box h5 { font-size: 18px; color: var(--text-main); }
         .plan-features { list-style: none; margin-bottom: 25px; }
         .plan-features li { display: flex; align-items: center; gap: 10px; font-size: 14px; margin-bottom: 10px; color: #ddd; }
         .plan-features li svg { width: 16px; height: 16px; stroke: var(--accent-green); fill: none; stroke-width: 2; }
-        .btn-VIP { background: var(--c-blue-1); color: white; border: none; width: 100%; padding: 14px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-        .btn-VIP:hover { background: var(--c-blue-2); }
-
-        /* Trợ lý ảo Box */
-        .bot-card {
-            background: linear-gradient(135deg, rgba(77, 168, 218, 0.15) 0%, rgba(138, 43, 226, 0.15) 100%);
-            border: 1px solid rgba(138, 43, 226, 0.3);
+        
+        /* Nút Gia hạn VIP */
+        .btn-VIP { 
+            background: transparent; 
+            color: var(--text-main); 
+            border: 1px solid rgba(255, 255, 255, 0.3); 
+            width: 100%; 
+            padding: 14px; 
+            border-radius: 8px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.2s; 
         }
-        .bot-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .bot-title { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; color: var(--accent-blue); }
-        .bot-title svg { width: 24px; height: 24px; fill: currentColor; }
+        .btn-VIP:hover { 
+            background: rgba(255, 255, 255, 0.1); 
+            border-color: var(--text-main);
+        }
+
+        /* Khối tiêu đề VIP Custom */
+        .VIP-header-custom {
+            margin-bottom: 25px;
+        }
+        .VIP-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .VIP-title-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .VIP-title-row h4 {
+            font-size: 26px;
+            color: var(--text-main);
+            line-height: 1;
+            margin: 0;
+        }
 
         /* Setting row for toggles */
         .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border-color); }
@@ -441,7 +473,7 @@
         .faq-item h5 { font-size: 15px; font-weight: 500; }
         .faq-item p { font-size: 13px; color: var(--text-muted); margin-top: 5px; }
         .faq-item svg { width: 16px; height: 16px; stroke: var(--text-muted); transition: transform 0.2s; }
-        .faq-item:hover svg { stroke: white; transform: translateX(3px); }
+        .faq-item:hover svg { stroke: var(--text-main); transform: translateX(3px); }
 
         /* Liên hệ Grid */
         .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -453,39 +485,41 @@
 
 
         /* ================= FOOTER ================= */
-        .footer { background-color: rgba(7, 16, 28, 0.6); backdrop-filter: blur(10px); padding: 60px 50px 20px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; }
+        .footer { background-color: rgba(4, 35, 30, 0.7); backdrop-filter: blur(10px); padding: 60px 50px 20px; border-top: 1px solid var(--border-color); margin-top: auto; color: var(--text-main); }
         .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; max-width: 1200px; margin: 0 auto; }
         .footer-logo img { height: 150px; margin-bottom: 20px; }
         .footer-links { display: flex; gap: 80px; flex-wrap: wrap; }
         .link-column { display: flex; flex-direction: column; gap: 12px; }
         .link-column h4 { color: var(--text-main); font-size: 16px; margin-bottom: 8px; font-weight: 600; }
         .link-column a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.3s; }
-        .link-column a:hover { color: var(--text-main); }
-        .footer-bottom { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); font-size: 13px; }
+        .link-column a:hover { color: var(--accent-color); }
+        .footer-bottom { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 13px; }
 
         /* ================= CHATBOT TRÔI NỔI ================= */
         .chat-widget-wrapper { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; z-index: 9998; }
-        .chat-fab { width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #4DA8DA, #8A2BE2); display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 20px rgba(0,0,0,0.5); cursor: grab; user-select: none; transition: transform 0.2s ease; overflow: hidden; }
+        .chat-fab { width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #f0cd63, #398682); display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 20px rgba(0,0,0,0.5); cursor: grab; user-select: none; transition: transform 0.2s ease; overflow: hidden; }
         .chat-fab:active { cursor: grabbing; }
         .chat-fab:hover { transform: scale(1.05); }
         .chat-fab img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; pointer-events: none; }
         
-        .chat-window { position: absolute; bottom: 75px; right: 0; width: 320px; height: 450px; background: rgba(15, 23, 36, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: none; flex-direction: column; overflow: hidden; transform-origin: bottom right; animation: popUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .chat-window { position: absolute; bottom: 75px; right: 0; width: 320px; height: 450px; background: rgba(4, 35, 30, 0.95); border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); display: none; flex-direction: column; overflow: hidden; transform-origin: bottom right; animation: popUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); backdrop-filter: blur(20px); }
         .chat-window.active { display: flex; }
         @keyframes popUp { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
-        .chat-header { background: rgba(0,0,0,0.3); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .chat-header h4 { font-size: 16px; color: white; display: flex; align-items: center; gap: 8px;}
+        .chat-header { background: rgba(0,0,0,0.3); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+        .chat-header h4 { font-size: 16px; color: var(--text-main); display: flex; align-items: center; gap: 8px;}
         .chat-header h4 span { display: inline-block; width: 8px; height: 8px; background-color: #46d369; border-radius: 50%; }
         .close-chat-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 20px; transition: color 0.2s; }
         .close-chat-btn:hover { color: var(--accent-red); }
         .chat-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
         .chat-msg { max-width: 80%; padding: 10px 15px; border-radius: 12px; font-size: 14px; line-height: 1.4;}
-        .chat-msg.bot { background: rgba(255,255,255,0.1); color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
-        .chat-msg.user { background: var(--accent-color); color: #000; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 500; }
-        .chat-input-area { padding: 15px; background: rgba(0,0,0,0.2); border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 10px; }
-        .chat-input-area input { flex: 1; padding: 10px 15px; border-radius: 20px; border: none; outline: none; background: rgba(255,255,255,0.1); color: white; font-size: 14px; }
-        .chat-input-area input::placeholder { color: #888; }
-        .chat-send-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-color); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .chat-msg.bot { background: rgba(0,0,0,0.3); color: var(--text-main); align-self: flex-start; border-bottom-left-radius: 2px; }
+        .chat-msg.user { background: #A1934B; color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 600; }
+        .chat-input-area { padding: 15px; background: rgba(0,0,0,0.3); border-top: 1px solid var(--border-color); display: flex; gap: 10px; }
+        .chat-input-area input { flex: 1; padding: 10px 15px; border-radius: 20px; border: 1px solid transparent; outline: none; background: rgba(255,255,255,0.1); color: var(--text-main); font-size: 14px; transition: border 0.3s;}
+        .chat-input-area input:focus { border-color: var(--accent-color); }
+        .chat-input-area input::placeholder { color: var(--text-muted); }
+        .chat-send-btn { width: 36px; height: 36px; border-radius: 50%; background: #A1934B; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s;}
+        .chat-send-btn:hover { transform: scale(1.1); }
         .chat-send-btn svg { width: 16px; height: 16px; fill: #000; margin-left: 2px;}
 
         /* ================= RESPONSIVE ================= */
@@ -509,44 +543,6 @@
             .setting-card { padding: 20px 15px; }
             .footer-links { flex-direction: column; gap: 20px; }
         }
-        /* Khối tiêu đề VIP Custom */
-        .VIP-header-custom {
-            margin-bottom: 25px;
-        }
-        .VIP-subtitle {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        .VIP-title-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .VIP-title-row h4 {
-            font-size: 26px;
-            color: white;
-            line-height: 1;
-            margin: 0;
-        }
-
-        /* Xóa nền trắng và làm đẹp nút Gia hạn */
-        .btn-VIP { 
-            background: transparent; /* Xóa phông nền trắng */
-            color: white; /* Đổi chữ thành màu trắng */
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Thêm viền xám mờ */
-            width: 100%; 
-            padding: 14px; 
-            border-radius: 8px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            transition: all 0.2s; 
-        }
-        .btn-VIP:hover { 
-            background: rgba(255, 255, 255, 0.1); /* Rê chuột vào sẽ sáng lên nhẹ */
-            border-color: white;
-        }
     </style>
 </head>
 <body>
@@ -555,7 +551,7 @@
     <header>
         <div class="nav-left">
             <a href="#" class="logo">
-                <img src="images/only_logo.png" alt="Nighthub logo">
+                <img src="images/logo.png" alt="Nighthub logo">
             </a>
             <nav class="nav-links">
                 <a href="#">Trang chủ</a>
@@ -628,7 +624,7 @@
                         <span>Chuyển Hồ Sơ</span>
                     </a>
                     <a href="setting.html" class="user-menu-item">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                         <span>Cài Đặt</span>
                     </a>
                     <div class="user-menu-divider"></div>
@@ -791,7 +787,7 @@
                                 <h5>Apple</h5>
                             </div>
                         </div>
-                        <button class="list-action blue">Kết nối</button>
+                        <button class="list-action accent">Kết nối</button>
                     </div>
                     
                     <div class="list-item">
@@ -822,7 +818,7 @@
                     <h3>Đăng Nhập & Bảo Mật</h3>
                     <p class="card-desc">Quản lý mật khẩu và bảo vệ tài khoản của bạn</p>
                     
-                    <h4 style="font-size: 15px; margin-bottom: 15px;">Đổi Mật Khẩu</h4>
+                    <h4 style="font-size: 15px; margin-bottom: 15px; color: var(--text-main);">Đổi Mật Khẩu</h4>
                     <div class="form-group" style="margin-bottom: 20px;">
                         <label>Mật khẩu hiện tại</label>
                         <input type="password" class="form-control" value="********">
@@ -920,21 +916,21 @@
                     
                     <div class="setting-row">
                         <div class="setting-row-info">
-                            <h5 style="display: flex; align-items: center; gap: 8px;"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> Chế độ hiển thị</h5>
+                            <h5 style="display: flex; align-items: center; gap: 8px; color: var(--text-main);"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> Chế độ hiển thị</h5>
                             <p>Chế độ tối</p>
                         </div>
                         <button class="btn-secondary">Chuyển đổi</button>
                     </div>
                     <div class="setting-row">
                         <div class="setting-row-info">
-                            <h5 style="display: flex; align-items: center; gap: 8px;"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> Ngôn ngữ</h5>
+                            <h5 style="display: flex; align-items: center; gap: 8px; color: var(--text-main);"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> Ngôn ngữ</h5>
                             <p>Tiếng Việt</p>
                         </div>
                         <span style="color: var(--text-muted); font-size: 18px;">›</span>
                     </div>
                     <div class="setting-row" style="border-bottom: none; padding-bottom: 0;">
                         <div class="setting-row-info">
-                            <h5 style="display: flex; align-items: center; gap: 8px;">
+                            <h5 style="display: flex; align-items: center; gap: 8px; color: var(--text-main);">
                                 <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> 
                                 Trợ lý ảo Nighthub
                             </h5>
@@ -962,7 +958,7 @@
                     
                     <div class="setting-row">
                         <div class="setting-row-info">
-                            <h5>Tự động phát tập tiếp theo</h5>
+                            <h5 style="color: var(--text-main);">Tự động phát tập tiếp theo</h5>
                             <p>Tự động chuyển sang tập tiếp theo khi xem series</p>
                         </div>
                         <label class="toggle-switch">
@@ -1010,7 +1006,7 @@
                     
                     <div class="setting-row">
                         <div class="setting-row-info">
-                            <h5>Thông báo phim mới</h5>
+                            <h5 style="color: var(--text-main);">Thông báo phim mới</h5>
                             <p>Nhận email khi có phim mới hoặc tập mới</p>
                         </div>
                         <label class="toggle-switch">
@@ -1020,7 +1016,7 @@
                     </div>
                     <div class="setting-row">
                         <div class="setting-row-info">
-                            <h5>Khuyến mãi</h5>
+                            <h5 style="color: var(--text-main);">Khuyến mãi</h5>
                             <p>Nhận thông báo về ưu đãi đặc biệt</p>
                         </div>
                         <label class="toggle-switch">
@@ -1036,7 +1032,7 @@
                     
                     <div class="setting-row">
                         <div class="setting-row-info">
-                            <h5>Hiển thị lịch sử xem</h5>
+                            <h5 style="color: var(--text-main);">Hiển thị lịch sử xem</h5>
                             <p>Cho phép lưu lại lịch sử xem phim của bạn</p>
                         </div>
                         <label class="toggle-switch">
@@ -1046,7 +1042,7 @@
                     </div>
                     <div class="setting-row">
                         <div class="setting-row-info">
-                            <h5>Hiển thị hoạt động trên hồ sơ</h5>
+                            <h5 style="color: var(--text-main);">Hiển thị hoạt động trên hồ sơ</h5>
                             <p>Cho phép bạn bè xem hoạt động của bạn</p>
                         </div>
                         <label class="toggle-switch">
@@ -1056,7 +1052,7 @@
                     </div>
                     <div class="setting-row">
                         <div class="setting-row-info">
-                            <h5>Chia sẻ dữ liệu thống kê</h5>
+                            <h5 style="color: var(--text-main);">Chia sẻ dữ liệu thống kê</h5>
                             <p>Giúp đối tác phân tích xu hướng (không bao gồm thông tin cá nhân)</p>
                         </div>
                         <label class="toggle-switch">
@@ -1065,18 +1061,17 @@
                         </label>
                     </div>
 
-                    <div class="list-item" style="border: 1px solid rgba(245, 197, 24, 0.3); background: rgba(245, 197, 24, 0.05); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                    <div class="list-item" style="border: 1px solid var(--accent-red); background: rgba(255, 71, 87, 0.05); padding: 15px; border-radius: 10px; margin-top: 15px;">
                         <div class="list-item-left">
                             <div class="list-icon" style="background: transparent;">
-                                <!-- CẬP NHẬT: PHÓNG TO ICON THÙNG RÁC (width 32px, height 32px) + INVERT (ĐẢO MÀU TRẮNG) -->
                                 <img src="images/trash can.png" alt="Xóa lịch sử xem" style="width: 50px; height: 50px; object-fit: contain">
                             </div>
                             <div class="list-info">
-                                <h5 style="color: var(--star-color);">Xóa lịch sử xem</h5>
+                                <h5 style="color: var(--accent-red);">Xóa lịch sử xem</h5>
                                 <p>Xóa một phần hoặc toàn bộ lịch sử</p>
                             </div>
                         </div>
-                        <span style="color: var(--star-color); font-size: 18px; cursor: pointer;">›</span>
+                        <span style="color: var(--accent-red); font-size: 18px; cursor: pointer;">›</span>
                     </div>
                 </div>
 
@@ -1085,7 +1080,7 @@
                     <p class="card-desc">Thiết lập giới hạn nội dung cho trẻ em</p>
                     <div class="setting-row" style="border: none;">
                         <div class="setting-row-info">
-                            <h5>Bật kiểm soát phụ huynh</h5>
+                            <h5 style="color: var(--text-main);">Bật kiểm soát phụ huynh</h5>
                             <p>Giới hạn nội dung theo độ tuổi</p>
                         </div>
                         <label class="toggle-switch">
@@ -1139,11 +1134,10 @@
                     <div class="list-item" style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
                         <div class="list-item-left">
                             <div class="list-icon" style="background: transparent; width: 44px; height: 44px;">
-                                <!-- CẬP NHẬT: PHÓNG TO ICON THẺ VISA (width 36px, height 36px) + INVERT (ĐẢO MÀU TRẮNG) -->
                                 <img src="images/card.png" alt="Visa Card Icon" style="width: 50px; height: 50px; object-fit: contain">
                             </div>
                             <div class="list-info">
-                                <h5>Visa **** 4242</h5>
+                                <h5 style="color: var(--text-main);">Visa **** 4242</h5>
                                 <p>Hết hạn 12/2027</p>
                             </div>
                         </div>
@@ -1160,13 +1154,11 @@
                     <!-- Lịch sử 1 -->
                     <div class="list-item" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05);">
                         <div class="list-item-left">
-                            <!-- CẬP NHẬT KÍCH THƯỚC DIV BAO QUANH CHO ĐỒNG BỘ -->
                             <div class="list-icon" style="width: 40px; height: 40px; background: transparent;">
-                                <!-- CẬP NHẬT: PHÓNG TO ICON ĐÔ LA (width 32px, height 32px) + INVERT (ĐẢO MÀU TRẮNG NẾU CẦN) -->
                                 <img src="images/dola.png" alt="Dollar Icon" style="width: 50px; height: 50px; object-fit: contain">
                             </div>
                             <div class="list-info">
-                                <h5>99,000đ</h5>
+                                <h5 style="color: var(--text-main);">99,000đ</h5>
                                 <p>15/04/2026 • #INV-2026-04</p>
                             </div>
                         </div>
@@ -1179,13 +1171,11 @@
                     <!-- Lịch sử 2 -->
                     <div class="list-item" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05);">
                         <div class="list-item-left">
-                            <!-- CẬP NHẬT KÍCH THƯỚC DIV BAO QUANH CHO ĐỒNG BỘ -->
                             <div class="list-icon" style="width: 40px; height: 40px; background: transparent;">
-                                <!-- CẬP NHẬT: PHÓNG TO ICON ĐÔ LA (width 32px, height 32px) + INVERT (ĐẢO MÀU TRẮNG NẾU CẦN) -->
                                 <img src="images/dola.png" alt="Dollar Icon" style="width: 50px; height: 50px; object-fit: contain">
                             </div>
                             <div class="list-info">
-                                <h5>99,000đ</h5>
+                                <h5 style="color: var(--text-main);">99,000đ</h5>
                                 <p>15/03/2026 • #INV-2026-03</p>
                             </div>
                         </div>
@@ -1209,7 +1199,7 @@
                     
                     <div class="faq-item">
                         <div>
-                            <h5>Làm thế nào để đổi mật khẩu?</h5>
+                            <h5 style="color: var(--text-main);">Làm thế nào để đổi mật khẩu?</h5>
                             <p>Vào tab Tài khoản > Đăng nhập & Bảo mật > Đổi mật khẩu.</p>
                         </div>
                         <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
@@ -1217,7 +1207,7 @@
                     
                     <div class="faq-item">
                         <div>
-                            <h5>Cách hủy đăng ký VIP?</h5>
+                            <h5 style="color: var(--text-main);">Cách hủy đăng ký VIP?</h5>
                             <p>Vào tab Gói của bạn và chọn "Hủy đăng ký".</p>
                         </div>
                         <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
@@ -1225,7 +1215,7 @@
 
                     <div class="faq-item">
                         <div>
-                            <h5>Tại sao không xem được phim?</h5>
+                            <h5 style="color: var(--text-main);">Tại sao không xem được phim?</h5>
                             <p>Kiểm tra kết nối internet và thử làm mới trang.</p>
                         </div>
                         <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
@@ -1233,7 +1223,7 @@
 
                     <div class="faq-item">
                         <div>
-                            <h5>Làm sao để liên hệ hỗ trợ?</h5>
+                            <h5 style="color: var(--text-main);">Làm sao để liên hệ hỗ trợ?</h5>
                             <p>Sử dụng chat trực tuyến hoặc gửi email support@nighthub.com.</p>
                         </div>
                         <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
@@ -1246,28 +1236,28 @@
                         <div class="contact-box">
                             <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                             <div class="contact-box-info">
-                                <h5>Chat trực tuyến</h5>
+                                <h5 style="color: var(--text-main);">Chat trực tuyến</h5>
                                 <p>Hỗ trợ 24/7</p>
                             </div>
                         </div>
                         <div class="contact-box">
                             <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                             <div class="contact-box-info">
-                                <h5>Email</h5>
+                                <h5 style="color: var(--text-main);">Email</h5>
                                 <p>support@nighthub.com</p>
                             </div>
                         </div>
                         <div class="contact-box">
                             <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                             <div class="contact-box-info">
-                                <h5>Hotline</h5>
+                                <h5 style="color: var(--text-main);">Hotline</h5>
                                 <p>1900-xxxx</p>
                             </div>
                         </div>
                         <div class="contact-box">
                             <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
                             <div class="contact-box-info">
-                                <h5>Tài liệu</h5>
+                                <h5 style="color: var(--text-main);">Tài liệu</h5>
                                 <p>Điều khoản & Chính sách</p>
                             </div>
                         </div>
@@ -1448,7 +1438,8 @@
                 chatWindow.style.bottom = 'auto'; chatWindow.style.top = '75px';
                 chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('bottom', 'top');
             } else {
-                chatWindow.style.bottom = '75px'; chatWindow.style.top = 'auto';
+                chatWindow.style.bottom = '75px';
+                chatWindow.style.top = 'auto';
                 chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('top', 'bottom');
             }
             newX = Math.max(0, Math.min(newX, window.innerWidth - 60));

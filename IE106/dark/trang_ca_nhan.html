@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nighthub - Trang Cá Nhân</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         /* Thêm cuộn mượt cho toàn bộ trang */
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
-        /* ================= CÀI ĐẶT BIẾN MÀU SẮC ================= */
+        /* ================= CÀI ĐẶT BIẾN MÀU SẮC (DARK MODE) ================= */
         :root {
-            --c-blue-1: #32455F;
-            --c-blue-2: #1A324A;
+            --c-blue-1: #32455F; 
+            --c-blue-2: #1A324A; 
             --c-darkest: #07101C;
             --bg-nav: rgba(7, 16, 28, 0.85); 
             
@@ -24,61 +25,40 @@
             --text-main: #ffffff; 
             --text-muted: #9aaec4; 
             --star-color: #f5c518; 
-            --bg-card: rgba(26, 50, 74, 0.3);
+            --bg-card: rgba(26, 50, 74, 0.3); 
             --bg-hover: rgba(255, 255, 255, 0.1);
         }
 
         /* ================= RESET CSS ================= */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+        
+        body { 
+            background: linear-gradient(135deg, #32455F 17%, #1A324A 35%, #07101C 62%, #1A324A 84%); 
+            background-attachment: fixed; 
+            color: var(--text-main); 
+            line-height: 1.6; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+            display: flex; 
+            flex-direction: column; 
         }
 
-        body {
-            background: linear-gradient(135deg, #32455F 17%, #1A324A 35%, #07101C 62%, #1A324A 84%);
-            background-attachment: fixed;
-            color: var(--text-main);
-            line-height: 1.6;
-            min-height: 100vh;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* ================= NAVBAR (TỪ TRANG HOME) ================= */
-        header {
-            background-color: var(--bg-nav);
-            padding: 15px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-        }
-
+        /* ================= NAVBAR ================= */
+        header { background-color: var(--bg-nav); padding: 5px 50px; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
         .nav-left { display: flex; align-items: center; gap: 40px; }
-        .logo { display: flex; align-items: center; text-decoration: none; }
-        .logo img { height: 35px; width: auto; object-fit: contain; }
+        
+        /* HIỆU ỨNG GLASS CHO LOGO TRÊN NỀN TỐI */
+        .logo { display: flex; align-items: center; text-decoration: none; background: linear-gradient(315deg, rgba(217, 217, 217, 0.05) 0%); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: none; margin: -15px 0; border-radius: 0; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25); overflow: hidden; border-radius: 12px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .logo img { height: 50px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4)); }
         
         .nav-links { display: flex; gap: 20px; }
         .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 20px; transition: all 0.3s ease; position: relative; }
         .nav-links a:hover, .nav-links a.active { color: var(--text-main); font-weight: 500; }
-
         .nav-right { display: flex; align-items: center; gap: 20px; }
 
         /* --- TÌM KIẾM ẨN --- */
         .search-wrapper { position: relative; display: flex; align-items: center; }
-        .search-box {
-            display: flex; align-items: center; justify-content: flex-start; background-color: transparent; 
-            border-radius: 25px; height: 42px; width: 42px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); overflow: hidden;
-        }
+        .search-box { display: flex; align-items: center; justify-content: flex-start; background-color: transparent; border-radius: 25px; height: 42px; width: 42px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); overflow: hidden; }
         .search-box.active { width: 280px; background-color: #1e293b; box-shadow: 0 4px 10px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
         .search-trigger { width: 42px; height: 42px; flex-shrink: 0; background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .search-trigger svg { width: 22px; height: 22px; stroke: var(--text-main); stroke-width: 1.5; fill: none; transition: stroke 0.3s, transform 0.2s; }
@@ -100,13 +80,9 @@
         .noti-btn-container:hover .bell-icon { transform: scale(1.1) rotate(10deg); stroke: var(--accent-color); }
         .noti-badge { position: absolute; top: 6px; right: 8px; width: 10px; height: 10px; background-color: var(--accent-red); border-radius: 50%; border: 2px solid var(--bg-nav); }
 
-        .notification-dropdown {
-            position: absolute; top: 50px; right: -80px; width: 340px; background: rgba(15, 23, 36, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: none; flex-direction: column; z-index: 1000; overflow: hidden; transform-origin: top right; animation: dropFade 0.2s ease;
-        }
+        .notification-dropdown { position: absolute; top: 50px; right: -80px; width: 340px; background: rgba(15, 23, 36, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: none; flex-direction: column; z-index: 1000; overflow: hidden; transform-origin: top right; animation: dropFade 0.2s ease; }
         .notification-dropdown.active { display: flex; }
         @keyframes dropFade { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
-
         .noti-header { padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 700; font-size: 16px; color: white; display: flex; justify-content: space-between; }
         .noti-header span { font-size: 12px; color: var(--accent-color); cursor: pointer; font-weight: normal; }
         .noti-list { max-height: 350px; overflow-y: auto; }
@@ -121,16 +97,9 @@
 
         /* --- AVATAR TÀI KHOẢN --- */
         .user-menu-wrapper { position: relative; }
-        .avatar {
-            width: 42px; height: 42px; background-color: #32455F; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255,255,255,0.2);
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'); background-size: cover; transition: transform 0.3s ease, border-color 0.3s ease;
-        }
+        .avatar { width: 42px; height: 42px; background-color: #32455F; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255,255,255,0.2); background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'); background-size: cover; transition: transform 0.3s ease, border-color 0.3s ease; }
         .avatar:hover, .user-menu-wrapper.active .avatar { transform: scale(1.08); border-color: var(--text-main); }
-
-        .user-dropdown {
-            position: absolute; top: 55px; right: 0; width: 220px; background: #1e293b; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            display: none; flex-direction: column; z-index: 1000; padding: 8px 0; transform-origin: top right; animation: dropFade 0.2s ease;
-        }
+        .user-dropdown { position: absolute; top: 55px; right: 0; width: 220px; background: #1e293b; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: none; flex-direction: column; z-index: 1000; padding: 8px 0; transform-origin: top right; animation: dropFade 0.2s ease; }
         .user-dropdown.active { display: flex; }
         .user-menu-item { display: flex; align-items: center; gap: 15px; padding: 12px 20px; color: #cbd5e1; text-decoration: none; font-size: 14.5px; font-weight: 500; transition: all 0.2s ease; }
         .user-menu-item:hover { background: rgba(255,255,255,0.06); color: #ffffff; }
@@ -139,23 +108,15 @@
         .user-menu-item svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         .user-menu-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 4px 0; }
 
-        /* ================= BỘ LỌC NÂNG CAO (DROPDOWN) ================= */
+        /* ================= BỘ LỌC NÂNG CAO ================= */
         .filter-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 9999; display: none; opacity: 0; transition: opacity 0.3s; }
         .filter-overlay.active { display: block; opacity: 1; }
-        .filter-modal {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%); background: #0f172a; color: #ffffff; width: 90%; max-width: 400px;
-            border-radius: 12px; padding: 25px; z-index: 10000; border: 1px solid var(--accent-blue); display: none; opacity: 0; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); max-height: 85vh; overflow-y: auto;
-        }
+        .filter-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%); background: #0f172a; color: #ffffff; width: 90%; max-width: 400px; border-radius: 12px; padding: 25px; z-index: 10000; border: 1px solid var(--accent-blue); display: none; opacity: 0; box-shadow: 0 20px 50px rgba(0,0,0,0.8); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); max-height: 85vh; overflow-y: auto; }
         .filter-modal.active { display: block; opacity: 1; transform: translate(-50%, -50%); }
         .filter-drag-handle { width: 50px; height: 5px; background: #334155; border-radius: 3px; margin: 0 auto 15px auto; }
         .filter-group { margin-bottom: 20px; }
         .filter-group label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #ffffff; }
-        .filter-select {
-            width: 100%; padding: 12px 15px; background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #ffffff; font-size: 14px; outline: none; appearance: none; cursor: pointer;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat; background-position: right 15px center; background-size: 16px; transition: border-color 0.2s;
-        }
+        .filter-select { width: 100%; padding: 12px 15px; background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #ffffff; font-size: 14px; outline: none; appearance: none; cursor: pointer; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 15px center; background-size: 16px; transition: border-color 0.2s; }
         .filter-select:focus, .filter-select:hover { border-color: var(--accent-blue); }
         .filter-select option { background-color: #1e293b; color: #ffffff; }
         .filter-footer { display: flex; gap: 15px; margin-top: 30px; }
@@ -165,297 +126,74 @@
         .btn-filter-cancel:hover { background-color: #475569; transform: translateY(-2px); }
 
 
-        /* ================= MAIN CONTAINER TÀI KHOẢN ================= */
-        .profile-container {
-            flex: 1;
-            max-width: 1200px;
-            width: 100%;
-            margin: 100px auto 50px; /* Cách header cố định */
-            padding: 0 30px;
-        }
-
-        .page-title {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 30px;
-            color: var(--text-main);
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-        }
+        /* ================= MAIN CONTAINER ================= */
+        .profile-container { flex: 1; max-width: 1200px; width: 100%; margin: 100px auto 50px; padding: 0 30px; }
+        .page-title { font-size: 28px; font-weight: 800; margin-bottom: 30px; color: var(--text-main); text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
 
         /* ================= KHU VỰC THÔNG TIN & THỐNG KÊ ================= */
-        .profile-header-card {
-            background: var(--bg-card);
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 40px;
-            display: flex;
-            gap: 40px;
-            margin-bottom: 30px;
-        }
-
-        /* Nửa trái: Hồ sơ cá nhân */
-        .user-info-section {
-            flex: 1;
-            display: flex;
-            gap: 25px;
-            border-right: 1px solid rgba(255,255,255,0.1);
-            padding-right: 40px;
-        }
-
-        .user-avatar-large {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
-            background-size: cover;
-            border: 3px solid rgba(255,255,255,0.2);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-            position: relative;
-        }
-
-        .btn-edit-avatar {
-            position: absolute;
-            bottom: 0; right: 0;
-            width: 32px; height: 32px;
-            border-radius: 50%; background: var(--accent-blue);
-            display: flex; align-items: center; justify-content: center;
-            border: none; cursor: pointer; transition: transform 0.2s;
-        }
+        .profile-header-card { background: var(--bg-card); border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 15px 35px rgba(0,0,0,0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 40px; display: flex; gap: 40px; margin-bottom: 30px; }
+        .user-info-section { flex: 1; display: flex; gap: 25px; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 40px; }
+        .user-avatar-large { width: 120px; height: 120px; border-radius: 50%; background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'); background-size: cover; border: 3px solid rgba(255,255,255,0.2); box-shadow: 0 8px 20px rgba(0,0,0,0.5); position: relative; }
+        .btn-edit-avatar { position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; border-radius: 50%; background: var(--accent-blue); display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; transition: transform 0.2s; }
         .btn-edit-avatar:hover { transform: scale(1.1); }
         .btn-edit-avatar svg { width: 16px; height: 16px; stroke: #000; fill: none; stroke-width: 2; }
-
-        .user-details {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .user-details h2 {
-            font-size: 26px;
-            margin-bottom: 10px;
-            color: #fff;
-            line-height: 1.2;
-        }
-
-        .info-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-            font-size: 14.5px;
-        }
         
-        .info-row svg {
-            width: 18px; height: 18px; stroke: var(--accent-color); fill: none; stroke-width: 2;
-            stroke-linecap: round; stroke-linejoin: round;
-        }
-
+        .user-details { display: flex; flex-direction: column; justify-content: center; }
+        .user-details h2 { font-size: 26px; margin-bottom: 10px; color: #fff; line-height: 1.2; }
+        .info-row { display: flex; align-items: center; gap: 10px; color: var(--text-muted); margin-bottom: 12px; font-size: 14.5px; }
+        .info-row svg { width: 18px; height: 18px; stroke: var(--accent-color); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         .info-row span { color: #e2e8f0; font-weight: 500; }
-
-        .btn-edit-profile {
-            margin-top: 10px;
-            padding: 8px 20px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.2);
-            background: transparent;
-            color: white;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            align-self: flex-start;
-        }
-        .btn-edit-profile:hover { background: rgba(255,255,255,0.1); border-color: white; }
-
-
-        /* Nửa phải: Thống kê */
-        .user-stats-section {
-            flex: 1;
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .stat-box {
-            flex: 1;
-            background: rgba(0,0,0,0.3);
-            border-radius: 16px;
-            padding: 25px 20px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.3s ease;
-        }
-
+        
+        .user-stats-section { flex: 1; display: flex; gap: 20px; align-items: center; }
+        .stat-box { flex: 1; background: rgba(0,0,0,0.3); border-radius: 16px; padding: 25px 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s ease; }
         .stat-box:hover { transform: translateY(-5px); background: rgba(0,0,0,0.4); }
-
-        .stat-box.vip {
-            border-color: rgba(245, 197, 24, 0.5);
-            background: linear-gradient(to bottom, rgba(245, 197, 24, 0.1), rgba(0,0,0,0.3));
-            box-shadow: 0 10px 20px rgba(245, 197, 24, 0.1);
-        }
-
-        .stat-number {
-            font-size: 32px;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 5px;
-        }
-
+        .stat-box.vip { border-color: rgba(245, 197, 24, 0.5); background: linear-gradient(to bottom, rgba(245, 197, 24, 0.1), rgba(0,0,0,0.3)); box-shadow: 0 10px 20px rgba(245, 197, 24, 0.1); }
+        .stat-number { font-size: 32px; font-weight: 800; color: #fff; margin-bottom: 5px; }
         .stat-box.vip .stat-number { color: var(--star-color); }
+        .stat-label { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
 
-        .stat-label {
-            font-size: 13px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-
-        /* ================= KHU VỰC CHỈNH SỬA HỒ SƠ ================= */
-        .edit-profile-section {
-            background: var(--bg-card);
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 40px;
-            margin-bottom: 50px;
-            display: none; /* Ẩn mặc định */
-            animation: slideDown 0.4s ease forwards;
-        }
-
-        .edit-profile-section.active {
-            display: block;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .edit-profile-title {
-            font-size: 20px;
-            font-weight: 700;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-        }
-
-        .edit-form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .form-group label {
-            font-size: 14px;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .form-group input {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 12px 15px;
-            color: white;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s, background-color 0.2s;
-        }
-
-        .form-group input:focus {
-            border-color: var(--accent-blue);
-            background: rgba(0,0,0,0.5);
-        }
-
-        .edit-form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 15px;
-            margin-top: 30px;
-            grid-column: span 2;
-        }
-
-        .btn-save, .btn-cancel {
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-            font-size: 14px;
-        }
-
-        .btn-save {
-            background: var(--accent-blue);
-            color: #000;
-            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
-        }
-
-        .btn-save:hover {
-            background: #2ea2d6;
-            transform: translateY(-2px);
-        }
-
-        .btn-cancel {
-            background: rgba(255,255,255,0.1);
-            color: white;
-        }
-
-        .btn-cancel:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
-        }
-
-
-        /* ================= DANH SÁCH PHIM (LỊCH SỬ / XEM SAU) ================= */
-        .movie-list-section {
-            margin-bottom: 50px;
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .view-all {
-            font-size: 14px;
-            color: var(--accent-blue);
-            text-decoration: none;
-            font-weight: 500;
-            transition: opacity 0.2s;
-        }
+        
+        /* ================= DANH SÁCH PHIM DẠNG SLIDER ================= */
+        .movie-list-section { margin-bottom: 50px; }
+        .section-title { font-size: 20px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+        .view-all { font-size: 14px; color: var(--accent-blue); text-decoration: none; font-weight: 500; transition: opacity 0.2s; }
         .view-all:hover { opacity: 0.8; text-decoration: underline; }
 
-        /* Tái sử dụng CSS Liquid Glass Card từ Trang Chủ */
-        .card-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+        /* KHUNG CHỨA SLIDER */
+        .slider-wrapper { position: relative; }
+
+        /* GRID PHIM CHO PHÉP CUỘN NGANG */
+        .card-grid { 
+            display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 80px) / 5); gap: 20px; 
+            overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; scrollbar-width: none; 
+            padding: 30px 5px 50px 5px; margin: -30px -5px -50px -5px;
+        }
+        .card-grid::-webkit-scrollbar { display: none; }
         
+        /* NÚT TRƯỢT SANG TRÁI/PHẢI NGOÀI POSTER */
+        .slide-btn {
+            position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; background: transparent; border: none;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 20; opacity: 1; transition: transform 0.2s ease;
+        }
+        .slide-btn:hover { transform: translateY(-50%) scale(1.2); }
+        .slide-btn svg { width: 40px; height: 40px; stroke: var(--text-main); transition: stroke 0.2s ease; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8)); }
+        .slide-btn:hover svg { stroke: var(--accent-color); }
+        .slide-btn.left-btn { left: -45px; }
+        .slide-btn.right-btn { right: -45px; }
+
+        /* THẺ PHIM DARK MODE */
         .movie-card {
             background: rgba(26, 50, 74, 0.2); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             border: none; text-decoration: none; color: var(--text-main); display: block; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); position: relative; aspect-ratio: 2 / 3; 
             isolation: isolate; transform: translateZ(0); -webkit-mask-image: -webkit-radial-gradient(white, black); mask-image: -webkit-radial-gradient(white, black); 
+            z-index: 1;
         }
         .movie-card::before { content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); transition: all 0.6s ease; z-index: 10; pointer-events: none; }
         .movie-card:hover::before { left: 200%; }
         .movie-card:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 40px rgba(0,0,0,0.9); z-index: 10; }
         .movie-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; position: relative; z-index: 1; display: block; }
         .movie-card:hover img { transform: scale(1.05); }
+        
         .card-info {
             padding: 30px 12px 12px 12px; position: absolute; bottom: -2px; left: -2px; right: -2px; z-index: 5; 
             background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 10%, rgba(0, 0, 0, 0.7) 60%, rgba(0, 0, 0, 0) 100%);
@@ -464,33 +202,40 @@
             border-bottom-left-radius: 0; border-bottom-right-radius: 0; transform: translateY(102%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
         .movie-card:hover .card-info { transform: translateY(0); }
-        .card-actions { display: flex; gap: 6px; opacity: 0; margin-bottom: 8px; transform: translateY(10px); transition: all 0.3s ease 0.1s; }
+        
+        /* CĂN TRÁI CHO 2 NÚT BẤM */
+        .card-actions { display: flex; justify-content: flex-start; gap: 6px; opacity: 0; margin-bottom: 8px; transform: translateY(10px); transition: all 0.3s ease 0.1s; width: 100%; }
         .movie-card:hover .card-actions { opacity: 1; transform: translateY(0); }
+        
         .card-action-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.6); background: rgba(20, 20, 20, 0.6); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; }
         .card-action-btn.play { background: var(--text-main); color: #000; border-color: var(--text-main); padding-left: 2px; }
         .card-action-btn:hover { border-color: var(--text-main); background: rgba(255,255,255,0.3); color: var(--text-main); transform: scale(1.15); }
         .card-action-btn.play:hover { background: rgba(255,255,255,0.9); color: #000; }
         .card-action-btn svg { width: 14px; height: 14px; }
-        .card-title { font-size: 13px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 800; color: var(--text-main); text-shadow: 1px 1px 3px rgba(0,0,0,1); }
         
-        /* Chỉnh lại desc một chút cho History (Hiển thị thời gian xem / tập) */
+        .card-title { font-size: 13px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 800; color: var(--text-main); text-shadow: 1px 1px 3px rgba(0,0,0,1); }
         .card-desc { font-size: 11px; color: var(--accent-blue); font-weight: 600; line-height: 1.4; display: flex; align-items: center; gap: 5px; }
         .card-desc svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2;}
-
-        /* Nút Remove cho danh sách xem sau */
         .card-action-btn.remove:hover { background: var(--accent-red); border-color: var(--accent-red); color: white; }
 
-
-        /* ================= FOOTER ================= */
-        .footer { background-color: rgba(7, 16, 28, 0.6); backdrop-filter: blur(10px); padding: 60px 50px 20px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; }
+        /* ================= FOOTER (ĐÃ BỔ SUNG LẠI THEO DARK MODE) ================= */
+        .footer { 
+            background-color: rgba(7, 16, 28, 0.6); 
+            backdrop-filter: blur(10px); 
+            padding: 60px 50px 20px; 
+            border-top: 1px solid rgba(255,255,255,0.05); 
+            margin-top: auto; 
+            width: 100%;
+        }
         .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; max-width: 1200px; margin: 0 auto; }
-        .footer-logo img { height: 150px; margin-bottom: 20px; }
+        .footer-logo img { height: 150px; margin-bottom: 20px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4)); }
         .footer-links { display: flex; gap: 80px; flex-wrap: wrap; }
         .link-column { display: flex; flex-direction: column; gap: 12px; }
         .link-column h4 { color: var(--text-main); font-size: 16px; margin-bottom: 8px; font-weight: 600; }
         .link-column a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.3s; }
         .link-column a:hover { color: var(--text-main); }
         .footer-bottom { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); font-size: 13px; }
+
 
         /* ================= CHATBOT TRÔI NỔI ================= */
         .chat-widget-wrapper { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; z-index: 9998; }
@@ -521,11 +266,11 @@
         @media (max-width: 1024px) { 
             .profile-header-card { flex-direction: column; gap: 30px; }
             .user-info-section { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding-right: 0; padding-bottom: 30px; }
-            .card-grid { grid-template-columns: repeat(4, 1fr); } 
+            .card-grid { grid-auto-columns: calc((100% - 60px) / 4); } 
             .nav-links { display: none; }
         }
         @media (max-width: 900px) {
-            .card-grid { grid-template-columns: repeat(3, 1fr); }
+            .card-grid { grid-auto-columns: calc((100% - 40px) / 3); }
             .footer-links { gap: 40px; }
         }
         @media (max-width: 600px) {
@@ -533,31 +278,30 @@
             .profile-container { padding: 0 15px; margin-top: 80px;}
             .user-stats-section { flex-direction: column; }
             .stat-box { width: 100%; }
-            .edit-form-grid { grid-template-columns: 1fr; }
-            .edit-form-actions { grid-column: span 1; }
-            .card-grid { grid-template-columns: repeat(2, 1fr); }
+            .card-grid { grid-auto-columns: calc((100% - 20px) / 2); }
             .search-box { width: 140px; }
             .notification-dropdown { width: 300px; right: -60px; }
             .user-dropdown { right: -20px; }
             .footer-links { flex-direction: column; gap: 20px; }
+            .slide-btn { display: none !important; } 
         }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR ĐỒNG BỘ TỪ TRANG HOME -->
+    <!-- NAVBAR -->
     <header>
         <div class="nav-left">
-            <a href="#" class="logo">
-                <img src="images/only_logo.png" alt="Nighthub logo">
+            <a href="home.html" class="logo">
+                <img src="../images/logo.png" alt="Nighthub logo">
             </a>
             <nav class="nav-links">
-                <a href="#">Trang chủ</a>
+                <a href="home.html">Trang chủ</a>
                 <a href="#">Phim điện ảnh</a>
                 <a href="#">Phim truyền hình</a>
                 <a href="#">Phim hoạt hình</a>
-                <a href="#">Phim tài liệu</a>
-                <a href="#">Danh sách của tôi</a>
+                <a href="phim_tai_lieu.html">Phim tài liệu</a>
+                <a href="danh_sach.html">Danh sách của tôi</a>
             </nav>
         </div>
         
@@ -573,12 +317,7 @@
                     </button>
                     <input type="text" class="search-input" id="searchInput" placeholder="Tìm kiếm phim...">
                     <button class="filter-toggle-btn" onclick="toggleFilter()" title="Bộ lọc nâng cao">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="17" cy="8" r="3"></circle>
-                            <line x1="3" y1="8" x2="14" y2="8"></line>
-                            <circle cx="7" cy="16" r="3"></circle>
-                            <line x1="10" y1="16" x2="21" y2="16"></line>
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="17" cy="8" r="3"></circle><line x1="3" y1="8" x2="14" y2="8"></line><circle cx="7" cy="16" r="3"></circle><line x1="10" y1="16" x2="21" y2="16"></line></svg>
                     </button>
                 </div>
             </div>
@@ -586,10 +325,7 @@
             <!-- CHỨC NĂNG THÔNG BÁO -->
             <div class="notification-wrapper">
                 <div class="noti-btn-container" onclick="toggleNotification(event)">
-                    <svg class="bell-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                    </svg>
+                    <svg class="bell-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                     <div class="noti-badge"></div>
                 </div>
 
@@ -597,19 +333,11 @@
                     <div class="noti-header">Thông báo<span>Đánh dấu đã đọc</span></div>
                     <div class="noti-list">
                         <div class="noti-item unread">
-                            <img src="images/poster_doc_2.webp" alt="Phim" class="noti-img">
+                            <img src="../images/poster_doc_2.webp" alt="Phim" class="noti-img">
                             <div class="noti-content">
                                 <div class="noti-title">Tập mới đã có sẵn!</div>
                                 <div class="noti-desc">Dune: Part Two (Tập 12) vừa được cập nhật. Xem ngay nào!</div>
                                 <div class="noti-time">10 phút trước</div>
-                            </div>
-                        </div>
-                        <div class="noti-item">
-                            <img src="images/avatar.jpg" alt="Phim" class="noti-img">
-                            <div class="noti-content">
-                                <div class="noti-title">Gợi ý cho bạn</div>
-                                <div class="noti-desc">Dựa trên Interstellar, chúng tôi đề xuất The Dark Knight.</div>
-                                <div class="noti-time">2 giờ trước</div>
                             </div>
                         </div>
                     </div>
@@ -619,31 +347,18 @@
             <!-- MENU TÀI KHOẢN -->
             <div class="user-menu-wrapper">
                 <div class="avatar" title="Tài khoản" onclick="toggleUserMenu(event)"></div>
-                
                 <div class="user-dropdown" id="userDropdown">
-                    <a href="trang_ca_nhan.html" class="user-menu-item">
-                        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        <span>Trang Cá Nhân</span>
-                    </a>
-                    <a href="select-profile.html" class="user-menu-item">
-                        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                        <span>Chuyển Hồ Sơ</span>
-                    </a>
-                    <a href="setting.html" class="user-menu-item">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                        <span>Cài Đặt</span>
-                    </a>
+                    <a href="profile.html" class="user-menu-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span>Trang Cá Nhân</span></a>
+                    <a href="select-profile.html" class="user-menu-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>Chuyển Hồ Sơ</span></a>
+                    <a href="setting.html" class="user-menu-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span>Cài Đặt</span></a>
                     <div class="user-menu-divider"></div>
-                    <a href="login.html" class="user-menu-item logout-btn">
-                        <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                        <span>Đăng Xuất</span>
-                    </a>
+                    <a href="login.html" class="user-menu-item logout-btn"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg><span>Đăng Xuất</span></a>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- BỘ LỌC NÂNG CAO DROPDOWN MỚI TỪ TRANG CHỦ -->
+    <!-- BỘ LỌC NÂNG CAO DROPDOWN -->
     <div class="filter-overlay" id="filterOverlay" onclick="toggleFilter()"></div>
     <div class="filter-modal" id="filterModal">
         <div class="filter-drag-handle"></div>
@@ -654,6 +369,7 @@
                 <option>Phim điện ảnh</option>
                 <option>Phim truyền hình</option>
                 <option>Phim hoạt hình</option>
+                <option>Phim tài liệu</option>
             </select>
         </div>
         <div class="filter-group">
@@ -694,7 +410,7 @@
         <div class="filter-group">
             <label>Sắp xếp theo</label>
             <select class="filter-select">
-                <option>Phổ biến</option>
+                <option>Phổ biến nhất</option>
                 <option>Mới cập nhật</option>
                 <option>Đánh giá cao</option>
                 <option>Nhiều lượt xem</option>
@@ -709,13 +425,10 @@
 
     <!-- ================= MAIN CONTENT: TRANG CÁ NHÂN ================= -->
     <main class="profile-container">
-        
         <h1 class="page-title">Hồ Sơ Của Tôi</h1>
 
         <!-- KHỐI 1: THÔNG TIN & THỐNG KÊ -->
         <div class="profile-header-card">
-            
-            <!-- Nửa trái: Thông tin cá nhân -->
             <div class="user-info-section">
                 <div class="user-avatar-large">
                     <button class="btn-edit-avatar" title="Đổi ảnh đại diện">
@@ -725,178 +438,207 @@
                 
                 <div class="user-details">
                     <h2>Nguyễn Hoàng Nam</h2>
-                    
                     <div class="info-row" title="Trạng thái tài khoản">
                         <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="var(--star-color)" stroke="none"></path></svg>
                         <span style="color: var(--star-color); font-weight: 600;">VIP (Đang hoạt động)</span>
                     </div>
-
-                    <button class="btn-edit-profile" id="btnEditProfile">Chỉnh sửa hồ sơ</button>
                 </div>
             </div>
 
-            <!-- Nửa phải: Thống kê -->
             <div class="user-stats-section">
-                
-                <div class="stat-box vip">
-                    <div class="stat-number">45</div>
-                    <div class="stat-label">Ngày VIP</div>
-                </div>
-                
-                <div class="stat-box">
-                    <div class="stat-number">12</div>
-                    <div class="stat-label">Phim Xem Sau</div>
-                </div>
-
-                <div class="stat-box">
-                    <div class="stat-number">128</div>
-                    <div class="stat-label">Phim Đã Xem</div>
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- KHỐI CHỈNH SỬA HỒ SƠ (ẨN MẶC ĐỊNH) -->
-        <div class="edit-profile-section" id="editProfileSection">
-            <h3 class="edit-profile-title">Chỉnh Sửa Hồ Sơ</h3>
-            <div class="edit-form-grid">
-                <div class="form-group" style="grid-column: span 2;">
-                    <label>Họ và tên</label>
-                    <input type="text" value="Nguyễn Hoàng Nam">
-                </div>
-                <div class="edit-form-actions">
-                    <button class="btn-cancel" id="btnCancelEdit">Hủy</button>
-                    <button class="btn-save" id="btnSaveEdit">Lưu thay đổi</button>
-                </div>
+                <div class="stat-box vip"><div class="stat-number">45</div><div class="stat-label">Ngày VIP</div></div>
+                <div class="stat-box"><div class="stat-number">12</div><div class="stat-label">Phim Xem Sau</div></div>
+                <div class="stat-box"><div class="stat-number">128</div><div class="stat-label">Phim Đã Xem</div></div>
             </div>
         </div>
 
-        <!-- KHỐI 2: LỊCH SỬ XEM -->
+        <!-- KHỐI 2: LỊCH SỬ XEM (DẠNG SLIDER) -->
         <section class="movie-list-section">
             <div class="section-title">
                 <span>Lịch sử xem gần đây</span>
                 <a href="#" class="view-all">Xem tất cả ›</a>
             </div>
             
-            <div class="card-grid">
-                <!-- Thẻ Phim Liquid Glass (Tái sử dụng từ trang chủ) -->
-                <a href="xem_phim.html" class="movie-card">
-                    <img src="images/poster_doc_2.webp" alt="Phim 1">
-                    <div class="card-info">
-                        <div class="card-actions">
-                            <button class="card-action-btn play" title="Xem tiếp">▶</button>
-                            <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
-                        </div>
-                        <h4 class="card-title">Interstellar</h4>
-                        <p class="card-desc">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                            Đang xem: Tập 1 (45:20)
-                        </p>
-                    </div>
-                </a>
+            <div class="slider-wrapper">
+                <button class="slide-btn left-btn" onclick="slideLeft(this)" style="display: none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
 
-                <a href="xem_phim.html" class="movie-card">
-                    <img src="images/poster_doc_2.webp" alt="Phim 2">
-                    <div class="card-info">
-                        <div class="card-actions">
-                            <button class="card-action-btn play" title="Xem tiếp">▶</button>
-                            <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                <div class="card-grid" onscroll="updateSlideButtons(this)">
+                    <a href="xem_phim.html" class="movie-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 1" class="poster">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="card-action-btn play" title="Xem tiếp">▶</button>
+                                <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title">Interstellar</h4>
+                            <p class="card-desc">Đang xem: Tập 1 (45:20)</p>
                         </div>
-                        <h4 class="card-title">The Dark Knight</h4>
-                        <p class="card-desc">
-                            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                            Đã xem xong
-                        </p>
-                    </div>
-                </a>
+                    </a>
 
-                <a href="xem_phim.html" class="movie-card">
-                    <img src="images/poster_doc_2.webp" alt="Phim 3">
-                    <div class="card-info">
-                        <div class="card-actions">
-                            <button class="card-action-btn play" title="Xem tiếp">▶</button>
-                            <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                    <a href="xem_phim.html" class="movie-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 2" class="poster">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="card-action-btn play" title="Xem tiếp">▶</button>
+                                <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title">The Dark Knight</h4>
+                            <p class="card-desc">Đã xem xong</p>
                         </div>
-                        <h4 class="card-title">Mad Max: Fury Road</h4>
-                        <p class="card-desc">
-                            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                            Đã xem xong
-                        </p>
-                    </div>
-                </a>
+                    </a>
 
-                <a href="xem_phim.html" class="movie-card">
-                    <img src="images/poster_doc_2.webp" alt="Phim 4">
-                    <div class="card-info">
-                        <div class="card-actions">
-                            <button class="card-action-btn play" title="Xem tiếp">▶</button>
-                            <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                    <a href="xem_phim.html" class="movie-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 3" class="poster">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="card-action-btn play" title="Xem tiếp">▶</button>
+                                <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title">Mad Max: Fury Road</h4>
+                            <p class="card-desc">Đã xem xong</p>
                         </div>
-                        <h4 class="card-title">Tenet</h4>
-                        <p class="card-desc">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                            Đang xem: 1:12:00
-                        </p>
-                    </div>
-                </a>
+                    </a>
 
+                    <a href="xem_phim.html" class="movie-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 4" class="poster">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="card-action-btn play" title="Xem tiếp">▶</button>
+                                <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title">Tenet</h4>
+                            <p class="card-desc">Đang xem: 1:12:00</p>
+                        </div>
+                    </a>
+                    
+                    <a href="xem_phim.html" class="movie-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 5" class="poster">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="card-action-btn play" title="Xem tiếp">▶</button>
+                                <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title">Inception</h4>
+                            <p class="card-desc">Đang xem: 0:45:00</p>
+                        </div>
+                    </a>
+                    
+                    <a href="xem_phim.html" class="movie-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 6" class="poster">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="card-action-btn play" title="Xem tiếp">▶</button>
+                                <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title">Blade Runner 2049</h4>
+                            <p class="card-desc">Đã xem xong</p>
+                        </div>
+                    </a>
+                </div>
+
+                <button class="slide-btn right-btn" onclick="slideRight(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
             </div>
         </section>
 
-        <!-- KHỐI 3: DANH SÁCH XEM SAU -->
+        <!-- KHỐI 3: DANH SÁCH XEM SAU (DẠNG SLIDER) -->
         <section class="movie-list-section">
             <div class="section-title">
                 <span>Danh sách xem sau</span>
                 <a href="#" class="view-all">Quản lý ›</a>
             </div>
             
-            <div class="card-grid">
-                
-                <a href="xem_phim.html" class="movie-card">
-                    <img src="images/poster_doc_2.webp" alt="Phim 1">
-                    <div class="card-info">
-                        <div class="card-actions">
-                            <button class="card-action-btn play" title="Xem ngay">▶</button>
-                            <button class="card-action-btn remove" title="Xóa khỏi danh sách"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-                        </div>
-                        <h4 class="card-title">Oppenheimer</h4>
-                    </div>
-                </a>
+            <div class="slider-wrapper">
+                <button class="slide-btn left-btn" onclick="slideLeft(this)" style="display: none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
 
-                <a href="xem_phim.html" class="movie-card">
-                    <img src="images/poster_doc_2.webp" alt="Phim 2">
-                    <div class="card-info">
-                        <div class="card-actions">
-                            <button class="card-action-btn play" title="Xem ngay">▶</button>
-                            <button class="card-action-btn remove" title="Xóa khỏi danh sách"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                <div class="card-grid" onscroll="updateSlideButtons(this)">
+                    <a href="xem_phim.html" class="movie-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 1" class="poster">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="card-action-btn play" title="Xem ngay">▶</button>
+                                <button class="card-action-btn remove" title="Xóa khỏi danh sách"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                            </div>
+                            <h4 class="card-title">Oppenheimer</h4>
                         </div>
-                        <h4 class="card-title">Dune: Part Two</h4>
-                    </div>
-                </a>
+                    </a>
 
-                <a href="xem_phim.html" class="movie-card">
-                    <img src="images/poster_doc_2.webp" alt="Phim 3">
-                    <div class="card-info">
-                        <div class="card-actions">
-                            <button class="card-action-btn play" title="Xem ngay">▶</button>
-                            <button class="card-action-btn remove" title="Xóa khỏi danh sách"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                    <a href="xem_phim.html" class="movie-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 2" class="poster">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="card-action-btn play" title="Xem ngay">▶</button>
+                                <button class="card-action-btn remove" title="Xóa khỏi danh sách"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                            </div>
+                            <h4 class="card-title">Dune: Part Two</h4>
                         </div>
-                        <h4 class="card-title">Mission Impossible</h4>
-                    </div>
-                </a>
+                    </a>
 
+                    <a href="xem_phim.html" class="movie-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 2" class="poster">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="card-action-btn play" title="Xem ngay">▶</button>
+                                <button class="card-action-btn remove" title="Xóa khỏi danh sách"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                            </div>
+                            <h4 class="card-title">Dune: Part Two</h4>
+                        </div>
+                    </a>
+
+                    <a href="xem_phim.html" class="movie-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 2" class="poster">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="card-action-btn play" title="Xem ngay">▶</button>
+                                <button class="card-action-btn remove" title="Xóa khỏi danh sách"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                            </div>
+                            <h4 class="card-title">Dune: Part Two</h4>
+                        </div>
+                    </a>
+
+                    <a href="xem_phim.html" class="movie-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 3" class="poster">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="card-action-btn play" title="Xem ngay">▶</button>
+                                <button class="card-action-btn remove" title="Xóa khỏi danh sách"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                            </div>
+                            <h4 class="card-title">Mission Impossible</h4>
+                        </div>
+                    </a>
+                    
+                    <a href="xem_phim.html" class="movie-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 4" class="poster">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="card-action-btn play" title="Xem ngay">▶</button>
+                                <button class="card-action-btn remove" title="Xóa khỏi danh sách"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                            </div>
+                            <h4 class="card-title">John Wick 4</h4>
+                        </div>
+                    </a>
+                </div>
+
+                <button class="slide-btn right-btn" onclick="slideRight(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
             </div>
         </section>
 
     </main>
 
-    <!-- ================= FOOTER ================= -->
+    <!-- ================= FOOTER MỚI THÊM (DARK MODE) ================= -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">
-                <img src="images/logo.png" alt="Nighthub logo">
+                <img src="../images/logo.png" alt="Nighthub logo">
             </div>
+            
             <div class="footer-links">
                 <div class="link-column">
                     <h4>Về chúng tôi</h4>
@@ -904,12 +646,14 @@
                     <a href="#">Cơ hội nghề nghiệp</a>
                     <a href="#">Thông tin báo chí</a>
                 </div>
+                
                 <div class="link-column">
                     <h4>Hỗ trợ khách hàng</h4>
                     <a href="#">Trung tâm trợ giúp</a>
                     <a href="#">Câu hỏi thường gặp</a>
                     <a href="#">Liên hệ với chúng tôi</a>
                 </div>
+                
                 <div class="link-column">
                     <h4>Điều khoản & Chính sách</h4>
                     <a href="#">Điều khoản sử dụng</a>
@@ -923,7 +667,7 @@
         </div>
     </footer>
 
-    <!-- ================= CHATBOT TRÔI NỔI ================= -->
+    <!-- ================= CHATBOT ================= -->
     <div class="chat-widget-wrapper" id="chatWrapper">
         <div class="chat-window" id="chatWindow">
             <div class="chat-header">
@@ -942,13 +686,12 @@
         </div>
 
         <div class="chat-fab" id="chatFab" title="Hỗ trợ trực tuyến">
-            <img src="images/chatbox-removebg-preview.png" alt="Chatbot Icon">
+            <img src="../images/chatbox-removebg-preview.png" alt="Chatbot Icon">
         </div>
     </div>
 
-    <!-- SCRIPT CHUNG VÀ XỬ LÝ TAB -->
+    <!-- SCRIPT -->
     <script>
-        // 1. Tìm kiếm
         function toggleSearch() {
             const searchBox = document.getElementById('searchBox');
             const searchInput = document.getElementById('searchInput');
@@ -956,7 +699,6 @@
             if(searchBox.classList.contains('active')) searchInput.focus();
         }
 
-        // 2. Bộ lọc nâng cao
         function toggleFilter() {
             const modal = document.getElementById('filterModal');
             const overlay = document.getElementById('filterOverlay');
@@ -966,7 +708,6 @@
             }
         }
 
-        // 3. Menu Thông báo & Tài khoản
         function toggleNotification(event) {
             event.stopPropagation(); 
             const dropdown = document.getElementById('notiDropdown');
@@ -1035,60 +776,73 @@
             chatWrapper.style.right = 'auto';
         }
 
-        fab.addEventListener('mousedown', function(e) {
-            isDragging = false; dragStartX = e.clientX; dragStartY = e.clientY;
-            function onMouseMove(moveEvent) {
-                if (Math.abs(moveEvent.clientX - dragStartX) > 3 || Math.abs(moveEvent.clientY - dragStartY) > 3) isDragging = true;
-                if (isDragging) updateChatPosition(moveEvent.clientX, moveEvent.clientY);
+        if (fab) {
+            fab.addEventListener('mousedown', function(e) {
+                isDragging = false; dragStartX = e.clientX; dragStartY = e.clientY;
+                function onMouseMove(moveEvent) {
+                    if (Math.abs(moveEvent.clientX - dragStartX) > 3 || Math.abs(moveEvent.clientY - dragStartY) > 3) isDragging = true;
+                    if (isDragging) updateChatPosition(moveEvent.clientX, moveEvent.clientY);
+                }
+                function onMouseUp() {
+                    document.removeEventListener('mousemove', onMouseMove); document.removeEventListener('mouseup', onMouseUp);
+                    if (!isDragging) toggleChat();
+                }
+                document.addEventListener('mousemove', onMouseMove); document.addEventListener('mouseup', onMouseUp);
+            });
+
+            fab.addEventListener('touchstart', function(e) {
+                isDragging = false; const touch = e.touches[0];
+                dragStartX = touch.clientX; dragStartY = touch.clientY;
+                function onTouchMove(moveEvent) {
+                    const touchMove = moveEvent.touches[0];
+                    if (Math.abs(touchMove.clientX - dragStartX) > 3 || Math.abs(touchMove.clientY - dragStartY) > 3) isDragging = true;
+                    if (isDragging) { moveEvent.preventDefault(); updateChatPosition(touchMove.clientX, touchMove.clientY); }
+                }
+                function onTouchEnd() {
+                    document.removeEventListener('touchmove', onTouchMove); document.removeEventListener('touchend', onTouchEnd);
+                    if (!isDragging) toggleChat();
+                }
+                document.addEventListener('touchmove', onTouchMove, {passive: false}); document.addEventListener('touchend', onTouchEnd);
+            });
+        }
+
+        // ================= JAVASCRIPT NÚT TRƯỢT NGANG =================
+        function slideRight(btn) {
+            const grid = btn.parentElement.querySelector('.card-grid');
+            const scrollAmount = grid.clientWidth * 0.8;
+            grid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+
+        function slideLeft(btn) {
+            const grid = btn.parentElement.querySelector('.card-grid');
+            const scrollAmount = grid.clientWidth * 0.8;
+            grid.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        }
+
+        function updateSlideButtons(grid) {
+            const wrapper = grid.parentElement;
+            const leftBtn = wrapper.querySelector('.left-btn');
+            const rightBtn = wrapper.querySelector('.right-btn');
+            
+            if(leftBtn && rightBtn) {
+                if (grid.scrollLeft > 10) {
+                    leftBtn.style.display = 'flex';
+                } else {
+                    leftBtn.style.display = 'none';
+                }
+                
+                if (grid.scrollLeft + grid.clientWidth >= grid.scrollWidth - 10) {
+                    rightBtn.style.display = 'none';
+                } else {
+                    rightBtn.style.display = 'flex';
+                }
             }
-            function onMouseUp() {
-                document.removeEventListener('mousemove', onMouseMove); document.removeEventListener('mouseup', onMouseUp);
-                if (!isDragging) toggleChat();
-            }
-            document.addEventListener('mousemove', onMouseMove); document.addEventListener('mouseup', onMouseUp);
-        });
+        }
 
-        fab.addEventListener('touchstart', function(e) {
-            isDragging = false; const touch = e.touches[0];
-            dragStartX = touch.clientX; dragStartY = touch.clientY;
-            function onTouchMove(moveEvent) {
-                const touchMove = moveEvent.touches[0];
-                if (Math.abs(touchMove.clientX - dragStartX) > 3 || Math.abs(touchMove.clientY - dragStartY) > 3) isDragging = true;
-                if (isDragging) { moveEvent.preventDefault(); updateChatPosition(touchMove.clientX, touchMove.clientY); }
-            }
-            function onTouchEnd() {
-                document.removeEventListener('touchmove', onTouchMove); document.removeEventListener('touchend', onTouchEnd);
-                if (!isDragging) toggleChat();
-            }
-            document.addEventListener('touchmove', onTouchMove, {passive: false}); document.addEventListener('touchend', onTouchEnd);
-        });
-
-        // 5. Logic Chỉnh Sửa Hồ Sơ (Trượt mượt mà)
-        const btnEditProfile = document.getElementById('btnEditProfile');
-        const editProfileSection = document.getElementById('editProfileSection');
-        const btnCancelEdit = document.getElementById('btnCancelEdit');
-        const btnSaveEdit = document.getElementById('btnSaveEdit');
-
-        btnEditProfile.addEventListener('click', () => {
-            // Hiển thị phần form chỉnh sửa
-            editProfileSection.classList.add('active');
-            // Cuộn mượt xuống khu vực form chỉnh sửa
-            editProfileSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-
-        btnCancelEdit.addEventListener('click', () => {
-            // Ẩn form đi
-            editProfileSection.classList.remove('active');
-            // Cuộn nhẹ nhàng trở lại đầu trang
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        btnSaveEdit.addEventListener('click', () => {
-            // Thêm hiệu ứng hoặc thông báo lưu ở đây
-            alert('Đã cập nhật thông tin hồ sơ thành công!');
-            // Ẩn form và cuộn lên
-            editProfileSection.classList.remove('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.card-grid').forEach(grid => {
+                updateSlideButtons(grid);
+            });
         });
 
     </script>

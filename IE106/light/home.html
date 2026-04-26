@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nighthub - Trang Chủ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* ================= CÀI ĐẶT CHUNG (LIGHT MODE) ================= */
+        html { scroll-behavior: smooth; }
+        :root {
+            --bg-nav: rgba(255, 255, 255, 0.85); 
+            
+            --accent-color: #0284c7; /* Xanh dương đậm để nổi bật trên nền sáng */
+            --accent-red: #ef4444; 
+            --accent-red-light: #fecaca;
+            --accent-blue: #0ea5e9; 
+            
+            --text-main: #0f172a; /* Xám đen đậm cho chữ chính */
+            --text-muted: #232529; /* Xám nhạt cho chữ phụ */
+            
+            --star-color: #eab308; 
+            --bg-card: rgba(255, 255, 255, 0.6);
+            --bg-hover: rgba(0, 0, 0, 0.05);
+            --badge-bg: rgba(255, 255, 255, 0.8);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+        
+        body { 
+            background: linear-gradient(135deg, #CFFFF9 0%, #FFFFFF 18%, #B2F1E9 43%, #FFFFFF 72%, #CFFFF9 92%);
+            background-attachment: fixed;
+            color: var(--text-main); 
+            overflow-x: hidden; 
+        }
+
+        /* ================= NAVBAR (THANH ĐIỀU HƯỚNG) ================= */
+        header { background-color: var(--bg-nav); padding: 5px 50px; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
+        .nav-left { display: flex; align-items: center; gap: 40px; }
+        
+       /* HIỆU ỨNG GLASS CHO LOGO TRÊN NỀN SÁNG */
+        .logo { display: flex; align-items: center; text-decoration: none; background: linear-gradient(315deg, rgba(255, 255, 255, 0.6) 0%); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: none; margin: -15px 0; border-radius: 0; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); overflow: hidden; border-radius: 12px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .logo img { height: 50px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+        
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 20px; transition: all 0.3s ease; position: relative; }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-main); font-weight: 600; }
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+
+        /* --- TÌM KIẾM ẨN --- */
+        .search-wrapper { position: relative; display: flex; align-items: center; }
+        .search-box { display: flex; align-items: center; justify-content: flex-start; background-color: transparent; border-radius: 25px; height: 42px; width: 42px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); overflow: hidden; }
+        .search-box.active { width: 280px; background-color: #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.1); }
+        .search-trigger { width: 42px; height: 42px; flex-shrink: 0; background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .search-trigger svg { width: 22px; height: 22px; stroke: var(--text-main); stroke-width: 1.5; fill: none; transition: stroke 0.3s, transform 0.2s; }
+        .search-trigger:hover svg { transform: scale(1.1); }
+        .search-box.active .search-trigger svg { stroke: var(--text-main); }
+        .search-input { border: none; background: transparent; outline: none; font-size: 14px; color: var(--text-main); width: 100%; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+        .search-input::placeholder { color: var(--text-muted); }
+        .search-box.active .search-input { opacity: 1; pointer-events: auto; padding: 0 5px; }
+
+        .filter-toggle-btn { background: transparent; border: none; border-radius: 8px; width: 32px; height: 32px; flex-shrink: 0; margin-right: 5px; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: all 0.3s; cursor: pointer; }
+        .filter-toggle-btn:hover { background-color: rgba(0, 0, 0, 0.05); }
+        .search-box.active .filter-toggle-btn { opacity: 1; pointer-events: auto; }
+        .filter-toggle-btn svg { width: 18px; height: 18px; stroke: var(--text-main); }
+
+        /* --- THÔNG BÁO --- */
+        .notification-wrapper { position: relative; }
+        .noti-btn-container { position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; width: 40px; height: 40px; }
+        .bell-icon { width: 24px; height: 24px; stroke: var(--text-main); transition: all 0.2s ease; user-select: none; fill: none; stroke-width: 1.5;}
+        .noti-btn-container:hover .bell-icon { transform: scale(1.1) rotate(10deg); stroke: var(--accent-color); }
+        .noti-badge { position: absolute; top: 6px; right: 8px; width: 10px; height: 10px; background-color: var(--accent-red); border-radius: 50%; border: 2px solid #ffffff; }
+
+        .notification-dropdown { position: absolute; top: 50px; right: -80px; width: 340px; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(0,0,0,0.1); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: none; flex-direction: column; z-index: 1000; overflow: hidden; transform-origin: top right; animation: dropFade 0.2s ease; }
+        .notification-dropdown.active { display: flex; }
+        @keyframes dropFade { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
+        .noti-header { padding: 15px 20px; border-bottom: 1px solid rgba(0,0,0,0.05); font-weight: 700; font-size: 16px; color: var(--text-main); display: flex; justify-content: space-between; }
+        .noti-header span { font-size: 12px; color: var(--accent-color); cursor: pointer; font-weight: normal; }
+        .noti-list { max-height: 350px; overflow-y: auto; }
+        .noti-item { padding: 15px 20px; display: flex; gap: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); cursor: pointer; position: relative; transition: background 0.2s;}
+        .noti-item:hover { background: rgba(0,0,0,0.02); }
+        .noti-item.unread::before { content: ''; position: absolute; left: 8px; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; background-color: var(--accent-color); border-radius: 50%; }
+        .noti-img { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; }
+        .noti-content { flex: 1; }
+        .noti-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
+        .noti-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+        .noti-time { font-size: 11px; color: var(--accent-color); margin-top: 5px; }
+
+        /* --- AVATAR TÀI KHOẢN --- */
+        .user-menu-wrapper { position: relative; }
+        .avatar { width: 42px; height: 42px; background-color: #e2e8f0; border-radius: 50%; cursor: pointer; border: 2px solid rgba(0,0,0,0.1); background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'); background-size: cover; transition: transform 0.3s ease, border-color 0.3s ease; }
+        .avatar:hover, .user-menu-wrapper.active .avatar { transform: scale(1.08); border-color: var(--accent-color); }
+        .user-dropdown { position: absolute; top: 55px; right: 0; width: 220px; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: none; flex-direction: column; z-index: 1000; padding: 8px 0; transform-origin: top right; animation: dropFade 0.2s ease; }
+        .user-dropdown.active { display: flex; }
+        .user-menu-item { display: flex; align-items: center; gap: 15px; padding: 12px 20px; color: var(--text-muted); text-decoration: none; font-size: 14.5px; font-weight: 500; transition: all 0.2s ease; }
+        .user-menu-item:hover { background: rgba(0,0,0,0.04); color: var(--text-main); }
+        .user-menu-item.logout-btn { color: var(--accent-red); }
+        .user-menu-item.logout-btn:hover { background: rgba(239, 68, 68, 0.1); color: #dc2626; }
+        .user-menu-item svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .user-menu-divider { height: 1px; background: rgba(0,0,0,0.05); margin: 4px 0; }
+
+        /* ================= BỘ LỌC NÂNG CAO ================= */
+        .filter-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 9999; display: none; opacity: 0; transition: opacity 0.3s; }
+        .filter-overlay.active { display: block; opacity: 1; }
+        .filter-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%); background: #ffffff; color: var(--text-main); width: 90%; max-width: 400px; border-radius: 12px; padding: 25px; z-index: 10000; border: 1px solid rgba(0,0,0,0.1); display: none; opacity: 0; box-shadow: 0 20px 50px rgba(0,0,0,0.2); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); max-height: 85vh; overflow-y: auto; }
+        .filter-modal.active { display: block; opacity: 1; transform: translate(-50%, -50%); }
+        .filter-drag-handle { width: 50px; height: 5px; background: #cbd5e1; border-radius: 3px; margin: 0 auto 15px auto; }
+        .filter-group { margin-bottom: 20px; }
+        .filter-group label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
+        .filter-select { width: 100%; padding: 12px 15px; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; color: var(--text-main); font-size: 14px; outline: none; appearance: none; cursor: pointer; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 15px center; background-size: 16px; transition: border-color 0.2s; }
+        .filter-select:focus, .filter-select:hover { border-color: var(--accent-color); }
+        .filter-select option { background-color: #ffffff; color: var(--text-main); }
+        .filter-footer { display: flex; gap: 15px; margin-top: 30px; }
+        .btn-filter-apply { flex: 1; padding: 14px; background-color: var(--accent-color); color: #ffffff; border-radius: 8px; font-size: 15px; font-weight: 700; border: none; cursor: pointer; transition: transform 0.2s; }
+        .btn-filter-apply:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        .btn-filter-cancel { flex: 1; padding: 14px; background-color: #f1f5f9; color: var(--text-main); border-radius: 8px; font-size: 15px; font-weight: 600; border: 1px solid #cbd5e1; cursor: pointer; transition: transform 0.2s; }
+        .btn-filter-cancel:hover { background-color: #e2e8f0; transform: translateY(-2px); }
+
+        /* ================= AVATAR & MENU DROPDOWN ================= */
+        .user-menu-wrapper {
+            position: relative;
+        }
+
+        .avatar {
+            width: 42px; height: 42px; background-color: #e2e8f0; border-radius: 50%;
+            cursor: pointer; border: 2px solid rgba(0,0,0,0.1);
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
+            background-size: cover; transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .avatar:hover, .user-menu-wrapper.active .avatar { 
+            transform: scale(1.08); 
+            border-color: var(--accent-color);
+        }
+
+        /* Bảng thả xuống của Avatar */
+        .user-dropdown {
+            position: absolute; 
+            top: 55px; 
+            right: 0; 
+            width: 220px;
+            background: rgba(255, 255, 255, 0.95); 
+            border: 1px solid rgba(0,0,0,0.1); 
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: none; 
+            flex-direction: column; 
+            z-index: 1000;
+            padding: 8px 0;
+            transform-origin: top right; 
+            animation: dropFade 0.2s ease;
+        }
+
+        .user-dropdown.active {
+            display: flex;
+        }
+
+        .user-menu-item {
+            display: flex; 
+            align-items: center; 
+            gap: 15px;
+            padding: 12px 20px; 
+            color: var(--text-muted); 
+            text-decoration: none;
+            font-size: 14.5px; 
+            font-weight: 500; 
+            transition: all 0.2s ease;
+        }
+
+        .user-menu-item:hover {
+            background: rgba(0,0,0,0.04); 
+            color: var(--text-main);
+        }
+        
+        .user-menu-item.logout-btn { color: var(--accent-red); }
+        .user-menu-item.logout-btn:hover { background: rgba(239, 68, 68, 0.1); color: #dc2626; }
+
+        .user-menu-item svg {
+            width: 18px; 
+            height: 18px; 
+            stroke: currentColor; 
+            fill: none; 
+            stroke-width: 2; 
+            stroke-linecap: round; 
+            stroke-linejoin: round;
+        }
+
+        .user-menu-divider {
+            height: 1px;
+            background: rgba(0,0,0,0.05);
+            margin: 4px 0;
+        }
+
+
+        /* ================= NÚT ĐĂNG NHẬP ================= */
+        .btn-login {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0,0,0,0.1);
+            color: var(--text-main);
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14.5px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .btn-login:hover {
+            background-color: var(--text-main);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        /* ================= BỘ LỌC NÂNG CAO ================= */
+        .filter-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 9999; display: none; opacity: 0; transition: opacity 0.3s; }
+        .filter-overlay.active { display: block; opacity: 1; }
+
+        .filter-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%);
+            background: #ffffff; color: var(--text-main); width: 90%; max-width: 400px;
+            border-radius: 16px; padding: 25px; z-index: 10000;
+            border: 1px solid rgba(0,0,0,0.1); display: none; opacity: 0; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); max-height: 85vh; overflow-y: auto;
+        }
+        .filter-modal.active { display: block; opacity: 1; transform: translate(-50%, -50%); }
+
+        .filter-drag-handle { width: 50px; height: 5px; background: #cbd5e1; border-radius: 3px; margin: 0 auto 15px auto; }
+        
+        .filter-header-title { text-align: center; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 15px; margin-bottom: 20px; }
+        .filter-header-title h3 { color: var(--accent-color); font-size: 18px; font-weight: 700; }
+
+        .filter-group { margin-bottom: 20px; }
+        .filter-group label, .filter-group h4 { display: block; font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--text-main); }
+        
+        .filter-select {
+            width: 100%; padding: 12px 15px; background-color: #f8fafc; border: 1px solid #cbd5e1;
+            border-radius: 8px; color: var(--text-main); font-size: 14px; outline: none; appearance: none; cursor: pointer;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat; background-position: right 15px center; background-size: 16px; transition: border-color 0.2s;
+        }
+        .filter-select:focus, .filter-select:hover { border-color: var(--accent-color); }
+        .filter-select option { background-color: #ffffff; color: var(--text-main); }
+
+        .filter-options { display: flex; flex-wrap: wrap; gap: 10px; }
+        .filter-tag {
+            padding: 6px 16px; border-radius: 20px; border: 1px solid var(--accent-color);
+            color: var(--accent-color); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; background: transparent;
+        }
+        .filter-tag.active { background-color: var(--accent-color); color: #fff; }
+        .filter-tag:hover { transform: scale(1.05); }
+
+        .filter-footer { display: flex; gap: 15px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px; margin-top: 20px; }
+        .btn-filter-apply { flex: 1; padding: 14px; background-color: var(--accent-color); color: #ffffff; border-radius: 8px; font-size: 15px; font-weight: 700; border: none; cursor: pointer; transition: transform 0.2s; }
+        .btn-filter-apply:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        .btn-filter-cancel { flex: 1; padding: 14px; background-color: #f1f5f9; color: var(--text-main); border-radius: 8px; font-size: 15px; font-weight: 600; border: 1px solid #cbd5e1; cursor: pointer; transition: transform 0.2s; }
+        .btn-filter-cancel:hover { background-color: #e2e8f0; transform: translateY(-2px); }
+        
+        .filter-modal::-webkit-scrollbar { width: 6px; }
+        .filter-modal::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+
+        /* ================= HERO BANNER & MAIN PHIM ================= */
+        .hero { position: relative; height: 85vh; min-height: 600px; background-image: url('../images/poster_1.jpeg'); background-size: cover; background-position: center 20%; margin-top: 0; display: flex; align-items: flex-end; padding: 60px 50px; }
+        
+        /* Chuyển Gradient Banner sang sáng */
+        .hero-overlay { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: linear-gradient(to top, #ffffff92 0%, transparent 70%), 
+                        linear-gradient(to right, rgba(255, 255, 255, 0.538) 0%, rgba(255,255,255,0.4) 40%, transparent 100%); 
+        }
+        
+        .hero-content { position: relative; z-index: 10; max-width: 650px; }
+        .hero-title { font-size: 4rem; margin-bottom: 15px; font-weight: 900; line-height: 1.1; color: var(--text-main); text-shadow: none; }
+        
+        /* Nhãn Banner Chuẩn */
+        .hero-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; font-size: 15px; font-weight: 700; color: var(--text-muted); text-shadow: none; }
+        .meta-item { display: flex; align-items: center; }
+        .meta-separator { font-weight: 900; margin: 0 4px; font-size: 20px; line-height: 1;}
+        .meta-rating { margin-left: 10px; display: flex; align-items: center; gap: 6px; color: var(--text-main); }
+        .star-icon { width: 16px; height: 16px; fill: var(--star-color); color: var(--star-color); transform: translateY(-1px);}
+
+        .hero-desc { font-size: 1.1rem; margin-bottom: 30px; color: var(--text-muted); text-shadow: none; line-height: 1.5; }
+        .hero-buttons { display: flex; gap: 15px; }
+        .btn { padding: 12px 28px; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.3s ease; }
+        
+        .btn-play { background-color: var(--accent-color); color: #ffffff; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3); }
+        .btn-play:hover { background-color: #0369a1; transform: scale(1.05); }
+        .btn-info { background-color: rgba(255,255,255,0.7); color: var(--text-main); border: 1px solid rgba(0,0,0,0.1); backdrop-filter: blur(5px); }
+        .btn-info:hover { background-color: #ffffff; transform: scale(1.05); }
+        
+        .action-btn-square { width: 44px; height: 44px; border-radius: 14px; border: 1px solid rgba(0, 0, 0, 0.1); background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--text-main); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 0; }
+        .action-btn-square:hover { border-color: rgba(0, 0, 0, 0.2); background: #ffffff; color: var(--accent-color); transform: scale(1.08); }
+        .action-btn-square svg { width: 20px; height: 20px; }
+        
+        /* Hiệu ứng đã lưu (tô màu) */
+        .action-btn-square.bookmarked svg, .action-btn.bookmarked svg { fill: currentColor; }
+
+        .movie-sections { padding: 0 50px 50px 50px; position: relative; z-index: 20; margin-top: -80px; }
+        .row-title { font-size: 1.3rem; margin-bottom: 15px; margin-top: 40px; font-weight: 600; color: var(--text-main); }
+        
+        /* KHUNG CHỨA SLIDER */
+        .slider-wrapper { position: relative; }
+
+        /* NÚT TRƯỢT SANG TRÁI/PHẢI NGOÀI POSTER */
+        .slide-btn {
+            position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; background: transparent; border: none;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 20; opacity: 1; transition: transform 0.2s ease;
+        }
+        .slide-btn:hover { transform: translateY(-50%) scale(1.2); }
+        .slide-btn svg { width: 40px; height: 40px; stroke: var(--text-main); transition: stroke 0.2s ease; }
+        .slide-btn:hover svg { stroke: var(--accent-color); }
+        .slide-btn.left-btn { left: -45px; }
+        .slide-btn.right-btn { right: -45px; }
+
+        /* GRID PHIM CHO PHÉP CUỘN NGANG VÀ CSS FIX WRAPPING */
+        .card-grid { 
+            display: flex; flex-wrap: nowrap; gap: 15px; 
+            overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; scrollbar-width: none; 
+            padding: 30px 5px 50px 5px; margin: -30px -5px -50px -5px;
+        }
+        .card-grid::-webkit-scrollbar { display: none; }
+
+        /* CHỐT CỨNG KÍCH THƯỚC THẺ PHIM */
+        .movie-card { 
+            flex: 0 0 calc((100% - (4 * 15px)) / 5); 
+            background: var(--bg-card); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); border: 1px solid rgba(0,0,0,0.05); text-decoration: none; color: var(--text-main); display: block; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05); position: relative; aspect-ratio: 2 / 3; isolation: isolate; transform: translateZ(0); -webkit-mask-image: -webkit-radial-gradient(white, black); 
+        }
+        .movie-card::before { content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); transition: all 0.6s ease; z-index: 10; pointer-events: none; }
+        .movie-card:hover::before { left: 200%; }
+        .movie-card:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 15px 40px rgba(0,0,0,0.15); z-index: 10; }
+        
+        .movie-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; position: relative; z-index: 1; display: block; }
+        .movie-card:hover img { transform: scale(1.05); }
+
+        /* Kính thông tin phim cho Hàng Đề xuất/Hành động */
+       .card-info {
+            padding: 30px 15px 12px 15px; position: absolute; 
+            bottom: -2px; left: -2px; right: -2px; z-index: 5; 
+            background: linear-gradient(to top, rgba(255, 255, 255, 0.95) 15%, rgba(255, 255, 255, 0.7) 65%, transparent 100%);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+            border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+            transform: translateY(102%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .movie-card.has-info:hover .card-info,
+        .top10-card:hover .card-info { transform: translateY(0); }
+
+        .card-actions { display: flex; gap: 8px; opacity: 0; margin-bottom: 10px; transform: translateY(10px); transition: all 0.3s ease 0.1s; }
+        
+        .movie-card.has-info:hover .card-actions,
+        .top10-card:hover .card-actions { opacity: 1; transform: translateY(0); }
+        
+        .action-btn { width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1); background: rgba(255, 255, 255, 0.8); color: var(--text-main); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; }
+        .action-btn.play { background: var(--accent-color); color: #ffffff; border-color: var(--accent-color); padding-left: 2px; }
+        .action-btn:hover { border-color: var(--accent-color); background: #ffffff; color: var(--accent-color); transform: scale(1.15); }
+        .action-btn.play:hover { background: #0369a1; color: #ffffff; }
+        .action-btn svg { width: 14px; height: 14px; }
+
+        .card-title { font-size: 15px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 800; color: var(--text-main); }
+        .card-desc { font-size: 11.5px; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; }
+
+        /* Meta tags thẻ phim */
+        .card-meta-info { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; margin-bottom: 4px; opacity: 0; transform: translateY(10px); transition: all 0.3s ease 0.15s; }
+        .movie-card:hover .card-meta-info { opacity: 1; transform: translateY(0); }
+        .card-meta-match { color: #16a34a; }
+        .card-meta-age { border: 1px solid rgba(0,0,0,0.2); padding: 0 4px; border-radius: 3px; color: var(--text-main); }
+        .card-meta-duration { color: var(--text-main); }
+        .card-genres { font-size: 11px; color: var(--text-muted); font-weight: 500; display: flex; gap: 5px; margin-bottom: 8px; opacity: 0; transform: translateY(10px); transition: all 0.3s ease 0.2s; }
+        .movie-card:hover .card-genres { opacity: 1; transform: translateY(0); }
+
+        /* Các Nhãn (Badges) */
+        .badges-wrapper { position: absolute; top: 8px; left: 8px; display: flex; gap: 5px; z-index: 10; pointer-events: none;}
+        .badge { padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 800; text-transform: uppercase; color: white;}
+        .badge.age { background: #dc2626; }
+        .badge.quality { background: rgba(255,255,255,0.8); color: var(--text-main); border: 1px solid rgba(0,0,0,0.1); }
+        .badge.new { background: var(--accent-color); }
+        .badge.series { position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.8); border: 1px solid rgba(0,0,0,0.1); color: var(--text-main); backdrop-filter: blur(4px); border-radius: 4px; padding: 2px 6px; font-size: 11px; font-weight: bold; z-index: 10;}
+
+        /* Icon Play Mặc định ở giữa cho các hàng không dùng Glass Info */
+        .play-overlay { 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5); 
+            width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--accent-color); display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: all 0.3s; background: rgba(255,255,255,0.9); pointer-events: none; z-index: 10;
+        }
+        .play-overlay svg { width: 20px; height: 20px; fill: var(--accent-color); margin-left: 3px; }
+        .movie-card:hover .play-overlay { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+        /* BỔ SUNG: CHỈNH NÚT PLAY LUÔN HIỆN CHO HÀNG TIẾP TỤC XEM */
+        .play-overlay.always-visible { 
+            opacity: 1; transform: translate(-50%, -50%) scale(1); 
+            background: rgba(255,255,255,0.7); border-color: rgba(0,0,0,0.1); 
+        }
+        .play-overlay.always-visible svg { fill: var(--text-main); }
+        
+        .movie-card:hover .play-overlay.always-visible { 
+            background: var(--accent-color); border-color: var(--accent-color); transform: translate(-50%, -50%) scale(1.15); 
+        }
+        .movie-card:hover .play-overlay.always-visible svg { fill: #ffffff; }
+
+        /* --- TIẾP TỤC XEM --- */
+        .cw-progress { position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: rgba(0,0,0,0.1); z-index: 15;}
+        .cw-fill { height: 100%; background: var(--accent-red); }
+
+        /* --- TOP 10 CÁCH ĐIỆU CHUẨN --- */
+        .top10-grid { padding-left: 20px; padding-bottom: 20px; align-items: flex-end; }
+        .top10-item { 
+            flex: 0 0 calc((100% - (4 * 15px)) / 5); 
+            position: relative; display: flex; justify-content: flex-end; align-items: flex-end; 
+            transition: transform 0.3s; height: 100%;
+        }
+        .top10-item:hover { transform: scale(1.05) translateY(-10px); z-index: 30;}
+        
+        .top-number {
+            position: absolute; left: -15px; bottom: -12px; 
+            font-size: 180px; font-weight: 900; line-height: 0.75; letter-spacing: -10px;
+            color: transparent; 
+            -webkit-text-stroke: 4px rgba(206, 16, 16, 0.889); 
+            z-index: 1; display: flex; align-items: flex-end;
+            user-select: none; pointer-events: none;
+        }
+        .top10-item:nth-child(1) .top-number { -webkit-text-stroke: 4px var(--accent-red); color: rgba(239, 68, 68, 0.05);} 
+        /* Căn chỉnh số 10 để không bị tràn */
+        .top10-item:nth-child(10) .top-number { left: -35px; letter-spacing: -20px; }
+        
+        .top10-card {
+            width: 65%; aspect-ratio: 2/3; 
+            background: var(--bg-card); border-radius: 8px; overflow: hidden; z-index: 2;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); cursor: pointer; position: relative;
+        }
+        .top10-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .top10-item:hover .top10-card img { transform: scale(1.05); }
+        .top10-item:hover .play-overlay { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+        /* ================= MODAL XÁC NHẬN ĐĂNG XUẤT ================= */
+        .logout-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+            z-index: 10000; display: none; opacity: 0; transition: opacity 0.3s;
+        }
+        .logout-overlay.active { display: block; opacity: 1; }
+
+        .logout-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0,0,0,0.1);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            color: var(--text-main); width: 90%; max-width: 360px;
+            border-radius: 16px; padding: 35px 25px; z-index: 10001;
+            display: none; opacity: 0; box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-align: center;
+        }
+        .logout-modal.active { display: block; opacity: 1; transform: translate(-50%, -50%); }
+
+        .logout-modal h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 30px; line-height: 1.5; }
+        .logout-actions { display: flex; justify-content: center; gap: 15px; }
+        .logout-actions button { flex: 1; padding: 12px 0; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .btn-cancel { background-color: #f1f5f9; color: var(--text-main); border: 1px solid #cbd5e1; }
+        .btn-cancel:hover { background-color: #e2e8f0; }
+        .btn-confirm { background-color: var(--accent-red); color: #ffffff; border: none; }
+        .btn-confirm:hover { filter: brightness(1.1); box-shadow: 0 4px 15px rgba(248, 96, 96, 0.3); }
+
+        /* ================= CHATBOT TRÔI NỔI VÀ KHUNG CHAT ================= */
+        .chat-widget-wrapper { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; z-index: 9998; }
+        .chat-fab { width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #4DA8DA, #8A2BE2); display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 20px rgba(0,0,0,0.2); cursor: grab; user-select: none; transition: transform 0.2s ease; overflow: hidden; }
+        .chat-fab:active { cursor: grabbing; }
+        .chat-fab:hover { transform: scale(1.05); }
+        .chat-fab img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; pointer-events: none; }
+        
+        .chat-window { position: absolute; bottom: 75px; right: 0; width: 320px; height: 450px; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(0,0,0,0.1); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: none; flex-direction: column; overflow: hidden; transform-origin: bottom right; animation: popUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .chat-window.active { display: flex; }
+        @keyframes popUp { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
+        .chat-header { background: rgba(0,0,0,0.03); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .chat-header h4 { font-size: 16px; color: var(--text-main); display: flex; align-items: center; gap: 8px;}
+        .chat-header h4 span { display: inline-block; width: 8px; height: 8px; background-color: #46d369; border-radius: 50%; }
+        .close-chat-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 20px; transition: color 0.2s; }
+        .close-chat-btn:hover { color: var(--accent-red); }
+        .chat-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .chat-msg { max-width: 80%; padding: 10px 15px; border-radius: 12px; font-size: 14px; line-height: 1.4;}
+        .chat-msg.bot { background: #f1f5f9; color: var(--text-main); align-self: flex-start; border-bottom-left-radius: 2px; }
+        .chat-msg.user { background: var(--accent-color); color: #ffffff; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 500; }
+        .chat-input-area { padding: 15px; background: rgba(0,0,0,0.02); border-top: 1px solid rgba(0,0,0,0.05); display: flex; gap: 10px; }
+        .chat-input-area input { flex: 1; padding: 10px 15px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.1); outline: none; background: #ffffff; color: var(--text-main); font-size: 14px; }
+        .chat-input-area input::placeholder { color: var(--text-muted); }
+        .chat-send-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-color); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .chat-send-btn svg { width: 16px; height: 16px; fill: #ffffff; margin-left: 2px;}
+
+        /* ================= FOOTER ================= */
+        .footer { background-color: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); padding: 60px 50px 20px; border-top: 1px solid rgba(0,0,0,0.05); margin-top: 60px; }
+        .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; max-width: 1200px; margin: 0 auto; }
+        .footer-logo img { height: 150px; margin-bottom: 20px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+        .footer-links { display: flex; gap: 80px; flex-wrap: wrap; }
+        .link-column { display: flex; flex-direction: column; gap: 12px; }
+        .link-column h4 { color: var(--text-main); font-size: 16px; margin-bottom: 8px; font-weight: 600; }
+        .link-column a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.3s; }
+        .link-column a:hover { color: var(--text-main); }
+        .footer-bottom { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); color: var(--text-muted); font-size: 13px; }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 1200px) { 
+            .movie-card, .top10-item { flex: 0 0 calc((100% - (3 * 15px)) / 4); } 
+            .nav-links { display: none; } .search-box { width: 200px; } 
+        }
+        @media (max-width: 900px) { 
+            .movie-card, .top10-item { flex: 0 0 calc((100% - (2 * 15px)) / 3); } 
+            .hero-title { font-size: 3rem; } .footer-links { gap: 40px; } 
+        }
+        @media (max-width: 600px) { 
+            .movie-card, .top10-item { flex: 0 0 calc((100% - 15px) / 2); } 
+            header { padding: 15px 20px; } 
+            .movie-sections, .hero, .footer { padding: 20px; } 
+            .hero { height: 60vh; min-height: 400px; padding-bottom: 40px;} 
+            .hero-title { font-size: 2rem; } .hero-desc { display: none; } 
+            .footer-links { gap: 20px; flex-direction: column; }
+            .search-box.active { width: 180px; }
+            .notification-dropdown { width: 300px; right: -60px; } 
+            .slide-btn { display: none !important; }
+            .top-number { font-size: 120px; left: -10px; }
+        }
+    </style>
+</head>
+<body>
+
+     <!-- NAVBAR -->
+    <header>
+        <div class="nav-left">
+            <a href="#" class="logo">
+                <img src="../images/logo.png" alt="Nighthub logo">
+            </a>
+            <nav class="nav-links">
+                <a href="#" class="active">Trang chủ</a>
+                <a href="#">Phim điện ảnh</a>
+                <a href="#">Phim truyền hình</a>
+                <a href="#">Phim hoạt hình</a>
+                <a href="#">Phim tài liệu</a>
+                <a href="#">Danh sách của tôi</a>
+            </nav>
+        </div>
+        
+        <div class="nav-right">
+            <!-- TÌM KIẾM ẨN VÀ BỘ LỌC -->
+            <div class="search-wrapper" id="searchWrapper">
+                <div class="search-box" id="searchBox">
+                    <button class="search-trigger" onclick="toggleSearch()" title="Tìm kiếm">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Tìm kiếm phim...">
+                    <button class="filter-toggle-btn" onclick="toggleFilter()" title="Bộ lọc nâng cao">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="17" cy="8" r="3"></circle><line x1="3" y1="8" x2="14" y2="8"></line><circle cx="7" cy="16" r="3"></circle><line x1="10" y1="16" x2="21" y2="16"></line></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CHỨC NĂNG THÔNG BÁO -->
+            <div class="notification-wrapper">
+                <div class="noti-btn-container" onclick="toggleNotification(event)">
+                    <svg class="bell-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    <div class="noti-badge"></div>
+                </div>
+
+                <div class="notification-dropdown" id="notiDropdown">
+                    <div class="noti-header">Thông báo<span>Đánh dấu đã đọc</span></div>
+                    <div class="noti-list">
+                        <div class="noti-item unread">
+                            <img src="../images/poster_doc_2.webp" alt="Phim" class="noti-img">
+                            <div class="noti-content">
+                                <div class="noti-title">Tập mới đã có sẵn!</div>
+                                <div class="noti-desc">Dune: Part Two (Tập 12) vừa được cập nhật. Xem ngay nào!</div>
+                                <div class="noti-time">10 phút trước</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MENU TÀI KHOẢN -->
+            <div class="user-menu-wrapper">
+                <div class="avatar" title="Tài khoản" onclick="toggleUserMenu(event)"></div>
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="trang_ca_nhan.html" class="user-menu-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span>Trang Cá Nhân</span></a>
+                    <a href="select-profile.html" class="user-menu-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>Chuyển Hồ Sơ</span></a>
+                    <a href="setting.html" class="user-menu-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span>Cài Đặt</span></a>
+                    <div class="user-menu-divider"></div>
+                    <a href="login.html" class="user-menu-item logout-btn"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg><span>Đăng Xuất</span></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- BỘ LỌC NÂNG CAO DROPDOWN MỚI TỪ TRANG CHỦ -->
+    <div class="filter-overlay" id="filterOverlay" onclick="toggleFilter()"></div>
+    <div class="filter-modal" id="filterModal">
+        <div class="filter-drag-handle"></div>
+        <div class="filter-group">
+            <label>Danh mục</label>
+            <select class="filter-select">
+                <option>Tất cả</option>
+                <option>Phim điện ảnh</option>
+                <option>Phim truyền hình</option>
+                <option>Phim hoạt hình</option>
+                <option>Phim tài liệu</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Khu vực</label>
+            <select class="filter-select">
+                <option>Tất cả</option>
+                <option>Việt Nam</option>
+                <option>Âu Mỹ</option>
+                <option>Hàn Quốc</option>
+                <option>Trung Quốc</option>
+                <option>Nhật Bản</option>
+                <option>Thái Lan</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Thể loại</label>
+            <select class="filter-select">
+                <option>Tất cả</option>
+                <option>Hành động</option>
+                <option>Tình cảm</option>
+                <option>Kinh dị</option>
+                <option>Khoa học viễn tưởng</option>
+                <option>Hài hước</option>
+                <option>Cổ trang</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Thời gian phát hành</label>
+            <select class="filter-select">
+                <option>Tất cả</option>
+                <option>2025</option>
+                <option>2024</option>
+                <option>2023</option>
+                <option>2022</option>
+                <option>Trước 2022</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Sắp xếp theo</label>
+            <select class="filter-select">
+                <option>Phổ biến nhất</option>
+                <option>Mới cập nhật</option>
+                <option>Đánh giá cao</option>
+                <option>Nhiều lượt xem</option>
+            </select>
+        </div>
+        <div class="filter-footer">
+            <button class="btn-filter-apply" onclick="toggleFilter()">Áp dụng</button>
+            <button class="btn-filter-cancel" onclick="toggleFilter()">Xóa bộ lọc</button>
+        </div>
+    </div>
+
+
+    <div class="filter-overlay" id="filterOverlay" onclick="toggleFilter()"></div>
+    
+    <div class="filter-modal" id="filterModal">
+        <div class="filter-drag-handle"></div>
+        
+        <div class="filter-header-title">
+            <h3>Bộ lọc nâng cao</h3>
+        </div>
+
+        <div class="filter-group">
+            <label>Danh mục</label>
+            <div class="filter-options">
+                <span class="filter-tag">Tất cả</span>
+                <span class="filter-tag active">Phim điện ảnh</span>
+                <span class="filter-tag">Phim truyền hình</span>
+                <span class="filter-tag">Phim hoạt hình</span>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label>Khu vực</label>
+            <select class="filter-select">
+                <option>Tất cả</option>
+                <option>Việt Nam</option>
+                <option>Âu Mỹ</option>
+                <option>Hàn Quốc</option>
+                <option>Trung Quốc</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Thể loại</label>
+            <select class="filter-select">
+                <option>Tất cả</option>
+                <option>Hành động</option>
+                <option>Tình cảm</option>
+                <option>Kinh dị</option>
+                <option>Hài hước</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Sắp xếp theo</label>
+            <select class="filter-select">
+                <option>Phổ biến</option>
+                <option>Mới cập nhật</option>
+                <option>Đánh giá cao</option>
+                <option>Xem nhiều nhất</option>
+            </select>
+        </div>
+
+        <div class="filter-footer">
+            <button class="btn-filter-cancel" onclick="toggleFilter()">Hủy bỏ</button>
+            <button class="btn-filter-apply" onclick="toggleFilter()">Áp dụng bộ lọc</button>
+        </div>
+    </div>
+
+    <div class="logout-overlay" id="logoutOverlay" onclick="closeLogoutModal()"></div>
+    <div class="logout-modal" id="logoutModal">
+        <h3>Bạn có chắc chắn muốn<br>đăng xuất không?</h3>
+        <div class="logout-actions">
+            <button class="btn-cancel" onclick="closeLogoutModal()">Huỷ</button>
+            <button class="btn-confirm" onclick="confirmLogout()">Đăng xuất</button>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Captain America:<br>CIVIL WAR</h1>
+            
+            <div class="hero-meta">
+                <span class="meta-item">2015</span>
+                <span class="meta-separator">&middot;</span>
+                <span class="meta-item">T18</span>
+                <span class="meta-separator">&middot;</span>
+                <span class="meta-item">2h 00m 00s</span>
+                <span class="meta-separator">&middot;</span>
+                <span class="meta-item" style="font-weight: 700;">Full HD</span>
+                <span class="meta-item meta-rating" style="margin-left: 15px;">4.9/5.0 <svg class="star-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span>
+            </div>
+
+            <p class="hero-desc">Trong bối cảnh một thế giới đầy nguy hiểm, Captain America và Iron Man đã phải đứng trước một quyết định khó khăn - liệu họ sẽ tuân thủ lệnh của chính phủ hay là tự do làm theo lương tâm của mình. </p>
+            <div class="hero-buttons">
+                <button class="btn btn-play" onclick="goToDetail(event)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    Xem ngay
+                </button>
+                <button class="btn btn-info" onclick="goToDetail(event)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    Chi tiết
+                </button>
+                <button class="action-btn-square" title="Lưu phim" onclick="toggleBookmark(this, event)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <main class="movie-sections">
+        
+        <h3 class="row-title">Tiếp tục xem cho Nam</h3>
+        <div class="slider-wrapper">
+            <button class="slide-btn left-btn" onclick="slideLeft(this)" style="display: none;"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+            <div class="card-grid" onscroll="updateSlideButtons(this)">
+                
+                <a href="xem_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim" onerror="this.src='images/poster_1.jpeg'">
+                    <div class="cw-progress"><div class="cw-fill" style="width: 45%;"></div></div>
+                    
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem tiếp" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <h4 class="card-title">Captain America</h4>
+                        <p class="card-desc">Còn lại 1h 15m</p>
+                    </div>
+                </a>
+                
+                <a href="xem_phim.html" class="movie-card has-info">
+                    <div class="badge series">Tập 4</div>
+                    <img src="../images/poster_doc_2.webp" alt="Phim" onerror="this.src='images/poster_1.jpeg'">
+                    <div class="cw-progress"><div class="cw-fill" style="width: 80%;"></div></div>
+
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem tiếp" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <h4 class="card-title">Stranger Things</h4>
+                        <p class="card-desc">Còn lại 12 phút</p>
+                    </div>
+                </a>
+
+                <a href="xem_phim.html" class="movie-card has-info">
+                    <div class="badge series">Tập 3</div>
+                    <img src="../images/poster_doc_2.webp" alt="Phim" onerror="this.src='images/poster_1.jpeg'">
+                    <div class="cw-progress"><div class="cw-fill" style="width: 25%;"></div></div>
+                    
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem tiếp" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <h4 class="card-title">Interstellar</h4>
+                        <p class="card-desc">Còn lại 2h 05m</p>
+                    </div>
+                </a>
+
+                <a href="xem_phim.html" class="movie-card has-info">
+                    <div class="badge series">Tập 2</div>
+                    <img src="../images/poster_doc_2.webp" alt="Phim" onerror="this.src='images/poster_1.jpeg'">
+                    <div class="cw-progress"><div class="cw-fill" style="width: 90%;"></div></div>
+                    
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem tiếp" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <h4 class="card-title">The Dark Knight</h4>
+                        <p class="card-desc">Còn lại 5 phút</p>
+                    </div>
+                </a>
+
+                <a href="xem_phim.html" class="movie-card has-info">
+                   <img src="../images/poster_doc_2.webp" alt="Phim" onerror="this.src='images/poster_1.jpeg'">
+                    <div class="cw-progress"><div class="cw-fill" style="width: 10%;"></div></div>
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem tiếp" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <h4 class="card-title">Fast & Furious</h4>
+                        <p class="card-desc">Còn lại 1h 45m</p>
+                    </div>
+                </a>
+
+                <a href="xem_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim" onerror="this.src='images/poster_1.jpeg'">
+                    <div class="cw-progress"><div class="cw-fill" style="width: 60%;"></div></div>
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem tiếp" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <h4 class="card-title">Logan</h4>
+                        <p class="card-desc">Còn lại 40 phút</p>
+                    </div>
+                </a>
+                
+                <a href="xem_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim" onerror="this.src='images/poster_1.jpeg'">
+                    <div class="cw-progress"><div class="cw-fill" style="width: 30%;"></div></div>
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem tiếp" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <h4 class="card-title">Spider-Man</h4>
+                        <p class="card-desc">Còn lại 1h 20m</p>
+                    </div>
+                </a>
+                
+                <a href="xem_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim" onerror="this.src='images/poster_1.jpeg'">
+                    <div class="cw-progress"><div class="cw-fill" style="width: 75%;"></div></div>
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem tiếp" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <h4 class="card-title">Avengers</h4>
+                        <p class="card-desc">Còn lại 45 phút</p>
+                    </div>
+                </a>
+            </div>
+            <button class="slide-btn right-btn" onclick="slideRight(this)"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+        </div>
+
+
+        <h3 class="row-title">Top 10 Phim Điện Ảnh Hôm Nay</h3>
+        <div class="slider-wrapper">
+            <button class="slide-btn left-btn" onclick="slideLeft(this)" style="display: none;"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+            <div class="card-grid top10-grid" onscroll="updateSlideButtons(this)">
+                <!-- 10 Phim Top 10 với Liquid Glass Effect -->
+                <div class="top10-item" onclick="goToDetail(event)">
+                    <span class="top-number">1</span>
+                    <div class="top10-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 1" onerror="this.src='../images/poster_1.jpeg'">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                                <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title" style="font-size: 13px;">Oppenheimer</h4>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="top10-item" onclick="goToDetail(event)">
+                    <span class="top-number">2</span>
+                    <div class="top10-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 2" onerror="this.src='../images/poster_1.jpeg'">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                                <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title" style="font-size: 13px;">The Dark Knight</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="top10-item" onclick="goToDetail(event)">
+                    <span class="top-number">3</span>
+                    <div class="top10-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 3" onerror="this.src='../images/poster_1.jpeg'">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                                <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title" style="font-size: 13px;">Interstellar</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="top10-item" onclick="goToDetail(event)">
+                    <span class="top-number">4</span>
+                    <div class="top10-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 4" onerror="this.src='../images/poster_1.jpeg'">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                                <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title" style="font-size: 13px;">Tenet</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="top10-item" onclick="goToDetail(event)">
+                    <span class="top-number">5</span>
+                    <div class="top10-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 5" onerror="this.src='../images/poster_1.jpeg'">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                                <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title" style="font-size: 13px;">Dune: Part Two</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="top10-item" onclick="goToDetail(event)">
+                    <span class="top-number">6</span>
+                    <div class="top10-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 6" onerror="this.src='../images/poster_1.jpeg'">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                                <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title" style="font-size: 13px;">Inception</h4>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="top10-item" onclick="goToDetail(event)">
+                    <span class="top-number">7</span>
+                    <div class="top10-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 7" onerror="this.src='../images/poster_1.jpeg'">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                                <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title" style="font-size: 13px;">Avatar</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="top10-item" onclick="goToDetail(event)">
+                    <span class="top-number">8</span>
+                    <div class="top10-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 8" onerror="this.src='../images/poster_1.jpeg'">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                                <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title" style="font-size: 13px;">Spider-Man</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="top10-item" onclick="goToDetail(event)">
+                    <span class="top-number">9</span>
+                    <div class="top10-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 9" onerror="this.src='../images/poster_1.jpeg'">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                                <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title" style="font-size: 13px;">Fast & Furious</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="top10-item" onclick="goToDetail(event)">
+                    <span class="top-number">10</span>
+                    <div class="top10-card">
+                        <img src="../images/poster_doc_2.webp" alt="Phim 10" onerror="this.src='../images/poster_1.jpeg'">
+                        <div class="card-info">
+                            <div class="card-actions">
+                                <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                                <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                                <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                            </div>
+                            <h4 class="card-title" style="font-size: 13px;">Logan</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="slide-btn right-btn" onclick="slideRight(this)"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+        </div>
+
+
+        <h3 class="row-title">Đề xuất cho bạn</h3>
+        <div class="slider-wrapper">
+            <button class="slide-btn left-btn" onclick="slideLeft(this)" style="display: none;"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+            <div class="card-grid" onscroll="updateSlideButtons(this)">
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 1">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-meta-info"><span class="card-meta-match">98% độ phù hợp</span><span class="card-meta-age">T13</span><span class="card-meta-duration">2h 49m</span></div>
+                        <div class="card-genres">Khoa học viễn tưởng &bull; Phiêu lưu</div>
+                        <h4 class="card-title">Interstellar</h4>
+                        <p class="card-desc">Khi Trái Đất đang chết mòn, một nhóm phi hành gia phải thực hiện sứ mệnh quan trọng nhất lịch sử nhân loại...</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 2">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-meta-info"><span class="card-meta-match">95% độ phù hợp</span><span class="card-meta-age">T16</span><span class="card-meta-duration">2h 32m</span></div>
+                        <div class="card-genres">Hành động &bull; Tội phạm</div>
+                        <h4 class="card-title">The Dark Knight</h4>
+                        <p class="card-desc">Hiệp sĩ bóng đêm Batman phải đối mặt với thử thách lớn nhất từ trước đến nay mang tên Joker...</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 3">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-meta-info"><span class="card-meta-match">92% độ phù hợp</span><span class="card-meta-age">T18</span><span class="card-meta-duration">3h 00m</span></div>
+                        <div class="card-genres">Tâm lý &bull; Lịch sử</div>
+                        <h4 class="card-title">Oppenheimer</h4>
+                        <p class="card-desc">Bộ phim kể lại câu chuyện về J. Robert Oppenheimer và sự ra đời của bom nguyên tử...</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 4">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-meta-info"><span class="card-meta-match">89% độ phù hợp</span><span class="card-meta-age">T16</span><span class="card-meta-duration">2h 30m</span></div>
+                        <div class="card-genres">Hành động &bull; Viễn tưởng</div>
+                        <h4 class="card-title">Tenet</h4>
+                        <p class="card-desc">Hành trình qua một thế giới bóng tối gián điệp quốc tế với nhiệm vụ thao túng nghịch lý thời gian.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 5">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-meta-info"><span class="card-meta-match">99% độ phù hợp</span><span class="card-meta-age">T13</span><span class="card-meta-duration">2h 46m</span></div>
+                        <div class="card-genres">Viễn tưởng &bull; Hành động</div>
+                        <h4 class="card-title">Dune: Part Two</h4>
+                        <p class="card-desc">Hành trình báo thù những kẻ đã hủy gia tộc anh, đồng thời đối mặt với sự lựa chọn giữa tình yêu và định mệnh vũ trụ.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 6">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-meta-info"><span class="card-meta-match">92% độ phù hợp</span><span class="card-meta-age">T18</span><span class="card-meta-duration">3h 00m</span></div>
+                        <div class="card-genres">Tâm lý &bull; Lịch sử</div>
+                        <h4 class="card-title">Oppenheimer</h4>
+                        <p class="card-desc">Sự ra đời của bom nguyên tử làm thay đổi hoàn toàn cục diện thế giới.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 7">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-meta-info"><span class="card-meta-match">89% độ phù hợp</span><span class="card-meta-age">T16</span><span class="card-meta-duration">2h 30m</span></div>
+                        <div class="card-genres">Hành động &bull; Viễn tưởng</div>
+                        <h4 class="card-title">Tenet</h4>
+                        <p class="card-desc">Hành trình qua một thế giới bóng tối gián điệp quốc tế với nhiệm vụ thao túng nghịch lý thời gian.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 8">
+                        <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-meta-info"><span class="card-meta-match">99% độ phù hợp</span><span class="card-meta-age">T13</span><span class="card-meta-duration">2h 46m</span></div>
+                        <div class="card-genres">Viễn tưởng &bull; Hành động</div>
+                        <h4 class="card-title">Dune: Part Two</h4>
+                        <p class="card-desc">Hành trình báo thù những kẻ đã hủy gia tộc anh, đồng thời đối mặt với sự lựa chọn giữa tình yêu và định mệnh vũ trụ.</p>
+                    </div>
+                </a>
+            </div>
+            <button class="slide-btn right-btn" onclick="slideRight(this)"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+        </div>
+
+        <h3 class="row-title">Phim hành động</h3>
+        <div class="slider-wrapper">
+            <button class="slide-btn left-btn" onclick="slideLeft(this)" style="display: none;"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+            <div class="card-grid" onscroll="updateSlideButtons(this)">
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 1">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Hành động &bull; Tội phạm</div>
+                        <h4 class="card-title">The Dark Knight</h4>
+                        <p class="card-desc">Hiệp sĩ bóng đêm Batman phải đối mặt với thử thách lớn nhất từ trước đến nay mang tên Joker...</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 2">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Phiêu lưu &bull; Viễn tưởng</div>
+                        <h4 class="card-title">Dune</h4>
+                        <p class="card-desc">Hành trình bảo vệ hành tinh sa mạc Arrakis chứa đựng tài nguyên quý giá nhất vũ trụ.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 3">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Hành động &bull; Giật gân</div>
+                        <h4 class="card-title">Mad Max: Fury Road</h4>
+                        <p class="card-desc">Trong một thế giới cạn kiệt tài nguyên sau tận thế, cuộc rượt đuổi nghẹt thở trên sa mạc cằn cỗi bắt đầu.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 4">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Hành động &bull; Tội phạm</div>
+                        <h4 class="card-title">Extraction 2</h4>
+                        <p class="card-desc">Lính đánh thuê Tyler Rake tiếp tục nhận một nhiệm vụ tử thần khác: giải cứu gia đình một tên trùm xã hội đen.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 5">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        
+                        <div class="card-genres">Phiêu lưu &bull; Viễn tưởng</div>
+                        <h4 class="card-title">Dune</h4>
+                        <p class="card-desc">Hành trình bảo vệ hành tinh sa mạc Arrakis chứa đựng tài nguyên quý giá nhất vũ trụ.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 6">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Hành động &bull; Giật gân</div>
+                        <h4 class="card-title">Mad Max: Fury Road</h4>
+                        <p class="card-desc">Trong một thế giới cạn kiệt tài nguyên sau tận thế, cuộc rượt đuổi nghẹt thở trên sa mạc cằn cỗi bắt đầu.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 7">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Hành động &bull; Tội phạm</div>
+                        <h4 class="card-title">Extraction 2</h4>
+                        <p class="card-desc">Lính đánh thuê Tyler Rake tiếp tục nhận một nhiệm vụ tử thần khác: giải cứu gia đình một tên trùm xã hội đen.</p>
+                    </div>
+                </a>
+            </div>
+            <button class="slide-btn right-btn" onclick="slideRight(this)"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+        </div>
+
+                <h3 class="row-title">Phim hoạt hình</h3>
+        <div class="slider-wrapper">
+            <button class="slide-btn left-btn" onclick="slideLeft(this)" style="display: none;"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+            <div class="card-grid" onscroll="updateSlideButtons(this)">
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 1">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Hành động &bull; Tội phạm</div>
+                        <h4 class="card-title">The Dark Knight</h4>
+                        <p class="card-desc">Hiệp sĩ bóng đêm Batman phải đối mặt với thử thách lớn nhất từ trước đến nay mang tên Joker...</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 2">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Phiêu lưu &bull; Viễn tưởng</div>
+                        <h4 class="card-title">Dune</h4>
+                        <p class="card-desc">Hành trình bảo vệ hành tinh sa mạc Arrakis chứa đựng tài nguyên quý giá nhất vũ trụ.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 3">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Hành động &bull; Giật gân</div>
+                        <h4 class="card-title">Mad Max: Fury Road</h4>
+                        <p class="card-desc">Trong một thế giới cạn kiệt tài nguyên sau tận thế, cuộc rượt đuổi nghẹt thở trên sa mạc cằn cỗi bắt đầu.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 4">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Hành động &bull; Tội phạm</div>
+                        <h4 class="card-title">Extraction 2</h4>
+                        <p class="card-desc">Lính đánh thuê Tyler Rake tiếp tục nhận một nhiệm vụ tử thần khác: giải cứu gia đình một tên trùm xã hội đen.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 5">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Phiêu lưu &bull; Viễn tưởng</div>
+                        <h4 class="card-title">Dune</h4>
+                        <p class="card-desc">Hành trình bảo vệ hành tinh sa mạc Arrakis chứa đựng tài nguyên quý giá nhất vũ trụ.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 6">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Hành động &bull; Giật gân</div>
+                        <h4 class="card-title">Mad Max: Fury Road</h4>
+                        <p class="card-desc">Trong một thế giới cạn kiệt tài nguyên sau tận thế, cuộc rượt đuổi nghẹt thở trên sa mạc cằn cỗi bắt đầu.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 7">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Hành động &bull; Tội phạm</div>
+                        <h4 class="card-title">Extraction 2</h4>
+                        <p class="card-desc">Lính đánh thuê Tyler Rake tiếp tục nhận một nhiệm vụ tử thần khác: giải cứu gia đình một tên trùm xã hội đen.</p>
+                    </div>
+                </a>
+            </div>
+            <button class="slide-btn right-btn" onclick="slideRight(this)"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+        </div>
+        <h3 class="row-title">Phim tình cảm</h3>
+        <div class="slider-wrapper">
+            <button class="slide-btn left-btn" onclick="slideLeft(this)" style="display: none;"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+            <div class="card-grid" onscroll="updateSlideButtons(this)">
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 1">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Hành động &bull; Tội phạm</div>
+                        <h4 class="card-title">The Dark Knight</h4>
+                        <p class="card-desc">Hiệp sĩ bóng đêm Batman phải đối mặt với thử thách lớn nhất từ trước đến nay mang tên Joker...</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 2">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Phiêu lưu &bull; Viễn tưởng</div>
+                        <h4 class="card-title">Dune</h4>
+                        <p class="card-desc">Hành trình bảo vệ hành tinh sa mạc Arrakis chứa đựng tài nguyên quý giá nhất vũ trụ.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 3">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Hành động &bull; Giật gân</div>
+                        <h4 class="card-title">Mad Max: Fury Road</h4>
+                        <p class="card-desc">Trong một thế giới cạn kiệt tài nguyên sau tận thế, cuộc rượt đuổi nghẹt thở trên sa mạc cằn cỗi bắt đầu.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 4">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Hành động &bull; Tội phạm</div>
+                        <h4 class="card-title">Extraction 2</h4>
+                        <p class="card-desc">Lính đánh thuê Tyler Rake tiếp tục nhận một nhiệm vụ tử thần khác: giải cứu gia đình một tên trùm xã hội đen.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 5">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Phiêu lưu &bull; Viễn tưởng</div>
+                        <h4 class="card-title">Dune</h4>
+                        <p class="card-desc">Hành trình bảo vệ hành tinh sa mạc Arrakis chứa đựng tài nguyên quý giá nhất vũ trụ.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 6">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Hành động &bull; Giật gân</div>
+                        <h4 class="card-title">Mad Max: Fury Road</h4>
+                        <p class="card-desc">Trong một thế giới cạn kiệt tài nguyên sau tận thế, cuộc rượt đuổi nghẹt thở trên sa mạc cằn cỗi bắt đầu.</p>
+                    </div>
+                </a>
+                <a href="chi_tiet_phim.html" class="movie-card has-info">
+                    <img src="../images/poster_doc_2.webp" alt="Phim 7">
+                    <div class="card-info">
+                        <div class="card-actions">
+                            <button class="action-btn play" title="Xem phim" onclick="goToDetail(event)"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+                            <button class="action-btn bookmark-btn" title="Lưu phim" onclick="toggleBookmark(this, event)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+                            <button class="action-btn info-btn" title="Chi tiết" onclick="goToDetail(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                        </div>
+                        <div class="card-genres">Hành động &bull; Tội phạm</div>
+                        <h4 class="card-title">Extraction 2</h4>
+                        <p class="card-desc">Lính đánh thuê Tyler Rake tiếp tục nhận một nhiệm vụ tử thần khác: giải cứu gia đình một tên trùm xã hội đen.</p>
+                    </div>
+                </a>
+            </div>
+            <button class="slide-btn right-btn" onclick="slideRight(this)"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+        </div>
+        
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="../images/logo.png" alt="nighthub logo">
+            </div>
+            
+            <div class="footer-links">
+                <div class="link-column">
+                    <h4>Về chúng tôi</h4>
+                    <a href="#">Giới thiệu Nighthub</a>
+                    <a href="#">Cơ hội nghề nghiệp</a>
+                    <a href="#">Thông báo báo chí</a>
+                </div>
+                
+                <div class="link-column">
+                    <h4>Hỗ trợ khách hàng</h4>
+                    <a href="#">Trung tâm trợ giúp</a>
+                    <a href="#">Câu hỏi thường gặp</a>
+                    <a href="#">Liên hệ với chúng tôi</a>
+                </div>
+                
+                <div class="link-column">
+                    <h4>Điều khoản & Chính sách</h4>
+                    <a href="#">Điều khoản sử dụng</a>
+                    <a href="#">Quyền riêng tư</a>
+                    <a href="#">Bảo mật & Cookie</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Nighthub. Nền tảng xem phim trực tuyến hàng đầu.</p>
+        </div>
+    </footer>
+
+    <div class="chat-widget-wrapper" id="chatWrapper">
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h4><span></span> Nighthub Support</h4>
+                <button class="close-chat-btn" onclick="toggleChat()">✖</button>
+            </div>
+            <div class="chat-body">
+                <div class="chat-msg bot">Xin chào! 👋 Mình là trợ lý ảo của Nighthub. Mình có thể giúp gì cho bạn hôm nay?</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" placeholder="Nhập tin nhắn...">
+                <button class="chat-send-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="chat-fab" id="chatFab" title="Hỗ trợ trực tuyến">
+            <img src="../images/chatbot.png" alt="Chatbot Icon">
+        </div>
+    </div>
+
+
+    <script>
+        /* ---------------- QUẢN LÝ TRẠNG THÁI ĐĂNG NHẬP ---------------- */
+        let isLoggedIn = true; 
+
+        function initAuthState() {
+            const loginBtn = document.getElementById('btnLoginBtn');
+            const avatarMenu = document.getElementById('userAvatarMenu');
+            const notiBadge = document.getElementById('notiBadge');
+            const notiLoggedOut = document.getElementById('notiLoggedOut');
+            const notiLoggedIn = document.getElementById('notiLoggedIn');
+            const markReadBtn = document.getElementById('markReadBtn');
+
+            if (isLoggedIn) {
+                if(loginBtn) loginBtn.style.display = 'none';
+                if(avatarMenu) avatarMenu.style.display = 'block';
+                if(notiBadge) notiBadge.style.display = 'block';
+                if(notiLoggedOut) notiLoggedOut.style.display = 'none';
+                if(notiLoggedIn) notiLoggedIn.style.display = 'block';
+                if(markReadBtn) markReadBtn.style.display = 'inline';
+            } else {
+                if(loginBtn) loginBtn.style.display = 'flex';
+                if(avatarMenu) avatarMenu.style.display = 'none';
+                if(notiBadge) notiBadge.style.display = 'none';
+                if(notiLoggedOut) notiLoggedOut.style.display = 'block';
+                if(notiLoggedIn) notiLoggedIn.style.display = 'none';
+                if(markReadBtn) markReadBtn.style.display = 'none';
+            }
+        }
+
+        initAuthState();
+
+        function demoLogout(event) {
+            event.preventDefault();
+            document.getElementById('userDropdown').classList.remove('active');
+            document.getElementById('logoutOverlay').classList.add('active');
+            document.getElementById('logoutModal').classList.add('active');
+        }
+
+        function closeLogoutModal() {
+            document.getElementById('logoutOverlay').classList.remove('active');
+            document.getElementById('logoutModal').classList.remove('active');
+        }
+
+        function confirmLogout() {
+            isLoggedIn = false;
+            initAuthState();
+            closeLogoutModal();
+        }
+
+        /* ---------------- TÌM KIẾM ẨN ---------------- */
+        function toggleSearch() {
+            const searchBox = document.getElementById('searchBox');
+            const searchInput = document.getElementById('searchInput');
+            searchBox.classList.toggle('active');
+            if(searchBox.classList.contains('active')) searchInput.focus();
+        }
+
+        /* ---------------- BỘ LỌC ---------------- */
+        function toggleFilter() {
+            const modal = document.getElementById('filterModal');
+            const overlay = document.getElementById('filterOverlay');
+            modal.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        /* ---------------- THÔNG BÁO ---------------- */
+        function toggleNotification(event) {
+            event.stopPropagation(); 
+            const dropdown = document.getElementById('notiDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        /* ---------------- LƯU PHIM (BOOKMARK) VÀ CHI TIẾT ---------------- */
+        function toggleBookmark(btn, event) {
+            if(event) event.preventDefault(); 
+            btn.classList.toggle('bookmarked');
+        }
+
+        function goToDetail(event) {
+            if(event) event.preventDefault();
+            window.location.href = "chi_tiet_phim.html";
+        }
+
+        /* ---------------- MENU TÀI KHOẢN ---------------- */
+        function toggleUserMenu(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        /* ---------------- TỰ ĐỘNG ĐÓNG CÁC DROPDOWN/SEARCH ---------------- */
+        document.addEventListener('click', function(event) {
+            const notiWrapper = document.querySelector('.notification-wrapper');
+            const notiDropdown = document.getElementById('notiDropdown');
+            const userWrapper = document.querySelector('.user-menu-wrapper');
+            const userDropdown = document.getElementById('userDropdown');
+            const searchBox = document.getElementById('searchBox');
+            const filterModal = document.getElementById('filterModal');
+            
+            if (notiWrapper && notiDropdown && !notiWrapper.contains(event.target)) notiDropdown.classList.remove('active');
+            if (userWrapper && userDropdown && !userWrapper.contains(event.target)) userDropdown.classList.remove('active');
+            if (searchBox && searchBox.classList.contains('active') && !searchBox.contains(event.target)) {
+                if (!filterModal || !filterModal.contains(event.target)) searchBox.classList.remove('active');
+            }
+        });
+
+        /* ---------------- NÚT CHAT KÉO THẢ ---------------- */
+        let lastToggleTime = 0;
+        function toggleChat() {
+            const now = Date.now();
+            if (now - lastToggleTime < 300) return; 
+            lastToggleTime = now;
+            const chatWindow = document.getElementById('chatWindow');
+            chatWindow.classList.toggle('active');
+        }
+
+        const fab = document.getElementById('chatFab');
+        const chatWrapper = document.getElementById('chatWrapper');
+        const chatWindow = document.getElementById('chatWindow');
+        let isDragging = false;
+        let dragStartX, dragStartY;
+
+        function updateChatPosition(clientX, clientY) {
+            let newX = clientX - 30; 
+            let newY = clientY - 30;
+
+            if (newX < 320) {
+                chatWindow.style.right = 'auto'; chatWindow.style.left = '0';
+                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('right', 'left');
+            } else {
+                chatWindow.style.right = '0'; chatWindow.style.left = 'auto';
+                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('left', 'right');
+            }
+
+            if (newY < 480) {
+                chatWindow.style.bottom = 'auto'; chatWindow.style.top = '75px';
+                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('bottom', 'top');
+            } else {
+                chatWindow.style.bottom = '75px'; chatWindow.style.top = 'auto';
+                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('top', 'bottom');
+            }
+
+            const maxX = window.innerWidth - 60;
+            const maxY = window.innerHeight - 60;
+            newX = Math.max(0, Math.min(newX, maxX));
+            newY = Math.max(0, Math.min(newY, maxY));
+
+            chatWrapper.style.left = newX + 'px';
+            chatWrapper.style.top = newY + 'px';
+            chatWrapper.style.bottom = 'auto';
+            chatWrapper.style.right = 'auto';
+        }
+
+        fab.addEventListener('mousedown', function(e) {
+            isDragging = false; dragStartX = e.clientX; dragStartY = e.clientY;
+            function onMouseMove(moveEvent) {
+                if (Math.abs(moveEvent.clientX - dragStartX) > 3 || Math.abs(moveEvent.clientY - dragStartY) > 3) isDragging = true;
+                if (isDragging) updateChatPosition(moveEvent.clientX, moveEvent.clientY);
+            }
+            function onMouseUp() {
+                document.removeEventListener('mousemove', onMouseMove); document.removeEventListener('mouseup', onMouseUp);
+                if (!isDragging) toggleChat();
+            }
+            document.addEventListener('mousemove', onMouseMove); document.addEventListener('mouseup', onMouseUp);
+        });
+
+        fab.addEventListener('touchstart', function(e) {
+            isDragging = false; const touch = e.touches[0]; dragStartX = touch.clientX; dragStartY = touch.clientY;
+            function onTouchMove(moveEvent) {
+                const touchMove = moveEvent.touches[0];
+                if (Math.abs(touchMove.clientX - dragStartX) > 3 || Math.abs(touchMove.clientY - dragStartY) > 3) isDragging = true;
+                if (isDragging) { moveEvent.preventDefault(); updateChatPosition(touchMove.clientX, touchMove.clientY); }
+            }
+            function onTouchEnd() {
+                document.removeEventListener('touchmove', onTouchMove); document.removeEventListener('touchend', onTouchEnd);
+                if (!isDragging) toggleChat();
+            }
+            document.addEventListener('touchmove', onTouchMove, {passive: false}); document.addEventListener('touchend', onTouchEnd);
+        });
+
+        // ================= JAVASCRIPT NÚT TRƯỢT NGANG (SLIDER) =================
+        function slideRight(btn) {
+            const grid = btn.parentElement.querySelector('.card-grid');
+            const card = grid.querySelector('.movie-card, .top10-item');
+            const scrollAmount = card.offsetWidth + 15;
+            
+            grid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+
+        function slideLeft(btn) {
+            const grid = btn.parentElement.querySelector('.card-grid');
+            const card = grid.querySelector('.movie-card, .top10-item');
+            const scrollAmount = card.offsetWidth + 15;
+            
+            grid.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        }
+
+        function updateSlideButtons(grid) {
+            const wrapper = grid.parentElement;
+            const leftBtn = wrapper.querySelector('.left-btn');
+            const rightBtn = wrapper.querySelector('.right-btn');
+            
+            if(leftBtn && rightBtn) {
+                if (grid.scrollLeft > 10) {
+                    leftBtn.style.display = 'flex';
+                } else {
+                    leftBtn.style.display = 'none';
+                }
+                
+                // Tránh lỗi pixel thập phân trên một số trình duyệt
+                if (Math.ceil(grid.scrollLeft + grid.clientWidth) >= grid.scrollWidth - 10) {
+                    rightBtn.style.display = 'none';
+                } else {
+                    rightBtn.style.display = 'flex';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.card-grid').forEach(grid => {
+                updateSlideButtons(grid);
+                // Gắn sự kiện cuộn tự nhiên (hoặc vuốt trên màn hình cảm ứng)
+                grid.addEventListener('scroll', () => updateSlideButtons(grid));
+            });
+        });
+
+    </script>
+
+</body>
+</html>

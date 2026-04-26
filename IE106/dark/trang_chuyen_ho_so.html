@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nighthub - Chọn Hồ Sơ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+    /* Ẩn input number arrows */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    
+    /* Thiết lập nút Back ở góc trái */
+    .back-link-top {
+        position: absolute;
+        top: 30px;
+        left: 50px;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #cbd5e1;
+        font-size: 16px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    .back-link-top:hover {
+        color: #ffffff;
+    }
+    .back-link-top svg {
+        width: 20px;
+        height: 20px;
+    }
+
+  </style>
+</head>
+<body class="min-h-screen text-slate-200 font-sans flex flex-col items-center justify-center p-4 m-0" 
+      style="background: linear-gradient(135deg, #32455F 17%, #1A324A 35%, #07101C 62%, #1A324A 84%); background-attachment: fixed;">
+
+  <!-- Nút Quay lại ở góc trái trên -->
+  <a href="home.html" class="back-link-top" title="Về trang chủ Nighthub">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+    Trang chủ
+  </a>
+
+  <!-- ========================================== -->
+  <!-- 1. MÀN HÌNH CHỌN HỒ SƠ -->
+  <!-- ========================================== -->
+  <div id="home-view" class="w-full max-w-4xl flex flex-col items-center animate-fade-in z-10 relative">
+    
+    <!-- Logo đặt trên tiêu đề -->
+    <div class="mb-6 flex justify-center w-full">
+        <img src="images/logo.png" alt="Nighthub Logo" class="h-12 w-auto object-contain drop-shadow-lg">
+    </div>
+
+    <h1 class="text-4xl font-bold text-white mb-2 text-shadow-md drop-shadow-lg">Chọn hồ sơ</h1>
+    <p class="text-slate-200 mb-10 text-lg font-medium drop-shadow-md">Ai đang xem?</p>
+
+    <div id="profiles-container" class="flex flex-wrap justify-center gap-6 mb-12">
+      <!-- Hồ sơ sẽ được render vào đây bằng JS -->
+    </div>
+
+    <p id="profile-count-text" class="text-slate-300 mb-6 text-sm font-medium">Đã sử dụng 1/5 hồ sơ</p>
+    
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 2. MÀN HÌNH TẠO HỒ SƠ MỚI -->
+  <!-- ========================================== -->
+  <div id="create-view" class="hidden fixed inset-0 bg-[#07101C]/80 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-fade-in">
+    <div class="bg-[rgba(15,23,36,0.95)] w-full max-w-2xl rounded-2xl shadow-2xl border border-[rgba(255,255,255,0.1)] overflow-hidden">
+      
+      <!-- Header -->
+      <div class="flex justify-between items-center p-6 border-b border-white/10">
+        <h2 class="text-2xl font-bold text-white">Tạo hồ sơ mới</h2>
+        <button onclick="setView('home')" class="w-8 h-8 bg-white/5 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors">
+          <img src="https://cdn-icons-png.flaticon.com/512/2961/2961937.png" alt="Đóng" class="w-3 h-3 filter invert opacity-70" />
+        </button>
+      </div>
+
+      <div class="p-6 space-y-6">
+        <!-- Chọn hình đại diện (Avatar với nhiều sắc thái) -->
+        <div>
+          <p class="text-sm font-medium text-slate-300 mb-3">Chọn hình đại diện</p>
+          <div id="avatar-container" class="flex flex-wrap justify-center sm:justify-start gap-4"></div>
+        </div>
+
+        <!-- Tên hồ sơ -->
+        <div>
+          <p class="text-sm font-medium text-slate-300 mb-2">Tên hồ sơ</p>
+          <input type="text" id="create-name-input" placeholder="VD: Minh, Lan, Trẻ em..."
+            class="w-full bg-white/5 border border-white/10 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-[#4DA8DA] transition-colors" />
+        </div>
+
+        <!-- Hồ sơ trẻ em Toggle -->
+        <div class="flex items-center justify-between bg-white/5 border border-white/10 rounded-lg p-4">
+          <div class="flex items-start gap-3">
+            <div class="mt-1">
+              <img src="https://cdn-icons-png.flaticon.com/512/3064/3064155.png" alt="Khóa" class="w-4 h-4 filter invert opacity-50" />
+            </div>
+            <div>
+              <p class="font-medium text-white">Hồ sơ trẻ em</p>
+              <p class="text-xs text-slate-400">Tắt tùy chọn này sẽ tạo hồ sơ "Mọi lứa tuổi" và yêu cầu mã PIN.</p>
+            </div>
+          </div>
+          <button id="kids-toggle-btn" onclick="toggleKids()" class="w-12 h-6 rounded-full transition-colors relative flex items-center bg-slate-600">
+            <div id="kids-toggle-circle" class="w-4 h-4 bg-white rounded-full absolute transition-transform translate-x-1"></div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="flex gap-4 p-6 pt-0 mt-2">
+        <button onclick="setView('home')" class="flex-1 py-3 rounded-lg border border-[rgba(255,255,255,0.2)] text-white hover:bg-white/5 transition-colors font-medium">Hủy</button>
+        <button onclick="submitCreateProfile()" class="flex-1 py-3 rounded-lg bg-[#4DA8DA] hover:bg-[#38bdf8] text-white font-bold transition-colors">Tạo hồ sơ</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 3. MÀN HÌNH MÀ PIN (Set / Verify) -->
+  <!-- ========================================== -->
+  <div id="pin-view" class="hidden fixed inset-0 bg-[#07101C]/80 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-fade-in">
+    <div class="bg-[rgba(15,23,36,0.95)] w-full max-w-md rounded-2xl shadow-2xl border border-[rgba(255,255,255,0.1)] p-8 relative flex flex-col items-center">
+      
+      <button onclick="closePinView()" class="absolute top-4 right-4 w-8 h-8 bg-white/5 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors">
+        <img src="https://cdn-icons-png.flaticon.com/512/2961/2961937.png" alt="Đóng" class="w-3 h-3 filter invert opacity-70" />
+      </button>
+
+      <!-- Khóa Icon lớn -->
+      <div class="w-16 h-16 rounded-full bg-white/5 border border-[rgba(255,255,255,0.1)] flex items-center justify-center mb-6">
+        <img src="https://cdn-icons-png.flaticon.com/512/3064/3064155.png" alt="Khóa" class="w-6 h-6 filter invert opacity-80" />
+      </div>
+
+      <h2 id="pin-title" class="text-3xl font-bold text-[#4DA8DA] mb-2 text-center">Đặt mã PIN</h2>
+      <p id="pin-desc" class="text-slate-300 text-center mb-8">Tạo mã PIN 4 số để bảo vệ hồ sơ 18+</p>
+
+      <!-- Các ô nhập PIN -->
+      <div class="flex justify-center gap-4 mb-8">
+        <input id="pin-0" type="password" inputmode="numeric" maxlength="1" class="pin-input w-14 h-16 bg-white/5 border-2 border-white/20 focus:border-[#4DA8DA] rounded-xl text-center text-2xl text-white focus:outline-none transition-colors" />
+        <input id="pin-1" type="password" inputmode="numeric" maxlength="1" class="pin-input w-14 h-16 bg-white/5 border-2 border-white/20 focus:border-[#4DA8DA] rounded-xl text-center text-2xl text-white focus:outline-none transition-colors" />
+        <input id="pin-2" type="password" inputmode="numeric" maxlength="1" class="pin-input w-14 h-16 bg-white/5 border-2 border-white/20 focus:border-[#4DA8DA] rounded-xl text-center text-2xl text-white focus:outline-none transition-colors" />
+        <input id="pin-3" type="password" inputmode="numeric" maxlength="1" class="pin-input w-14 h-16 bg-white/5 border-2 border-white/20 focus:border-[#4DA8DA] rounded-xl text-center text-2xl text-white focus:outline-none transition-colors" />
+      </div>
+
+      <div class="flex items-center gap-2 text-slate-400 text-xs mt-2">
+        <img src="https://cdn-icons-png.flaticon.com/512/569/569064.png" alt="Ghi chú" class="w-3 h-3 filter invert opacity-50" />
+        <span id="pin-footer-text">Ghi nhớ mã PIN của bạn. Bạn sẽ cần nó để truy cập hồ sơ này.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 4. MÀN HÌNH ĐĂNG NHẬP THÀNH CÔNG -->
+  <!-- ========================================== -->
+  <div id="logged-in-view" class="hidden text-center animate-fade-in z-10 relative">
+    <h1 class="text-4xl font-bold text-[#4DA8DA] mb-4 text-shadow-md">Chào mừng!</h1>
+    <p class="text-white mb-8 font-medium">Bạn đã truy cập thành công vào hồ sơ.</p>
+    <div class="flex justify-center gap-4">
+        <button onclick="setView('home')" class="px-6 py-3 border border-white/30 hover:bg-white/10 text-white rounded-lg font-medium transition-colors">
+            Đổi hồ sơ khác
+        </button>
+        <button onclick="window.location.href='home.html'" class="px-6 py-3 bg-[#4DA8DA] hover:bg-[#38bdf8] text-white rounded-lg font-bold transition-colors shadow-lg">
+            Vào Trang Chủ
+        </button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 5. MÀN HÌNH XÁC NHẬN XÓA -->
+  <!-- ========================================== -->
+  <div id="delete-confirm-view" class="hidden fixed inset-0 bg-[#07101C]/80 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-fade-in">
+    <div class="bg-[rgba(15,23,36,0.95)] w-full max-w-sm rounded-2xl shadow-2xl border border-[rgba(255,255,255,0.1)] p-6 text-center">
+      <h3 class="text-xl font-bold text-white mb-2">Xóa hồ sơ?</h3>
+      <p class="text-slate-300 mb-6">Bạn có chắc chắn muốn xóa hồ sơ này không? Hành động này không thể hoàn tác.</p>
+      <div class="flex gap-4">
+        <button onclick="closeDeleteConfirm()" class="flex-1 py-2 rounded-lg border border-white/20 text-white hover:bg-white/10 transition-colors font-medium">Hủy</button>
+        <button onclick="confirmDeleteProfile()" class="flex-1 py-2 rounded-lg bg-[#F86060] hover:bg-[#ff4757] text-white font-bold transition-colors">Xóa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 6. MÀN HÌNH CẢNH BÁO/LỖI CHUNG (POPUP) -->
+  <!-- ========================================== -->
+  <div id="alert-modal-view" class="hidden fixed inset-0 bg-[#07101C]/80 backdrop-blur-md flex items-center justify-center p-4 z-[60] animate-fade-in">
+    <div class="bg-[rgba(15,23,36,0.95)] w-full max-w-sm rounded-2xl shadow-2xl border border-[rgba(255,255,255,0.1)] p-6 text-center flex flex-col items-center">
+      
+      <!-- Icon Cảnh báo -->
+      <div class="w-14 h-14 rounded-full bg-[rgba(248,96,96,0.1)] border border-[rgba(248,96,96,0.3)] flex items-center justify-center mb-5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#F86060]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+      </div>
+      
+      <h3 id="alert-title" class="text-xl font-bold text-white mb-2">Thông báo</h3>
+      <p id="alert-message" class="text-slate-300 mb-8 text-sm">Nội dung thông báo...</p>
+      
+      <button onclick="closeAlert()" class="w-full py-2.5 rounded-lg bg-[#4DA8DA] hover:bg-[#38bdf8] text-white font-bold transition-colors">Đã hiểu</button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT LOGIC -->
+  <!-- ========================================== -->
+  <script>
+    // --- HÀM XỬ LÝ POPUP CẢNH BÁO ---
+    function showAlert(title, message) {
+      document.getElementById('alert-title').innerText = title;
+      document.getElementById('alert-message').innerText = message;
+      document.getElementById('alert-modal-view').classList.remove('hidden');
+    }
+
+    function closeAlert() {
+      document.getElementById('alert-modal-view').classList.add('hidden');
+      // Nếu đang ở màn hình nhập PIN, tự động focus lại vào ô đầu tiên
+      if (!document.getElementById('pin-view').classList.contains('hidden')) {
+          setTimeout(() => document.getElementById('pin-0').focus(), 100);
+      }
+    }
+
+    // --- TẠO MÃ SVG CHO AVATAR VỚI NHIỀU SẮC THÁI ---
+    const svgAvatar = (colorHex, type = 1) => {
+        let eyes = `<circle cx="32" cy="38" r="6" fill="white"/><circle cx="68" cy="38" r="6" fill="white"/>`;
+        let mouth = `<path d="M 35 60 Q 50 75 65 60" stroke="white" stroke-width="6" stroke-linecap="round" fill="none"/>`;
+
+        switch(type) {
+            case 1: // Cười tươi
+                break;
+            case 2: // Nhếch mép (giống ảnh mẫu của bạn)
+                eyes = `<circle cx="28" cy="36" r="5" fill="white"/><circle cx="72" cy="36" r="5" fill="white"/>`;
+                mouth = `<path d="M 42 56 Q 58 64 72 52" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>`;
+                break;
+            case 3: // Thanh thản (đường thẳng)
+                mouth = `<line x1="38" y1="62" x2="62" y2="62" stroke="white" stroke-width="6" stroke-linecap="round"/>`;
+                break;
+            case 4: // Buồn / Phụng phịu
+                mouth = `<path d="M 35 65 Q 50 55 65 65" stroke="white" stroke-width="6" stroke-linecap="round" fill="none"/>`;
+                break;
+            case 5: // Ngạc nhiên (chữ O)
+                mouth = `<circle cx="50" cy="65" r="7" fill="none" stroke="white" stroke-width="5"/>`;
+                break;
+            case 6: // Nháy mắt
+                eyes = `<line x1="26" y1="38" x2="38" y2="38" stroke="white" stroke-width="5" stroke-linecap="round"/><circle cx="68" cy="38" r="6" fill="white"/>`;
+                break;
+            case 7: // Cười há miệng
+                mouth = `<path d="M 30 55 Q 50 80 70 55 Z" fill="white"/>`;
+                break;
+            case 8: // Nhắm mắt ngủ
+                eyes = `<path d="M 25 38 Q 32 30 39 38" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M 61 38 Q 68 30 75 38" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>`;
+                mouth = `<circle cx="50" cy="65" r="4" fill="white"/>`;
+                break;
+        }
+
+        const svgStr = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#${colorHex}"/>${eyes}${mouth}</svg>`;
+        return `data:image/svg+xml;utf8,${encodeURIComponent(svgStr)}`;
+    };
+
+    // Danh sách avatar kết hợp màu sắc và sắc thái
+    const AVATARS = [
+      'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png', // Mặc định Netflix
+      svgAvatar('1D7D79', 2), // Xanh mòng két - nhếch mép giống hình bạn gửi
+      svgAvatar('E50914', 1), // Đỏ - cười tươi
+      svgAvatar('0071EB', 6), // Xanh biển - nháy mắt
+      svgAvatar('F5A623', 7), // Vàng - cười lớn
+      svgAvatar('8E24AA', 5), // Tím - ngạc nhiên
+      svgAvatar('2ECC71', 3), // Xanh lá - bình thường
+      svgAvatar('E91E63', 8), // Hồng - ngủ
+      svgAvatar('E67E22', 4), // Cam - buồn
+      svgAvatar('7F8C8D', 1)  // Xám - cười
+    ];
+
+    const ICONS = {
+      plus: "https://cdn-icons-png.flaticon.com/512/992/992651.png",
+      check: "https://cdn-icons-png.flaticon.com/512/190/190411.png",
+      lock: "https://cdn-icons-png.flaticon.com/512/3064/3064155.png",
+      trash: "https://cdn-icons-png.flaticon.com/512/3096/3096673.png"
+    };
+
+    // --- TRẠNG THÁI ỨNG DỤNG ---
+    let profiles = [{
+      id: 1, name: "Nguyễn Hoàng Nam", avatarUrl: AVATARS[0], isKids: false, pin: null
+    }];
+    let activeProfileId = 1;
+    
+    // Trạng thái Tạo hồ sơ
+    let selectedAvatar = AVATARS[1]; // Mặc định chọn mặt nhếch mép xanh ngọc
+    let isKids = false;
+    let newProfileCache = null;
+
+    // Trạng thái Mã PIN
+    let pinMode = 'set'; 
+    let profileToVerify = null;
+    let currentPinArray = ['', '', '', ''];
+    let pinStep = 1;
+    let firstPin = '';
+
+    // Trạng thái Xoá
+    let profileToDelete = null;
+
+    // --- VIEW MANAGEMENT ---
+    function setView(viewId) {
+      document.getElementById('home-view').classList.add('hidden');
+      document.getElementById('create-view').classList.add('hidden');
+      document.getElementById('pin-view').classList.add('hidden');
+      document.getElementById('logged-in-view').classList.add('hidden');
+      document.getElementById('delete-confirm-view').classList.add('hidden');
+
+      document.getElementById(viewId + '-view').classList.remove('hidden');
+      if(viewId === 'home') {
+        renderHome();
+      }
+    }
+
+    // --- HOME RENDER ---
+    function renderHome() {
+      const container = document.getElementById('profiles-container');
+      container.innerHTML = '';
+
+      profiles.forEach(profile => {
+        const isActive = activeProfileId === profile.id;
+        
+        // Huy hiệu độ tuổi
+        let badgeHtml = '';
+        if (!profile.isKids) {
+          badgeHtml = `
+            <div class="absolute -top-2 -right-2 text-[11px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-lg border border-[rgba(255,255,255,0.2)] bg-slate-800 text-white z-20">
+              <img src="${ICONS.lock}" class="w-2.5 h-2.5 filter invert" />
+            </div>
+          `;
+        }
+
+        // Nút xóa (không cho phép xóa hồ sơ chính id=1)
+        let deleteBtnHtml = '';
+        if (profile.id !== 1) { 
+          deleteBtnHtml = `
+            <button onclick="deleteProfile(${profile.id}, event)" class="absolute -top-3 -left-3 w-8 h-8 bg-slate-700 hover:bg-[#F86060] border border-slate-600 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 shadow-xl">
+              <img src="${ICONS.trash}" class="w-3.5 h-3.5 filter invert opacity-90" />
+            </button>
+          `;
+        }
+
+        const profileEl = document.createElement('div');
+        profileEl.className = `relative flex flex-col items-center justify-center p-6 rounded-xl cursor-pointer transition-all duration-300 w-44 min-h-[11rem] bg-[rgba(26,50,74,0.3)] hover:bg-[rgba(26,50,74,0.6)] border border-white/10 hover:border-[#4DA8DA] group ${isActive ? 'ring-2 ring-[#4DA8DA]' : ''}`;
+        profileEl.onclick = () => handleProfileClick(profile.id);
+
+        profileEl.innerHTML = `
+          ${deleteBtnHtml}
+          ${isActive ? `<div class="absolute top-3 left-3 bg-[#4DA8DA] rounded-full p-1 shadow-lg z-20"><img src="${ICONS.check}" class="w-3 h-3" /></div>` : ''}
+          <div class="w-24 h-24 mb-4 relative flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+            <img src="${profile.avatarUrl}" class="w-full h-full rounded-full object-cover border-2 ${isActive ? 'border-[#4DA8DA]' : 'border-transparent'} shadow-xl" />
+            ${badgeHtml}
+          </div>
+          <span class="text-base font-semibold text-center break-words w-full ${isActive ? 'text-[#4DA8DA]' : 'text-slate-100'} drop-shadow-md">${profile.name}</span>
+        `;
+        container.appendChild(profileEl);
+      });
+
+      // Nút Thêm hồ sơ
+      if (profiles.length < 5) {
+        const addBtn = document.createElement('div');
+        addBtn.className = "flex flex-col items-center justify-center p-6 rounded-xl cursor-pointer transition-all duration-300 w-44 min-h-[11rem] border-2 border-dashed border-slate-600 hover:border-[#4DA8DA]/70 hover:bg-[rgba(26,50,74,0.3)] group";
+        addBtn.onclick = startCreateProfile;
+        addBtn.innerHTML = `
+          <div class="w-20 h-20 rounded-full bg-slate-700 flex items-center justify-center mb-4 group-hover:bg-slate-600 transition-colors flex-shrink-0 group-hover:scale-105 duration-300 shadow-inner border border-white/10">
+            <img src="${ICONS.plus}" class="w-8 h-8 filter invert opacity-70 group-hover:opacity-100 transition-opacity" />
+          </div>
+          <span class="text-base font-medium text-slate-400 group-hover:text-[#4DA8DA] text-center break-words w-full transition-colors drop-shadow-md">Thêm hồ sơ</span>
+        `;
+        container.appendChild(addBtn);
+      }
+
+      document.getElementById('profile-count-text').innerText = `Đã sử dụng ${profiles.length}/5 hồ sơ`;
+    }
+
+    function handleProfileClick(id) {
+      const profile = profiles.find(p => p.id === id);
+      if (!profile.isKids && profile.pin) {
+        profileToVerify = profile;
+        openPinModal('verify');
+      } else {
+        activeProfileId = id;
+        setView('logged-in');
+      }
+    }
+
+    // --- DELETE PROFILE ---
+    function deleteProfile(id, event) {
+      event.stopPropagation();
+      profileToDelete = id;
+      document.getElementById('delete-confirm-view').classList.remove('hidden');
+    }
+
+    function closeDeleteConfirm() {
+      profileToDelete = null;
+      document.getElementById('delete-confirm-view').classList.add('hidden');
+    }
+
+    function confirmDeleteProfile() {
+      if (profileToDelete) {
+        profiles = profiles.filter(p => p.id !== profileToDelete);
+        if (activeProfileId === profileToDelete) activeProfileId = 1; // Đưa về profile gốc nếu xóa nhầm profile đang dùng
+        renderHome();
+        closeDeleteConfirm();
+      }
+    }
+
+    // --- CREATE PROFILE ---
+    function startCreateProfile() {
+      document.getElementById('create-name-input').value = '';
+      selectedAvatar = AVATARS[1];
+      isKids = false;
+      updateKidsToggleUI();
+      renderCreateOptions();
+      setView('create');
+    }
+
+    function renderCreateOptions() {
+      // Render Bảng chọn Avatar
+      const avContainer = document.getElementById('avatar-container');
+      avContainer.innerHTML = '';
+      AVATARS.forEach(url => {
+        const btn = document.createElement('button');
+        btn.className = `w-16 h-16 rounded-full flex items-center justify-center transition-all hover:scale-110 shadow-lg ${selectedAvatar === url ? 'ring-4 ring-[#4DA8DA] scale-110' : 'ring-1 ring-white/20'}`;
+        btn.onclick = () => { selectedAvatar = url; renderCreateOptions(); };
+        btn.innerHTML = `<img src="${url}" class="w-full h-full rounded-full object-cover" />`;
+        avContainer.appendChild(btn);
+      });
+    }
+
+    function toggleKids() {
+      isKids = !isKids;
+      updateKidsToggleUI();
+    }
+
+    function updateKidsToggleUI() {
+      const btn = document.getElementById('kids-toggle-btn');
+      const circle = document.getElementById('kids-toggle-circle');
+      
+      if (isKids) {
+        btn.classList.replace('bg-slate-600', 'bg-green-500');
+        circle.classList.replace('translate-x-1', 'translate-x-7');
+      } else {
+        btn.classList.replace('bg-green-500', 'bg-slate-600');
+        circle.classList.replace('translate-x-7', 'translate-x-1');
+      }
+    }
+
+    function submitCreateProfile() {
+      const name = document.getElementById('create-name-input').value.trim();
+      
+      // Hiển thị Modal Cảnh báo
+      if (!name) return showAlert("Thiếu thông tin", "Vui lòng nhập tên hồ sơ trước khi tiếp tục!");
+
+      newProfileCache = {
+        name, avatarUrl: selectedAvatar, isKids, pin: null
+      };
+
+      if (!isKids) {
+        openPinModal('set');
+      } else {
+        saveNewProfile();
+      }
+    }
+
+    function saveNewProfile(pin = null) {
+      if (pin) newProfileCache.pin = pin;
+      newProfileCache.id = Date.now();
+      profiles.push(newProfileCache);
+      setView('home');
+    }
+
+    // --- PIN MODAL LOGIC ---
+    function openPinModal(mode) {
+      pinMode = mode;
+      pinStep = 1;
+      firstPin = '';
+      currentPinArray = ['', '', '', ''];
+      
+      document.querySelectorAll('.pin-input').forEach(input => {
+        input.value = '';
+        input.classList.remove('border-[#F86060]');
+        input.classList.add('border-white/20');
+      });
+
+      if (mode === 'set') {
+        document.getElementById('pin-title').innerText = 'Đặt mã PIN';
+        document.getElementById('pin-desc').innerText = 'Tạo mã PIN 4 số để bảo vệ hồ sơ mọi lứa tuổi';
+        document.getElementById('pin-footer-text').innerText = 'Ghi nhớ mã PIN của bạn. Bạn sẽ cần nó để truy cập hồ sơ này.';
+      } else {
+        document.getElementById('pin-title').innerText = 'Nhập mã PIN';
+        document.getElementById('pin-desc').innerText = `Nhập mã PIN để truy cập hồ sơ của ${profileToVerify.name}`;
+        document.getElementById('pin-footer-text').innerText = 'Hồ sơ này yêu cầu xác thực để tiếp tục.';
+      }
+
+      setView('pin');
+      setTimeout(() => document.getElementById('pin-0').focus(), 100);
+    }
+
+    function closePinView() {
+      if(pinMode === 'set') setView('create');
+      else setView('home');
+    }
+
+    // Setup input listeners for PIN
+    const pinInputs = document.querySelectorAll('.pin-input');
+    pinInputs.forEach((input, index) => {
+      // Handle Typing
+      input.addEventListener('input', (e) => {
+        let val = e.target.value.replace(/[^0-9]/g, ''); // Chỉ cho nhập số
+        e.target.value = val;
+        
+        if (val) {
+          currentPinArray[index] = val;
+          pinInputs.forEach(i => { i.classList.remove('border-[#F86060]'); i.classList.add('border-white/20'); });
+
+          if (index < 3) {
+            pinInputs[index + 1].focus();
+          } else {
+            // Đã nhập đủ 4 số
+            handlePinSubmit();
+          }
+        } else {
+          currentPinArray[index] = '';
+        }
+      });
+
+      // Handle Backspace
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+          pinInputs[index - 1].focus();
+        }
+      });
+    });
+
+    function handlePinSubmit() {
+      const fullPin = currentPinArray.join('');
+      if (fullPin.length !== 4) return;
+
+      const pinInputs = document.querySelectorAll('.pin-input');
+
+      if (pinMode === 'set') {
+        if (pinStep === 1) {
+          firstPin = fullPin;
+          pinStep = 2;
+          
+          document.getElementById('pin-title').innerText = 'Xác nhận mã PIN';
+          document.getElementById('pin-desc').innerText = 'Vui lòng nhập lại mã PIN để xác nhận';
+          
+          currentPinArray = ['', '', '', ''];
+          pinInputs.forEach(i => {
+            i.value = '';
+            i.classList.remove('border-[#F86060]');
+            i.classList.add('border-white/20');
+          });
+          pinInputs[0].focus();
+        } else {
+          // Kiểm tra lần 2 có khớp không
+          if (fullPin === firstPin) {
+            saveNewProfile(fullPin);
+          } else {
+            // Gọi Popup cảnh báo lỗi
+            showAlert("Lỗi xác nhận", "Mã PIN không khớp. Vui lòng đặt lại từ đầu.");
+            
+            pinStep = 1;
+            firstPin = '';
+            document.getElementById('pin-title').innerText = 'Đặt mã PIN';
+            document.getElementById('pin-desc').innerText = 'Tạo mã PIN 4 số để bảo vệ hồ sơ mọi lứa tuổi';
+            
+            currentPinArray = ['', '', '', ''];
+            pinInputs.forEach(i => {
+              i.value = '';
+              i.classList.remove('border-white/20');
+              i.classList.add('border-[#F86060]');
+            });
+          }
+        }
+      } else {
+        if (fullPin === profileToVerify.pin) {
+          activeProfileId = profileToVerify.id;
+          setView('logged-in');
+        } else {
+          // Gọi Popup cảnh báo lỗi
+          showAlert("Sai mã PIN", "Mã PIN không chính xác. Vui lòng thử lại.");
+          
+          pinInputs.forEach(i => {
+            i.value = '';
+            i.classList.remove('border-white/20');
+            i.classList.add('border-[#F86060]');
+          });
+          currentPinArray = ['', '', '', ''];
+        }
+      }
+    }
+
+    // --- KHỞI TẠO LẦN ĐẦU ---
+    renderHome();
+
+  </script>
+</body>
+</html>

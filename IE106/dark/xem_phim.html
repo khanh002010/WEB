@@ -56,13 +56,16 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
         }
+        .logo { display: flex; align-items: center; text-decoration: none; background: linear-gradient(315deg, rgba(217, 217, 217, 0.05) 0%); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: none; margin: -15px 0; border-radius: 0; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25); overflow: hidden; border-radius: 12px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .logo img { height: 50px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4)); }
+        
 
         .nav-left { display: flex; align-items: center; gap: 40px; }
         .logo { display: flex; align-items: center; text-decoration: none; }
         .logo img { height: 35px; width: auto; object-fit: contain; }
         
         .nav-links { display: flex; gap: 20px; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 20px; transition: all 0.3s ease; position: relative; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: all 0.3s ease; position: relative; }
         .nav-links a:hover, .nav-links a.active { color: var(--text-main); font-weight: 500; }
 
         .nav-right { display: flex; align-items: center; gap: 20px; }
@@ -194,6 +197,24 @@
         .btn-filter-cancel { flex: 1; padding: 14px; background-color: #334155; color: #ffffff; border-radius: 8px; font-size: 15px; font-weight: 600; border: none; cursor: pointer; transition: transform 0.2s; }
         .btn-filter-cancel:hover { background-color: #475569; transform: translateY(-2px); }
 
+        .footer { 
+            background-color: rgba(7, 16, 28, 0.6); 
+            backdrop-filter: blur(10px); 
+            padding: 60px 50px 20px; 
+            border-top: 1px solid rgba(255,255,255,0.05); 
+            margin-top: auto; 
+            width: 100%;
+        }
+        .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; max-width: 1200px; margin: 0 auto; }
+        .footer-logo img { height: 150px; margin-bottom: 20px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4)); }
+        .footer-links { display: flex; gap: 80px; flex-wrap: wrap; }
+        .link-column { display: flex; flex-direction: column; gap: 12px; }
+        .link-column h4 { color: var(--text-main); font-size: 16px; margin-bottom: 8px; font-weight: 600; }
+        .link-column a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.3s; }
+        .link-column a:hover { color: var(--text-main); }
+        .footer-bottom { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); font-size: 13px; }
+
+
 
         /* ================= BỐ CỤC CHUNG ================= */
         .watch-container {
@@ -202,16 +223,26 @@
             padding: 100px 20px 50px 20px;
         }
 
-        .breadcrumb { margin-bottom: 20px; font-size: 14px; color: var(--text-muted); }
+        .breadcrumb {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
         .breadcrumb a { color: var(--accent-color); text-decoration: none; }
         .breadcrumb a:hover { text-decoration: underline; }
 
         .watch-layout {
-            display: grid; grid-template-columns: minmax(0, 1fr) 350px; gap: 25px; align-items: flex-start;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 350px; 
+            gap: 25px;
+            align-items: flex-start;
         }
 
-        .watch-main { display: flex; flex-direction: column; gap: 20px; }
-
+        .watch-main {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 
         /* ================= TRÌNH PHÁT VIDEO CHUYÊN NGHIỆP ================= */
         .player-wrapper {
@@ -229,187 +260,73 @@
         .player-wrapper:fullscreen .main-video { object-fit: contain; width: 100vw; height: 100vh; }
         .player-wrapper:fullscreen .player-bottom-overlay { padding: 30px 40px; }
 
-        /* Đã đổi img thành video thật */
         .main-video { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; cursor: pointer;}
         
-        /* Subtitle Mock Overlay */
         .subtitle-overlay {
-            position: absolute;
-            bottom: 120px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            width: 80%;
-            pointer-events: none;
-            display: none; /* Ẩn mặc định */
+            position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%);
+            text-align: center; width: 80%; pointer-events: none; display: none;
         }
         .subtitle-text {
-            display: inline-block;
-            background: rgba(0, 0, 0, 0.6);
-            color: #fff;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 18px;
-            text-shadow: 1px 1px 2px black;
-            font-weight: 500;
+            display: inline-block; background: rgba(0, 0, 0, 0.6); color: #fff;
+            padding: 4px 10px; border-radius: 4px; font-size: 18px; text-shadow: 1px 1px 2px black; font-weight: 500;
         }
 
         .player-bottom-overlay {
-            position: absolute;
-            left: 0; right: 0; bottom: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 80px 25px 20px 25px; 
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            z-index: 5;
+            position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 80px 25px 20px 25px; opacity: 0; transition: opacity 0.3s ease-in-out; z-index: 5;
             background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.5) 60%, transparent 100%);
         }
 
         .player-wrapper:hover .player-bottom-overlay, .player-wrapper.force-show-controls .player-bottom-overlay { opacity: 1; }
 
-        .vid-ctrl-btn {
-            background: none; border: none; color: white; cursor: pointer;
-            transition: transform 0.2s, color 0.2s, filter 0.2s;
-            display: flex; align-items: center; justify-content: center;
-        }
+        .vid-ctrl-btn { background: none; border: none; color: white; cursor: pointer; transition: transform 0.2s, color 0.2s, filter 0.2s; display: flex; align-items: center; justify-content: center; }
         .vid-ctrl-btn:hover { transform: scale(1.15); color: var(--accent-blue); filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.5)); }
         .vid-ctrl-btn.active-cc { color: var(--accent-blue); filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.5)); }
-        
         .vid-ctrl-btn svg { width: 26px; height: 26px; fill: currentColor; }
         .vid-ctrl-btn.stroke svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         
         .player-controls-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
         .player-left-ctrl, .player-right-ctrl { display: flex; gap: 20px; align-items: center; }
 
-        /* --- THANH TIẾN TRÌNH (Tích hợp Kéo/Tua) --- */
-        .progress-container {
-            width: 100%; height: 5px; background: rgba(255,255,255,0.3);
-            border-radius: 5px; cursor: pointer; position: relative; transition: height 0.2s;
-        }
+        /* --- THANH TIẾN TRÌNH --- */
+        .progress-container { width: 100%; height: 5px; background: rgba(255,255,255,0.3); border-radius: 5px; cursor: pointer; position: relative; transition: height 0.2s; }
         .player-wrapper:hover .progress-container { height: 7px; }
         .progress-filled { width: 0%; height: 100%; background: var(--accent-red); border-radius: 5px; position: relative; pointer-events: none;}
-        .progress-thumb {
-            position: absolute; right: -7px; top: 50%; transform: translateY(-50%);
-            width: 16px; height: 16px; background: var(--accent-red); border-radius: 50%; opacity: 0; transition: opacity 0.2s, transform 0.1s; box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            pointer-events: none;
-        }
+        .progress-thumb { position: absolute; right: -7px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; background: var(--accent-red); border-radius: 50%; opacity: 0; transition: opacity 0.2s, transform 0.1s; box-shadow: 0 0 10px rgba(0,0,0,0.5); pointer-events: none; }
         .progress-container:hover .progress-thumb { opacity: 1; transform: translateY(-50%) scale(1.2); }
         .time-display { font-size: 14px; font-weight: 500; color: #fff; letter-spacing: 0.5px;}
 
         /* --- THANH ÂM LƯỢNG --- */
-        .volume-container {
-            display: flex; align-items: center; position: relative; gap: 0;
-            margin-left: 5px;
-        }
-        .volume-slider-wrapper {
-            width: 0; overflow: hidden; opacity: 0;
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
-            display: flex; align-items: center; height: 26px;
-        }
-        .volume-container:hover .volume-slider-wrapper {
-            width: 70px; opacity: 1; padding: 0 5px; margin-left: 5px;
-        }
-        .volume-slider {
-            width: 100%; height: 4px; background: rgba(255,255,255,0.3);
-            border-radius: 2px; position: relative; cursor: pointer;
-        }
-        .volume-slider-progress {
-            height: 100%; background: #fff; border-radius: 2px; pointer-events: none; width: 100%;
-        }
-        .volume-slider-thumb {
-            width: 12px; height: 12px; background: #fff; border-radius: 50%;
-            position: absolute; top: 50%; transform: translate(-50%, -50%);
-            pointer-events: none; left: 100%;
-        }
-        .volume-container:hover .volume-slider-progress, .volume-container:hover .volume-slider-thumb {
-            background: #fff; 
-        }
+        .volume-container { display: flex; align-items: center; position: relative; gap: 0; margin-left: 5px; }
+        .volume-slider-wrapper { width: 0; overflow: hidden; opacity: 0; transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s; display: flex; align-items: center; height: 26px; }
+        .volume-container:hover .volume-slider-wrapper { width: 70px; opacity: 1; padding: 0 5px; margin-left: 5px; }
+        .volume-slider { width: 100%; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; position: relative; cursor: pointer; }
+        .volume-slider-progress { height: 100%; background: #fff; border-radius: 2px; pointer-events: none; width: 100%; }
+        .volume-slider-thumb { width: 12px; height: 12px; background: #fff; border-radius: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); pointer-events: none; left: 100%; }
+        .volume-container:hover .volume-slider-progress, .volume-container:hover .volume-slider-thumb { background: #fff; }
 
-        /* MENU CÀI ĐẶT VIDEO - DẠNG ĐỘNG (INTERACTIVE) */
+        /* MENU CÀI ĐẶT VIDEO */
         .settings-wrapper { position: relative; }
-
         .settings-menu {
-            position: absolute;
-            right: 0;
-            bottom: calc(100% + 15px);
-            background: #000000; 
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 12px;
-            width: 280px;
-            display: none;
-            overflow: hidden; 
-            z-index: 99999;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+            position: absolute; right: 0; bottom: calc(100% + 15px); background: #000000; 
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; width: 280px; display: none;
+            overflow: hidden; z-index: 99999; box-shadow: 0 10px 40px rgba(0,0,0,0.9);
         }
+        .settings-menu.active { display: block; animation: dropUpFade 0.2s ease; transform-origin: bottom right; }
+        .menu-panel { display: none; flex-direction: column; width: 100%; padding: 8px 0; }
+        .menu-panel.active { display: flex; animation: slideInRight 0.2s ease forwards; }
 
-        .settings-menu.active {
-            display: block;
-            animation: dropUpFade 0.2s ease;
-            transform-origin: bottom right;
-        }
+        @keyframes slideInRight { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-        .menu-panel {
-            display: none;
-            flex-direction: column;
-            width: 100%;
-            padding: 8px 0;
-        }
-
-        .menu-panel.active {
-            display: flex;
-            animation: slideInRight 0.2s ease forwards;
-        }
-
-        @keyframes slideInRight {
-            from { transform: translateX(20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .menu-back {
-            padding: 12px 20px;
-            font-weight: 600;
-            color: white;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 5px;
-            transition: background 0.2s;
-        }
+        .menu-back { padding: 12px 20px; font-weight: 600; color: white; border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; display: flex; align-items: center; gap: 10px; margin-bottom: 5px; transition: background 0.2s; }
         .menu-back:hover { background: rgba(255,255,255,0.1); }
         .menu-back svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; }
-
-        .setting-option {
-            padding: 12px 20px 12px 45px;
-            cursor: pointer;
-            position: relative;
-            color: #ddd;
-            font-size: 14px;
-            transition: background 0.2s, color 0.2s;
-        }
+        .setting-option { padding: 12px 20px 12px 45px; cursor: pointer; position: relative; color: #ddd; font-size: 14px; transition: background 0.2s, color 0.2s; }
         .setting-option:hover { background: rgba(255,255,255,0.1); color: white; }
-        
-        .setting-option.selected {
-            color: var(--accent-blue);
-            font-weight: 600;
-        }
-        .setting-option.selected::before {
-            content: '✓';
-            position: absolute;
-            left: 20px;
-            color: var(--accent-blue);
-            font-weight: bold;
-        }
-
-        .setting-item { 
-            padding: 12px 20px; display: flex; align-items: center; cursor: pointer; 
-            transition: background 0.2s; color: #fff; font-weight: 400;
-        }
+        .setting-option.selected { color: var(--accent-blue); font-weight: 600; }
+        .setting-option.selected::before { content: '✓'; position: absolute; left: 20px; color: var(--accent-blue); font-weight: bold; }
+        .setting-item { padding: 12px 20px; display: flex; align-items: center; cursor: pointer; transition: background 0.2s; color: #fff; font-weight: 400; }
         .setting-item:hover { background: rgba(255,255,255,0.15); }
-        
         .setting-icon { width: 24px; height: 24px; margin-right: 15px; display: flex; align-items: center; justify-content: center; color: #fff; }
         .setting-icon svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.5; }
         .setting-label { flex: 1; font-size: 15px; }
@@ -419,20 +336,18 @@
         /* THÔNG TIN PHIM DƯỚI VIDEO */
         .movie-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; margin-top: 10px;}
         .movie-info h1 { font-size: 26px; margin-bottom: 8px; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
-        .movie-stats { display: flex; gap: 15px; font-size: 14px; color: var(--text-muted); align-items: center; flex-wrap: wrap; }
+        .movie-stats { display: flex; gap: 10px; font-size: 17px; font-weight: 500; color: var(--text-main); align-items: center; flex-wrap: wrap; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); letter-spacing: 0.3px;}
+        .movie-stats .meta-separator { font-weight: 700; margin: 0 2px; font-size: 20px; line-height: 1;}
         .movie-actions { display: flex; gap: 10px; flex-wrap: wrap;}
-        .btn-action {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);
-            color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: all 0.2s;
-        }
+        .btn-action { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: all 0.2s; }
         .btn-action:hover { background: rgba(255,255,255,0.2); }
         .movie-desc { font-size: 14.5px; color: #d1d5db; line-height: 1.6; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
-
 
         /* ================= TƯƠNG TÁC (ĐÁNH GIÁ TRÁI - PHIM LIÊN QUAN PHẢI) ================= */
         .interaction-section { display: flex; flex-direction: column; gap: 20px; margin-top: 10px; }
         .rating-related-wrapper { display: grid; grid-template-columns: 280px 1fr; gap: 20px; align-items: stretch; }
 
+        /* BOX ĐÁNH GIÁ ĐÃ CĂN GIỮA */
         .rating-box { 
             background: var(--bg-card); padding: 25px; border-radius: 12px; text-align: center; 
             border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -442,14 +357,43 @@
         .stars-container { display: inline-flex; direction: rtl; gap: 5px; margin: 10px 0; justify-content: center;}
         .stars-container span { font-size: 32px; color: rgba(255,255,255,0.2); cursor: pointer; transition: color 0.2s; }
         .stars-container span:hover, .stars-container span:hover ~ span { color: var(--star-color); }
+        
+        /* Khóa hover khi đã đánh giá và giữ màu sao */
+        .stars-container.locked { pointer-events: none; }
         .stars-container.locked span.active { color: var(--star-color); }
-        .stars-container.locked span { color: rgba(255,255,255,0.2); }
+        .stars-container.locked span:not(.active) { color: rgba(255,255,255,0.2); }
+        
         .rating-text { font-size: 14px; color: var(--text-muted); }
 
-        /* PHIM LIÊN QUAN (CSS LIQUID GLASS) */
-        .related-box { background: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        /* PHIM LIÊN QUAN (BOX CHỨA SLIDER) */
+        .related-box { background: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); min-width: 0; }
         .related-box h3 { margin-bottom: 15px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        .related-card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        
+        /* CHỈNH SỬA: LƯỚI PHIM LIÊN QUAN TRƯỢT NGANG */
+        .slider-wrapper { position: relative; }
+        .slide-btn {
+            position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; background: transparent; border: none;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 20; opacity: 1; transition: transform 0.2s ease;
+        }
+        .slide-btn:hover { transform: translateY(-50%) scale(1.2); }
+        .slide-btn svg { width: 40px; height: 40px; stroke: var(--text-main); transition: stroke 0.2s ease; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8)); }
+        .slide-btn:hover svg { stroke: var(--accent-color); }
+        .slide-btn.left-btn { left: -15px; }
+        .slide-btn.right-btn { right: -15px; }
+
+        .related-card-grid { 
+            display: grid; 
+            grid-auto-flow: column; 
+            grid-auto-columns: calc((100% - 30px) / 3); /* Hiển thị 3 thẻ, trừ đi khoảng cách gap */
+            gap: 15px; 
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            padding: 15px 5px 30px 5px; /* Tránh cắt viền bóng khi hover */
+            margin: -15px -5px -30px -5px;
+        }
+        .related-card-grid::-webkit-scrollbar { display: none; }
         
         .movie-card {
             background: rgba(26, 50, 74, 0.2); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -483,21 +427,25 @@
         .comment-box { background: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
         .comment-box h3 { margin-bottom: 20px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
         .comment-input-area { display: flex; gap: 15px; margin-bottom: 30px; }
-        .comment-input-area img { width: 40px; height: 40px; border-radius: 50%; }
-        .input-wrapper { flex: 1; display: flex; flex-direction: column; gap: 10px; }
-        .input-wrapper textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 12px; color: white; resize: none; outline: none; min-height: 80px; font-family: inherit; }
-        .input-wrapper textarea:focus { border-color: var(--accent-color); }
-        .btn-submit { align-self: flex-end; background: var(--accent-color); color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; }
-        .btn-submit:hover { background: #3b8bc2; }
+        .comment-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); }
+        
+        .input-wrapper { flex: 1; display: flex; flex-direction: column; gap: 10px; position: relative;}
+        .comment-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px 15px; color: white; outline: none; font-size: 15px; resize: vertical; min-height: 80px; font-family: inherit; transition: border-color 0.3s; }
+        .comment-input:focus { border-color: var(--accent-color); }
+        .btn-submit { position: absolute; bottom: 10px; right: 10px; background: var(--accent-color); color: #000; border: none; padding: 6px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: transform 0.2s;}
+        .btn-submit:hover { transform: scale(1.05); }
 
         .comment-list { display: flex; flex-direction: column; gap: 20px; }
         .comment-item { display: flex; gap: 15px; }
-        .comment-avatar { width: 40px; height: 40px; border-radius: 50%; background: #555; }
-        .comment-content { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; flex: 1; border: 1px solid rgba(255,255,255,0.05); }
-        .comment-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
-        .comment-name { font-weight: bold; font-size: 14px; }
+        .comment-content { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; flex: 1; border: 1px solid rgba(255,255,255,0.05); }
+        .comment-header { display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center;}
+        .comment-author { font-weight: 600; color: var(--text-main); font-size: 15px;}
         .comment-time { font-size: 12px; color: var(--text-muted); }
-        .comment-text { font-size: 14px; line-height: 1.5; color: #d1d5db; }
+        .comment-text { font-size: 14.5px; color: #cbd5e1; line-height: 1.5; }
+        .comment-actions { margin-top: 10px; display: flex; gap: 15px; font-size: 13px; color: var(--text-muted); }
+        .comment-actions button { background: none; border: none; color: inherit; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: color 0.2s;}
+        .comment-actions button:hover { color: var(--accent-color); }
+        .comment-actions button svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;}
 
         /* ================= CỘT PHẢI: SIDEBAR CHỌN TẬP PHIM ================= */
         .watch-sidebar {
@@ -554,17 +502,6 @@
         .chat-send-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-color); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .chat-send-btn svg { width: 16px; height: 16px; fill: #000; margin-left: 2px;}
 
-        /* ================= FOOTER ================= */
-        .footer { background-color: rgba(7, 16, 28, 0.6); backdrop-filter: blur(10px); padding: 60px 50px 20px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 60px; }
-        .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; max-width: 1200px; margin: 0 auto; }
-        .footer-logo img { height: 150px; margin-bottom: 20px; }
-        .footer-links { display: flex; gap: 80px; flex-wrap: wrap; }
-        .link-column { display: flex; flex-direction: column; gap: 12px; }
-        .link-column h4 { color: var(--text-main); font-size: 16px; margin-bottom: 8px; font-weight: 600; }
-        .link-column a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.3s; }
-        .link-column a:hover { color: var(--text-main); }
-        .footer-bottom { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); font-size: 13px; }
-
         /* ================= RESPONSIVE ================= */
         @media (max-width: 1024px) { .watch-layout { grid-template-columns: minmax(0, 1fr) 300px; } }
         @media (max-width: 900px) {
@@ -583,15 +520,16 @@
             .btn-action { flex: 1; justify-content: center; } .footer-links { gap: 20px; flex-direction: column; }
             .related-card-grid { grid-template-columns: repeat(2, 1fr); }
         }
+
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR ĐỒNG BỘ TỪ TRANG HOME -->
+    <!-- NAVBAR -->
     <header>
         <div class="nav-left">
             <a href="#" class="logo">
-                <img src="images/only_logo.png" alt="Nighthub logo">
+                <img src="../images/only_logo.png" alt="Nighthub logo">
             </a>
             
             <nav class="nav-links">
@@ -605,7 +543,6 @@
         </div>
         
         <div class="nav-right">
-            
             <!-- TÌM KIẾM ẨN VÀ BỘ LỌC -->
             <div class="search-wrapper" id="searchWrapper">
                 <div class="search-box" id="searchBox">
@@ -641,7 +578,7 @@
                     <div class="noti-header">Thông báo<span>Đánh dấu đã đọc</span></div>
                     <div class="noti-list">
                         <div class="noti-item unread">
-                            <img src="images/poster_doc_2.webp" alt="Phim" class="noti-img">
+                            <img src="../images/poster_doc_2.webp" alt="Phim" class="noti-img">
                             <div class="noti-content">
                                 <div class="noti-title">Tập mới đã có sẵn!</div>
                                 <div class="noti-desc">Dune: Part Two (Tập 12) vừa được cập nhật. Xem ngay nào!</div>
@@ -649,7 +586,7 @@
                             </div>
                         </div>
                         <div class="noti-item">
-                            <img src="images/avatar.jpg" alt="Phim" class="noti-img">
+                            <img src="../images/avatar.jpg" alt="Phim" class="noti-img">
                             <div class="noti-content">
                                 <div class="noti-title">Gợi ý cho bạn</div>
                                 <div class="noti-desc">Dựa trên Interstellar, chúng tôi đề xuất The Dark Knight.</div>
@@ -660,7 +597,7 @@
                 </div>
             </div>
 
-            <!-- MENU TÀI KHOẢN VÀ ĐĂNG XUẤT MÀU ĐỎ -->
+            <!-- MENU TÀI KHOẢN -->
             <div class="user-menu-wrapper">
                 <div class="avatar" title="Tài khoản" onclick="toggleUserMenu(event)"></div>
                 
@@ -768,7 +705,7 @@
     <div class="watch-container">
         
         <div class="breadcrumb">
-            <a href="#">Trang chủ</a> > <a href="#">Hành động</a> > <span>Mad Max: Fury Road</span>
+            <a href="#">Trang chủ</a> > <a href="#">Tình cảm</a> > <span>MỘT NGÀY NÀO ĐÓ</span>
         </div>
 
         <div class="watch-layout">
@@ -779,9 +716,7 @@
                 <!-- TRÌNH PHÁT VIDEO CHUYÊN NGHIỆP -->
                 <div class="player-wrapper" id="playerWrapper">
                     
-                    <!-- THÊM VIDEO THẬT .mp4 -->
-                    <video id="mainVideo" class="main-video" src="video/videoplayback.mp4" playsinline></video>
-                    
+                    <video id="mainVideo" class="main-video" src="../video/videoplayback.mp4" playsinline></video>
                     <!-- Subtitle MOCK Overlay -->
                     <div class="subtitle-overlay" id="subtitleOverlay">
                         <span class="subtitle-text" id="subtitleText">Đây là một đoạn phụ đề mẫu đang hiển thị...</span>
@@ -973,12 +908,15 @@
                 <!-- THÔNG TIN PHIM DƯỚI VIDEO -->
                 <div class="movie-header">
                     <div class="movie-info">
-                        <h1 id="movieTitleText">Big Buck Bunny (Phim Test)</h1>
+                        <h1 id="movieTitleText">MỘT NGÀY NÀO ĐÓ</h1>
                         <div class="movie-stats">
-                            <span>🎬 2026</span>
-                            <span>👁️ 1.2M Lượt xem</span>
-                            <span style="color: var(--star-color);">★ 4.9 Đánh giá</span>
-                            <span style="border: 1px solid #9aaec4; padding: 2px 6px; border-radius: 4px; font-size: 12px;">FULL HD</span>
+                            <span>2026</span>
+                            <span class="meta-separator">&bull;</span>
+                            <span>T16</span>
+                            <span class="meta-separator">&bull;</span>
+                            <span>1/3 Tập</span>
+                            <span class="meta-separator">&bull;</span>
+                            <span>Full HD</span>
                         </div>
                     </div>
                     
@@ -1000,13 +938,16 @@
                 </div>
 
                 <div class="movie-desc">
-                    <strong>Ghi chú:</strong> Video mẫu này được dùng để test UX Control (Tua, Space, Volume, Scroll, Progress bar). Bạn có thể bấm các phím tắt M, F, Mũi tên trái/phải/lên/xuống trên Desktop để trải nghiệm.
+                    <p>
+                        Hành trình trưởng thành và những hoài niệm của tuổi trẻ - khi con người bị cuốn theo dòng đời vội vã nhưng vẫn giữ trong lòng những ước mơ, lời hứa và một tình cảm chưa trọn vẹn. Dù thời gian trôi nhanh và nhiều thứ thay đổi, nhân vật vẫn tin vào “một ngày nào đó” sẽ quay lại, tìm được bình yên, hiểu rõ bản thân và cùng người mình thương đi tiếp như thuở ban đầu.
+                    </p>
                 </div>
 
                 <!-- TƯƠNG TÁC: ĐÁNH GIÁ (TRÁI) VÀ PHIM LIÊN QUAN (PHẢI) -->
                 <div class="interaction-section">
                     <div class="rating-related-wrapper">
                         
+                        <!-- CẬP NHẬT: Box Đánh Giá Đã Căn Giữa -->
                         <div class="rating-box">
                             <h3>Đánh giá phim</h3>
                             <div class="rating-score" id="score-display">4.9</div>
@@ -1020,54 +961,138 @@
                             <div class="rating-text" id="rating-msg">Click vào sao để đánh giá</div>
                         </div>
 
+                        <!-- CẬP NHẬT: Box Phim Liên Quan (Có trượt ngang Slider) -->
                         <div class="related-box">
                             <h3>Có thể bạn sẽ thích</h3>
-                            <div class="related-card-grid">
+                            
+                            <div class="slider-wrapper">
+                                <button class="slide-btn left-btn" onclick="slideLeft(this)" style="display: none;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                                </button>
+
+                                <div class="related-card-grid" onscroll="updateSlideButtons(this)">
+                                    
+                                    <a href="#" class="movie-card">
+                                        <img src="../images/poster_doc_2.webp" alt="Phim 1" onerror="this.src='https://via.placeholder.com/150x225/1A324A/fff?text=Poster'">
+                                        <div class="card-info">
+                                            <div class="card-actions">
+                                                <button class="card-action-btn play" title="Xem phim">▶</button>
+                                                <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                                            </div>
+                                            <h4 class="card-title">Interstellar</h4>
+                                            <p class="card-desc">Sứ mệnh lịch sử.</p>
+                                        </div>
+                                    </a>
+
+                                    <a href="#" class="movie-card">
+                                        <img src="../images/poster_doc_2.webp" alt="Phim 2" onerror="this.src='https://via.placeholder.com/150x225/1A324A/fff?text=Poster'">
+                                        <div class="card-info">
+                                            <div class="card-actions">
+                                                <button class="card-action-btn play" title="Xem phim">▶</button>
+                                                <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                                            </div>
+                                            <h4 class="card-title">The Dark Knight</h4>
+                                            <p class="card-desc">Hiệp sĩ bóng đêm.</p>
+                                        </div>
+                                    </a>
+
+                                    <a href="#" class="movie-card">
+                                        <img src="../images/poster_doc_2.webp" alt="Phim 3" onerror="this.src='https://via.placeholder.com/150x225/1A324A/fff?text=Poster'">
+                                        <div class="card-info">
+                                            <div class="card-actions">
+                                                <button class="card-action-btn play" title="Xem phim">▶</button>
+                                                <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                                            </div>
+                                            <h4 class="card-title">Oppenheimer</h4>
+                                            <p class="card-desc">Bom nguyên tử.</p>
+                                        </div>
+                                    </a>
+
+                                    <a href="#" class="movie-card">
+                                        <img src="../images/poster_doc_2.webp" alt="Phim 4" onerror="this.src='https://via.placeholder.com/150x225/1A324A/fff?text=Poster'">
+                                        <div class="card-info">
+                                            <div class="card-actions">
+                                                <button class="card-action-btn play" title="Xem phim">▶</button>
+                                                <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                                            </div>
+                                            <h4 class="card-title">Mad Max: Fury Road</h4>
+                                            <p class="card-desc">Cơn điên xa lộ sa mạc.</p>
+                                        </div>
+                                    </a>
+
+                                    <a href="#" class="movie-card">
+                                        <img src="../images/poster_doc_2.webp" alt="Phim 5" onerror="this.src='https://via.placeholder.com/150x225/1A324A/fff?text=Poster'">
+                                        <div class="card-info">
+                                            <div class="card-actions">
+                                                <button class="card-action-btn play" title="Xem phim">▶</button>
+                                                <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                                            </div>
+                                            <h4 class="card-title">Inception</h4>
+                                            <p class="card-desc">Kẻ cắp giấc mơ.</p>
+                                        </div>
+                                    </a>
+
+                                    <a href="#" class="movie-card">
+                                        <img src="../images/poster_doc_2.webp" alt="Phim 6" onerror="this.src='https://via.placeholder.com/150x225/1A324A/fff?text=Poster'">
+                                        <div class="card-info">
+                                            <div class="card-actions">
+                                                <button class="card-action-btn play" title="Xem phim">▶</button>
+                                                <button class="card-action-btn" title="Chi tiết"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></button>
+                                            </div>
+                                            <h4 class="card-title">Tenet</h4>
+                                            <p class="card-desc">Thuyết đảo ngược thời gian.</p>
+                                        </div>
+                                    </a>
+
+                                </div>
                                 
-                                <a href="#" class="movie-card">
-                                    <img src="images/poster_doc_2.webp" alt="Phim 1" onerror="this.src='https://via.placeholder.com/150x225/1A324A/fff?text=Poster'">
-                                    <div class="card-info">
-                                        <div class="card-actions">
-                                            <button class="card-action-btn play" title="Xem phim">▶</button>
-                                        </div>
-                                        <h4 class="card-title">Interstellar</h4>
-                                        <p class="card-desc">Sứ mệnh lịch sử.</p>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="movie-card">
-                                    <img src="images/poster_doc_2.webp" alt="Phim 2" onerror="this.src='https://via.placeholder.com/150x225/1A324A/fff?text=Poster'">
-                                    <div class="card-info">
-                                        <div class="card-actions">
-                                            <button class="card-action-btn play" title="Xem phim">▶</button>
-                                        </div>
-                                        <h4 class="card-title">The Dark Knight</h4>
-                                        <p class="card-desc">Hiệp sĩ bóng đêm.</p>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="movie-card">
-                                    <img src="images/poster_doc_2.webp" alt="Phim 3" onerror="this.src='https://via.placeholder.com/150x225/1A324A/fff?text=Poster'">
-                                    <div class="card-info">
-                                        <div class="card-actions">
-                                            <button class="card-action-btn play" title="Xem phim">▶</button>
-                                        </div>
-                                        <h4 class="card-title">Oppenheimer</h4>
-                                        <p class="card-desc">Bom nguyên tử.</p>
-                                    </div>
-                                </a>
-
+                                <button class="slide-btn right-btn" onclick="slideRight(this)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </button>
                             </div>
                         </div>
                     </div>
 
+                    <!-- BÌNH LUẬN -->
                     <div class="comment-box">
                         <h3>Bình luận (128)</h3>
                         <div class="comment-input-area">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="My Avatar">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="My Avatar" class="comment-avatar">
                             <div class="input-wrapper">
-                                <textarea placeholder="Bạn nghĩ gì về tập phim này?"></textarea>
+                                <textarea class="comment-input" placeholder="Bạn nghĩ gì về tập phim này?"></textarea>
                                 <button class="btn-submit">Đăng bình luận</button>
+                            </div>
+                        </div>
+
+                        <div class="comment-list">
+                            <div class="comment-item">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Avatar" class="comment-avatar">
+                                <div class="comment-content">
+                                    <div class="comment-header">
+                                        <span class="comment-author">Mê xem phim</span>
+                                        <span class="comment-time">2 giờ trước</span>
+                                    </div>
+                                    <div class="comment-text">Phim quá đỉnh, phần kỹ xảo làm cực kỳ mãn nhãn. Kịch bản có chiều sâu hơn mình kỳ vọng! Rất đáng xem lại lần 2.</div>
+                                    <div class="comment-actions">
+                                        <button><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 245</button>
+                                        <button><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg> Phản hồi</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="comment-item">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Avatar" class="comment-avatar" style="filter: hue-rotate(90deg);">
+                                <div class="comment-content">
+                                    <div class="comment-header">
+                                        <span class="comment-author">TranBao99</span>
+                                        <span class="comment-time">5 giờ trước</span>
+                                    </div>
+                                    <div class="comment-text">Đoạn cuối hơi rush một xíu nhưng tổng thể thì Tom Hardy diễn vẫn quá xuất sắc. Mình thích cách đạo diễn xây dựng bối cảnh hậu tận thế này.</div>
+                                    <div class="comment-actions">
+                                        <button><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 120</button>
+                                        <button><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg> Phản hồi</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1083,7 +1108,7 @@
 
                 <div class="episode-list" id="episodeListContainer">
                     <div class="episode-item active" onclick="playEpisode(this, 'Tập 1')">
-                        <img src="https://via.placeholder.com/100x56/1A324A/fff?text=Ep+1" alt="Tập 1" class="ep-img">
+                        <img src="../images/poster_1.jpeg" alt="Tập 1" class="ep-img">
                         <div class="ep-info">
                             <div class="ep-title">Tập 1 (Đang xem)</div>
                             <div class="ep-duration">9m 56s</div>
@@ -1092,7 +1117,7 @@
                     </div>
                     
                     <div class="episode-item" onclick="playEpisode(this, 'Tập 2')">
-                        <img src="https://via.placeholder.com/100x56/1A324A/fff?text=Ep+2" alt="Tập 2" class="ep-img">
+                        <img src="../images/poster_1.jpeg" alt="Tập 2" class="ep-img">
                         <div class="ep-info">
                             <div class="ep-title">Tập 2</div>
                             <div class="ep-duration">1h 3m 36s</div>
@@ -1101,7 +1126,7 @@
                     </div>
 
                     <div class="episode-item" onclick="playEpisode(this, 'Tập 3')">
-                        <img src="https://via.placeholder.com/100x56/1A324A/fff?text=Ep+3" alt="Tập 3" class="ep-img">
+                        <img src="../images/poster_1.jpeg" alt="Tập 3" class="ep-img">
                         <div class="ep-info">
                             <div class="ep-title">Tập 3</div>
                             <div class="ep-duration">52m 21s</div>
@@ -1112,6 +1137,64 @@
             </div>
 
         </div> 
+    </div>
+
+    <!-- ================= CHATBOT TRÔI NỔI ================= -->
+    <div class="chat-widget-wrapper" id="chatWrapper">
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h4><span></span> Nighthub Support</h4>
+                <button class="close-chat-btn" onclick="toggleChat()">✖</button>
+            </div>
+            <div class="chat-body">
+                <div class="chat-msg bot">Xin chào! 👋 Mình là trợ lý ảo của Nighthub. Mình có thể giúp gì cho bạn hôm nay?</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" placeholder="Nhập tin nhắn...">
+                <button class="chat-send-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="chat-fab" id="chatFab" title="Hỗ trợ trực tuyến">
+            <img src="../images/chatbox-removebg-preview.png" alt="Chatbot Icon">
+        </div>
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="../images/logo.png" alt="Nighthub logo" onerror="this.src='https://via.placeholder.com/150x50/1A324A/fff?text=Logo'">
+            </div>
+            
+            <div class="footer-links">
+                <div class="link-column">
+                    <h4>Về chúng tôi</h4>
+                    <a href="#">Giới thiệu Nighthub</a>
+                    <a href="#">Cơ hội nghề nghiệp</a>
+                    <a href="#">Thông tin báo chí</a>
+                </div>
+                
+                <div class="link-column">
+                    <h4>Hỗ trợ khách hàng</h4>
+                    <a href="#">Trung tâm trợ giúp</a>
+                    <a href="#">Câu hỏi thường gặp</a>
+                    <a href="#">Liên hệ với chúng tôi</a>
+                </div>
+                
+                <div class="link-column">
+                    <h4>Điều khoản & Chính sách</h4>
+                    <a href="#">Điều khoản sử dụng</a>
+                    <a href="#">Quyền riêng tư</a>
+                    <a href="#">Bảo mật & Cookie</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Nighthub. Nền tảng xem phim trực tuyến hàng đầu.</p>
+        </div>
     </div>
 
     <!-- SCRIPT CHUNG VÀ LOGIC VIDEO CỰC KỲ QUAN TRỌNG -->
@@ -1258,16 +1341,6 @@
             }
         }
 
-        // Hover Scroll Chuột trên trình phát để đổi âm lượng
-        playerWrapper.addEventListener('wheel', (e) => {
-            e.preventDefault(); // Ngăn cuộn trang web
-            if (e.deltaY < 0) {
-                changeVolume(currentVolume + 0.1); // Scroll lên -> To
-            } else {
-                changeVolume(currentVolume - 0.1); // Scroll xuống -> Nhỏ
-            }
-        });
-
         function setVolumeFromEvent(e) {
             const rect = volumeSlider.getBoundingClientRect();
             let x = e.clientX - rect.left;
@@ -1382,7 +1455,7 @@
             const newTitleEl = element.querySelector('.ep-title');
             newTitleEl.innerText = newTitleEl.innerText + " (Đang xem)";
             
-            document.getElementById('movieTitleText').innerText = `Big Buck Bunny - ${title}`;
+            document.getElementById('movieTitleText').innerText = `MỘT NGÀY NÀO ĐÓ - ${title}`;
             
             // Giả lập load video mới bằng cách reset
             video.currentTime = 0;
@@ -1466,7 +1539,7 @@
             }
         }
 
-        // ================= SCRIPT DROPDOWNS KHÁC =================
+        // ================= SCRIPT DROPDOWNS KHÁC VÀ DRAG CHAT =================
         function toggleSearch() {
             const searchBox = document.getElementById('searchBox');
             const searchInput = document.getElementById('searchInput');
@@ -1503,6 +1576,161 @@
                 closeSubMenu();
             }
         });
+
+        // Chatbot Draggable Logic
+        let lastToggleTime = 0;
+        function toggleChat() {
+            const now = Date.now();
+            if (now - lastToggleTime < 300) return; 
+            lastToggleTime = now;
+            const chatWindow = document.getElementById('chatWindow');
+            chatWindow.classList.toggle('active');
+        }
+
+        const fab = document.getElementById('chatFab');
+        const chatWrapper = document.getElementById('chatWrapper');
+        const chatWindow = document.getElementById('chatWindow');
+        let isDragging = false;
+        let dragStartX, dragStartY;
+
+        function updateChatPosition(clientX, clientY) {
+            let newX = clientX - 30; let newY = clientY - 30;
+            if (newX < 320) {
+                chatWindow.style.right = 'auto'; chatWindow.style.left = '0';
+                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('right', 'left');
+            } else {
+                chatWindow.style.right = '0'; chatWindow.style.left = 'auto';
+                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('left', 'right');
+            }
+            if (newY < 480) {
+                chatWindow.style.bottom = 'auto'; chatWindow.style.top = '75px';
+                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('bottom', 'top');
+            } else {
+                chatWindow.style.bottom = '75px'; chatWindow.style.top = 'auto';
+                chatWindow.style.transformOrigin = chatWindow.style.transformOrigin.replace('top', 'bottom');
+            }
+            newX = Math.max(0, Math.min(newX, window.innerWidth - 60));
+            newY = Math.max(0, Math.min(newY, window.innerHeight - 60));
+            chatWrapper.style.left = newX + 'px';
+            chatWrapper.style.top = newY + 'px';
+            chatWrapper.style.bottom = 'auto';
+            chatWrapper.style.right = 'auto';
+        }
+
+        fab.addEventListener('mousedown', function(e) {
+            isDragging = false; dragStartX = e.clientX; dragStartY = e.clientY;
+            function onMouseMove(moveEvent) {
+                if (Math.abs(moveEvent.clientX - dragStartX) > 3 || Math.abs(moveEvent.clientY - dragStartY) > 3) isDragging = true;
+                if (isDragging) updateChatPosition(moveEvent.clientX, moveEvent.clientY);
+            }
+            function onMouseUp() {
+                document.removeEventListener('mousemove', onMouseMove); document.removeEventListener('mouseup', onMouseUp);
+                if (!isDragging) toggleChat();
+            }
+            document.addEventListener('mousemove', onMouseMove); document.addEventListener('mouseup', onMouseUp);
+        });
+
+        fab.addEventListener('touchstart', function(e) {
+            isDragging = false; const touch = e.touches[0];
+            dragStartX = touch.clientX; dragStartY = touch.clientY;
+            function onTouchMove(moveEvent) {
+                const touchMove = moveEvent.touches[0];
+                if (Math.abs(touchMove.clientX - dragStartX) > 3 || Math.abs(touchMove.clientY - dragStartY) > 3) isDragging = true;
+                if (isDragging) { moveEvent.preventDefault(); updateChatPosition(touchMove.clientX, touchMove.clientY); }
+            }
+            function onTouchEnd() {
+                document.removeEventListener('touchmove', onTouchMove); document.removeEventListener('touchend', onTouchEnd);
+                if (!isDragging) toggleChat();
+            }
+            document.addEventListener('touchmove', onTouchMove, {passive: false}); document.addEventListener('touchend', onTouchEnd);
+        });
+
+        // 7. Chuyển Tab Mô Tả Phim
+        function openTab(evt, tabId) {
+            const wrapper = evt.currentTarget.closest('.tabs-wrapper');
+            const panes = wrapper.querySelectorAll('.tab-pane');
+            panes.forEach(pane => pane.classList.remove('active'));
+            
+            const btns = wrapper.querySelectorAll('.tab-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // ================= JAVASCRIPT CHO NÚT TRƯỢT NGANG (PHIM LIÊN QUAN) =================
+        function slideRight(btn) {
+            const grid = btn.parentElement.querySelector('.related-card-grid') || btn.parentElement.querySelector('.card-grid');
+            const scrollAmount = grid.clientWidth * 0.8;
+            grid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+
+        function slideLeft(btn) {
+            const grid = btn.parentElement.querySelector('.related-card-grid') || btn.parentElement.querySelector('.card-grid');
+            const scrollAmount = grid.clientWidth * 0.8;
+            grid.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        }
+
+        function updateSlideButtons(grid) {
+            const wrapper = grid.parentElement;
+            const leftBtn = wrapper.querySelector('.left-btn');
+            const rightBtn = wrapper.querySelector('.right-btn');
+            
+            if(leftBtn && rightBtn) {
+                if (grid.scrollLeft > 10) {
+                    leftBtn.style.display = 'flex';
+                } else {
+                    leftBtn.style.display = 'none';
+                }
+                
+                if (grid.scrollLeft + grid.clientWidth >= grid.scrollWidth - 10) {
+                    rightBtn.style.display = 'none';
+                } else {
+                    rightBtn.style.display = 'flex';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Lắng nghe nút cuộn cho cả 2 loại slider nếu có
+            document.querySelectorAll('.related-card-grid, .card-grid').forEach(grid => {
+                updateSlideButtons(grid);
+            });
+        });
+
+        // ================= TÍNH NĂNG ĐÁNH GIÁ SAO (ĐÃ SỬA CỐ ĐỊNH SAO) =================
+        const starContainer = document.getElementById('star-rating');
+        const stars = starContainer.querySelectorAll('span');
+        const msgDisplay = document.getElementById('rating-msg');
+        let hasRated = false;
+
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                if (hasRated) return; // Nếu đã đánh giá thì không cho click nữa
+                
+                const value = this.getAttribute('data-val');
+                hasRated = true; // Khóa đánh giá
+                starContainer.classList.add('locked'); // Thêm class để khóa hiệu ứng hover trong CSS
+                
+                // Tô màu các sao từ 1 đến vị trí người dùng click
+                stars.forEach(s => {
+                    if (s.getAttribute('data-val') <= value) {
+                        s.classList.add('active'); // Thêm màu vàng
+                    } else {
+                        s.classList.remove('active'); // Giữ màu xám
+                    }
+                });
+
+                // Hiện dòng thông báo bên dưới
+                msgDisplay.innerHTML = `Bạn đã đánh giá <b>${value} sao</b>`;
+                msgDisplay.style.color = 'var(--star-color)';
+                msgDisplay.style.fontWeight = 'bold';
+                
+                // Cập nhật số điểm to ở phía trên
+                document.getElementById('score-display').innerText = value + ".0";
+            });
+        });
+
     </script>
 </body>
 </html>
